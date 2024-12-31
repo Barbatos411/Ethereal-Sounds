@@ -15,11 +15,12 @@
         <div class="sidebar">
             <div class="sidebar-container">
                 <div onclick="sidebar_fold()" class="title">
-                    <div>
-                        <img src="./assets/logo.png" alt="logo" width="70%" height="70%">
+                    <div
+                        style="width: 60px; height: 60px;padding: 5px; display: flex; justify-content: center;align-items: center;">
+                        <img src="./assets/logo.png" alt="logo" width="50px" height="50px" style="left: 0px;">
                     </div>
                     <div>
-                        <h2>LISTEN2</h2>
+                        <h2 id="title">LISTEN2</h2>
                     </div>
                 </div>
                 <div class="menu">
@@ -28,6 +29,15 @@
         </div>
         <div class="main">
             <div class="header">
+                <div class="music-platform">网易云音乐</div>
+                <p style="color: #7a7a7b;">|</p>
+                <div class="music-platform">QQ音乐</div>
+                <p style="color: #7a7a7b;">|</p>
+                <div class="music-platform">酷狗音乐</div>
+                <p style="color: #7a7a7b;">|</p>
+                <div class="music-platform">酷我音乐</div>
+                <p style="color: #7a7a7b;">|</p>
+                <div class="music-platform">哔哩哔哩</div>
                 <div
                     style="background-color: #f2f2f7; width: 200px; height: 32px;border-radius: 10px; display: flex; right: 20px;">
                     <svg style=" display: flex;width: 32px;height: 32px;cursor: default;" role="img"
@@ -38,7 +48,7 @@
                         <path d="M14.4121122,14.4121122 L20,20" />
                         <circle cx="10" cy="10" r="6" />
                     </svg>
-                    <input class="search" type="text" placeholder="搜索">
+                    <input id="music-search" class="search" type="text" placeholder="搜索">
                 </div>
             </div>
         </div>
@@ -98,7 +108,7 @@
                     xmlns="http://www.w3.org/2000/svg" width="32px" height="32px" viewBox="0 0 24 24"
                     aria-labelledby="chevronDownIconTitle" stroke="#000" stroke-width="1.7142857142857142"
                     stroke-linecap="round" stroke-linejoin="round" fill="none" color="#000">
-                    <title id="chevronDownIconTitle">折叠</title>
+                    <title id="chevronDownIconTitle">展开</title>
                     <polyline points="6 10 12 16 18 10" />
                 </svg>
             </div>
