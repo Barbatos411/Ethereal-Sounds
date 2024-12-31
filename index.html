@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>listen2</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="http://q1.qlogo.cn/g?b=qq&nk=2607263248&s=100">
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="sidebar">
+            <div class="sidebar-container">
+                <div onclick="sidebar_fold()" class="title">
+                    <div>
+                        <img src="./assets/logo.png" alt="logo" width="70%" height="70%">
+                    </div>
+                    <div>
+                        <h2>LISTEN2</h2>
+                    </div>
+                </div>
+                <div class="menu">
+                </div>
+            </div>
+        </div>
+        <div class="main">
+            <div class="header">
+                <div
+                    style="background-color: #f2f2f7; width: 200px; height: 32px;border-radius: 10px; display: flex; right: 20px;">
+                    <svg style=" display: flex;width: 32px;height: 32px;cursor: default;" role="img"
+                        xmlns="http://www.w3.org/2000/svg" width="32px" height="32px" viewBox="0 0 24 24"
+                        aria-labelledby="searchIconTitle" stroke="#afafaf" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" fill="none" color="#000">
+                        <title id="searchIconTitle">Search</title>
+                        <path d="M14.4121122,14.4121122 L20,20" />
+                        <circle cx="10" cy="10" r="6" />
+                    </svg>
+                    <input class="search" type="text" placeholder="搜索">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footer-left">
+
+        </div>
+        <div class="footer-center">
+            <div class="song">
+                <div class="last-song">
+                    <img onclick="play_music_last()" class="last-song-cover" src="./assets/last-song-cover.png"
+                        alt="cover" width="100%" height="100%">
+                    <svg onclick="play_music_last()" role="img" class="overlay-icon" xmlns="http://www.w3.org/2000/svg"
+                        width="32px" height="32px" viewBox="0 0 24 24" aria-labelledby="previousIconTitle" stroke="#fff"
+                        stroke-width="2.142857142857143" stroke-linecap="round" stroke-linejoin="round" fill="#fff"
+                        color="#000">
+                        <title id="previousIconTitle">上一首</title>
+                        <path d="M7 11.5L18 18V5z" />
+                        <path d="M6 18V5" />
+                    </svg>
+                </div>
+
+                <div onclick="togglePlayPause()" class="current-song">
+                    <img class="current-song-cover" src="./assets/current-song-cover.png" alt="cover" width="100%"
+                        height="100%">
+                    <svg id="playPauseButton" role="img" onclick="togglePlayPause()" class="playbutten"
+                        xmlns="http://www.w3.org/2000/svg" width="56px" height="56px" viewBox="0 0 24 24"
+                        aria-labelledby="playIconTitle" stroke="#fff" stroke-width="1.7142857142857142"
+                        stroke-linecap="round" stroke-linejoin="round" fill="none" color="#000">
+                        <title id="playIconTitle">播放</title>
+                        <path d="M20 12L5 21V3z" />
+                    </svg>
+                </div>
+                <div class="next-song">
+                    <img onclick="play_music_next()" class="next-song-cover" src="./assets/next-song-cover.png"
+                        alt="cover" width="100%" height="100%">
+                    <svg onclick="play_music_next()" role="img" class="overlay-icon" xmlns="http://www.w3.org/2000/svg"
+                        width="32px" height="32px" viewBox="0 0 24 24" aria-labelledby="nextIconTitle" stroke="#fff"
+                        stroke-width="2.142857142857143" stroke-linecap="round" stroke-linejoin="round" fill="#fff"
+                        color="#000">
+                        <title id="nextIconTitle">下一首</title>
+                        <path d="M17 11.5L6 18V5z" />
+                        <path d="M18 18V5" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-right">
+            <div class="fold"
+                style="position: absolute;width: 32px; height: 32px; right: 32px;bottom: 32px; border-radius: 50%; transition: backgroundColor 0.3s ease;"
+                onmouseover="this.style.backgroundColor='#f2f2f7'"
+                onmouseout="this.style.backgroundColor='transparent'">
+                <svg class="footer-butten-fold" onclick="footer_fold()"
+                    style="cursor: pointer;transition: transform 0.3s ease;" role="img"
+                    xmlns="http://www.w3.org/2000/svg" width="32px" height="32px" viewBox="0 0 24 24"
+                    aria-labelledby="chevronDownIconTitle" stroke="#000" stroke-width="1.7142857142857142"
+                    stroke-linecap="round" stroke-linejoin="round" fill="none" color="#000">
+                    <title id="chevronDownIconTitle">折叠</title>
+                    <polyline points="6 10 12 16 18 10" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    <script src="javascript.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,302 @@
+/* 设置页面的基本样式 */
+body {
+    /* 设置页面的字体为Arial或无衬线字体，确保在不同系统上有良好的可读性 */
+    font-family: Arial, sans-serif;
+    /* 使用Flex布局，使页面内容在水平和垂直方向上居中对齐 */
+    display: flex;
+    /* 在水平方向上居中对齐内容 */
+    justify-content: center;
+    /* 在垂直方向上居中对齐内容 */
+    align-items: center;
+    /* 设置页面的高度为视口高度的100%，确保内容充满整个屏幕 */
+    height: 100vh;
+    /* 移除默认的margin */
+    margin: 0;
+}
+
+/* 设置侧边栏样式 */
+.sidebar {
+    /* 固定位置 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* 设置宽度和高度 */
+    width: 200px;
+    height: 100%;
+    /* 设置内边距 */
+    padding: 10px;
+    /* 设置背景颜色 */
+    background-color: #ffffff;
+    transition: width 0.3s ease
+}
+
+.sidebar-fold {
+    width: 120px;
+}
+
+/* 设置侧边栏容器样式 */
+.sidebar-container {
+    /* 使用Flex布局 */
+    display: flex;
+    /* 设置背景颜色 */
+    background-color: #f2f2f7;
+    /* 设置宽度和高度 */
+    width: 90%;
+    height: 83%;
+    /* 设置内边距 */
+    padding: 5px;
+    /* 设置圆角 */
+    border-radius: 10px;
+    /* 添加垂直滚动条 */
+    overflow-y: auto;
+}
+
+
+
+/* 设置主要内容区域样式 */
+.main {
+    /* 固定位置 */
+    position: fixed;
+    top: 0;
+    left: 200px;
+    /* 设置宽度和高度 */
+    width: calc(100% - 200px);
+    height: 100%;
+    /* 设置内边距 */
+    padding: 10px;
+    /* 设置背景颜色 */
+    background-color: #ffffff;
+    /* 添加垂直滚动条 */
+    overflow-y: auto;
+    transition: width 0.3s ease
+}
+
+/* 设置头部样式 */
+.header {
+    /* 设置文字颜色 */
+    color: #000000;
+    /* 设置内边距 */
+    padding: 10px;
+    /* 设置背景颜色 */
+    background-color: #ffffff;
+}
+
+.search {
+    width: 174px;
+    background-color: transparent;
+    border-style: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-default-color);
+    outline: none;
+}
+
+/* 设置标题样式 */
+.title {
+    /* 设置高度 */
+    height: 60px;
+    /* 设置圆角 */
+    border-radius: 10px;
+    /* 使用Flex布局 */
+    display: flex;
+    /* 设置背景颜色 */
+    background-color: #ffffff;
+    /* 设置宽度 */
+    width: 100%;
+    /* 设置内边距 */
+    padding: 5%;
+    /* 确保内边距和边框不会增加元素的总大小 */
+    box-sizing: border-box;
+    /* 垂直居中子元素 */
+    align-items: center;
+    /* 水平居中子元素 */
+    justify-content: center;
+    /* 设置鼠标悬停时的光标样式 */
+    cursor: pointer;
+    transition: box-shadow 0.3s ease
+}
+
+/* 设置标题悬停效果 */
+.title:hover {
+    /* 设置阴影效果 */
+    box-shadow: 0px 0px 10px #888888;
+}
+
+/* 设置图片样式 */
+img {
+    /* 设置圆角 */
+    border-radius: 5px;
+}
+
+/* 设置页脚样式 */
+.footer {
+    /* 设置高度 */
+    height: 100px;
+    /* 设置圆角 */
+    border-radius: 10px;
+    /* 设置宽度 */
+    width: 98%;
+    /* 固定位置 */
+    position: fixed;
+    bottom: 10px;
+    /* 设置背景颜色 */
+    background-color: #f2f2f7;
+    /* 半透明背景 */
+    background-color: rgba(255, 255, 255, 0.8);
+    /* 毛玻璃效果 */
+    backdrop-filter: blur(10px);
+    /* 设置内边距 */
+    padding: 10px;
+    /* 确保内边距和边框不会增加元素的总大小 */
+    box-sizing: border-box;
+    /* 使用Flex布局，水平分布子元素 */
+    display: flex;
+    justify-content: space-between;
+    /* 设置文本居中 */
+    text-align: center;
+    /* 设置阴影效果 */
+    box-shadow: 0px 0px 10px #888888;
+    transition: height 0.3s ease
+}
+
+.footer-full-height {
+    height: 98%;
+}
+
+.footer-butten-fold {
+    transform: rotate(-180deg);
+}
+
+/* 设置页脚左侧样式 */
+.footer-left,
+.footer-right {
+    /* 设置宽度 */
+    width: 30%;
+    /* 设置高度 */
+    height: 100%;
+    /* 设置边框 */
+}
+
+/* 设置页脚中间样式 */
+.footer-center {
+    /* 设置宽度 */
+    width: 450px;
+    /* 设置高度 */
+    height: 100%;
+    /* 使用Flex布局，水平和垂直居中子元素 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 设置当前歌曲封面样式 */
+.current-song-cover {
+    /* 设置宽度 */
+    width: 120px;
+    /* 设置高度 */
+    height: 120px;
+    /* 设置圆角 */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: filter 0.3s ease
+}
+
+.playbutten.playing {
+    display: none;
+}
+
+/* 设置上一首歌曲封面样式 */
+.last-song-cover,
+/* 设置下一首歌曲封面样式 */
+.next-song-cover {
+    /* 设置宽度 */
+    width: 30px;
+    /* 设置高度 */
+    height: 50px;
+    /* 设置椭圆形圆角 */
+    border-radius: 50% / 25%;
+    /* 设置垂直居中 */
+    align-items: center;
+    /* 设置图片覆盖方式 */
+    object-fit: cover;
+    cursor: pointer;
+    transition: filter 0.3s ease
+}
+
+/* 设置歌曲播放控件样式 */
+.song {
+    /* 使用Flex布局 */
+    display: flex;
+    /* 固定位置 */
+    position: fixed;
+    bottom: 30px;
+    /* 垂直居中子元素 */
+    align-items: flex-end;
+    /* 水平分布子元素 */
+    justify-content: space-between;
+}
+
+/* 设置上一首歌曲控件样式 */
+.last-song,
+/* 设置下一首歌曲控件样式 */
+.next-song {
+    /* 设置宽度 */
+    width: 70px;
+    /* 设置垂直居中 */
+    align-items: center;
+    position: relative;
+}
+
+.overlay-icon {
+    /* 绝对定位图标 */
+    position: absolute;
+    /* 距离顶部的距离 */
+    top: 50%;
+    /* 距离左侧的距离 */
+    left: 50%;
+    /* 水平和垂直居中 */
+    transform: translate(-50%, -50%);
+    /* 可选：添加鼠标悬停效果 */
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease
+}
+
+.last-song:hover .overlay-icon {
+    opacity: 1;
+}
+
+.last-song:hover .last-song-cover {
+    filter: brightness(0%);
+}
+
+.next-song:hover .overlay-icon {
+    opacity: 1;
+}
+
+.next-song:hover .next-song-cover {
+    filter: brightness(0%);
+}
+
+.playbutten {
+    /* 绝对定位图标 */
+    position: absolute;
+    /* 距离顶部的距离 */
+    top: 50%;
+    /* 距离左侧的距离 */
+    left: 50%;
+    /* 水平和垂直居中 */
+    transform: translate(-50%, -50%);
+    /* 可选：添加鼠标悬停效果 */
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease
+}
+
+.current-song:hover .playbutten {
+    opacity: 1;
+}
+
+.current-song:hover .current-song-cover {
+    filter: brightness(0%);
+}
