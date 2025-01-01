@@ -54,7 +54,7 @@ function togglePlayPause() {
         playIconTitle.textContent = '播放';
     } else {
         playPauseButton.innerHTML = `
-            <title id="pauseIconTitle">Pause</title>
+            <title id="pauseIconTitle">暂停</title>
             <rect width="4" height="16" x="5" y="4" />
             <rect width="4" height="16" x="15" y="4" />
         `;
@@ -74,5 +74,5 @@ function play_music_last() {
 }
 
 function choose_musuc_platform() {
-    
+
 }
