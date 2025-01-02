@@ -48,7 +48,7 @@ function togglePlayPause() {
 
     if (isPlaying) {
         playPauseButton.innerHTML = `
-            <title id="playIconTitle">Play</title>
+            <title id="playIconTitle">播放</title>
             <path d="M20 12L5 21V3z" />
         `;
         playIconTitle.textContent = '播放';

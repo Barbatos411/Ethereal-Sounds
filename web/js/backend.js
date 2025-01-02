@@ -4,12 +4,15 @@ async function displayPlatforms() {
 
     const platformsContainer = document.getElementById('platforms-container');
 
-    // 遍历平台名称，生成对应的 <div> 元素
+    // 按照 id 排序平台
+    data.platforms.sort((a, b) => a.id - b.id);
+
+    // 遍历排序后的平台，生成对应的 <div> 元素
     data.platforms.forEach((platform, index) => {
         // 创建平台的 <div> 元素
         const platformDiv = document.createElement('div');
         platformDiv.className = 'music-platform';
-        platformDiv.textContent = platform;
+        platformDiv.textContent = platform.name;
 
         // 添加平台 <div> 元素
         platformsContainer.appendChild(platformDiv);
@@ -19,7 +22,6 @@ async function displayPlatforms() {
             const separator = document.createElement('p');
             separator.style.color = '#7a7a7b';  // 设置颜色
             separator.textContent = '|';  // 分隔符文本
-            separator.style.userSelect = 'none';  // 禁止用户选择文本
             platformsContainer.appendChild(separator);
         }
     });

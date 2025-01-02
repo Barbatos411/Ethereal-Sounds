@@ -1,6 +1,6 @@
 import os
 import importlib
-from fastapi import FastAPI
+from fastapi import FastAPI, Query, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
@@ -26,7 +26,7 @@ async def read_item(request: Request):
 platforms = []
 
 def load_platforms():
-    # 获取 /app/search 目录下的所有.py文件
+    # 获取 /app/search 目录下的所有 .py 文件
     search_dir = os.path.join(os.path.dirname(__file__), 'search')
     for filename in os.listdir(search_dir):
         if filename.endswith('.py') and filename != '__init__.py' and filename != 'base.py':
@@ -35,10 +35,14 @@ def load_platforms():
             module = importlib.import_module(module_name)
             for attr_name in dir(module):
                 platform_class = getattr(module, attr_name)
-                if isinstance(platform_class, type) and hasattr(platform_class, 'name'):
+                if isinstance(platform_class, type) and hasattr(platform_class, 'name') and hasattr(platform_class, 'id'):
                     platforms.append(platform_class())
 
+# 加载平台并按 id 排序
 load_platforms()  # 加载平台
+
+# 按 id 排序平台
+platforms.sort(key=lambda platform: platform.id)
 
 @app.get("/platforms")
 async def get_platforms():
@@ -46,20 +50,23 @@ async def get_platforms():
     返回支持的平台名称
     :return: 平台名称列表
     """
-    return {"platforms": [platform.name for platform in platforms]}
+    return {"platforms": [{"id": platform.id, "name": platform.name} for platform in platforms]}
 
 @app.get("/search")
-async def search(keyword: str, platform: str, page: int = 1, limit: int = 20):
+async def search_song(
+    keyword: str = Query(..., description="搜索关键词"),
+    platform: str = Query(..., description="搜索平台"),
+    page: int = Query(1, description="分页")
+):
     """
-    搜索音乐
-    :param keyword: 搜索关键词
-    :param platform: 平台名称
-    :param page: 页码
-    :param limit: 每页数量
-    :return: 搜索结果
+    根据指定平台和关键词进行歌曲搜索
     """
     # 根据平台名称找到对应的平台类
     for p in platforms:
         if p.name == platform:
-            return p.search(keyword, page, limit)
-    return {"error": "Platform not found"}
+            try:
+                results = await p.search(keyword, page)
+                return {"platform": platform, "results": results}
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=str(e))
+    raise HTTPException(status_code=400, detail="指定的平台不受支持")
