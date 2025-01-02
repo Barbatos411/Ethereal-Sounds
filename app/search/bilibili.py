@@ -32,10 +32,10 @@ class BilibiliSearch:
                 {
                 "author": song["author"], # 作者
                 "title": song["title"], # 标题
-                "pic": f"http:{song['pic']}", # 封面
+                "cover": f"http:{song['pic']}", # 封面
                 "play": song["play"], # 播放量
                 "duration": song["duration"], # 时长
-                "arcurl": song["arcurl"], # 链接
+                "url": song["arcurl"], # 链接
                 }
                 for song in results
             ]

@@ -34,9 +34,9 @@ class NeteaseSearch(BaseSearch):
             songCount = data.get("result", {}).get("songCount", 0) # 歌曲总数
             song_list = [
                 {
-                    "name": song["name"], # 歌曲名称
+                    "title": song["name"], # 歌曲名称
                     "status": song["status"], # 歌曲状态，1为正常，-1未知
-                    "artist": ", ".join(artist["name"] for artist in song.get("artists", [])), # 歌手
+                    "author": ", ".join(artist["name"] for artist in song.get("artists", [])), # 歌手
                     "url": f"https://music.163.com/song?id={song['id']}",  # 歌曲链接
                     "cover": song["album"].get("picUrl", ""),  # 歌曲封面图片
                     "album": song["album"]["name"],  # 专辑名称
