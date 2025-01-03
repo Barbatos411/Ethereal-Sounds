@@ -18,8 +18,8 @@ body {
 .sidebar {
     /* 固定位置 */
     position: fixed;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     /* 设置宽度和高度 */
     width: 200px;
     height: 100%;
@@ -48,7 +48,6 @@ body {
 }
 
 
-
 /* 设置主要内容区域样式 */
 .main {
     /* 固定位置 */
@@ -69,11 +68,11 @@ body {
 
 /* 设置头部样式 */
 .header {
-    top: 0px;
+    top: 0;
     /* 设置文字颜色 */
     color: #000000;
     /* 设置内边距 */
-    padding: 0px;
+    padding: 0;
     height: 50px;
     /* 设置背景颜色 */
     background-color: #ffffff;
@@ -94,7 +93,7 @@ body {
     /* 阻止文本被选中 */
     user-select: none;
     transition: font-size 0.3s ease, background-color 0.3s ease, width 0.3s ease,
-        font-weight 0.3s ease;
+    font-weight 0.3s ease;
 }
 
 .music-platform:hover {
@@ -105,13 +104,21 @@ body {
     width: 150px;
 }
 
+.selected {
+    color: #000000;
+    font-size: 30px;
+    font-weight: bold;
+    width: 150px;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 1);
+}
+
 .search {
     width: 174px;
     background-color: transparent;
     border-style: none;
     font-size: 16px;
     font-weight: 600;
-    color: var(--text-default-color);
+    color: #000000;
     outline: none;
 }
 
@@ -145,7 +152,7 @@ body {
 /* 设置标题悬停效果 */
 .title:hover {
     /* 设置阴影效果 */
-    box-shadow: 0px 0px 10px #888888;
+    box-shadow: 0 0 10px #888888;
 }
 
 /* 设置图片样式 */
@@ -181,7 +188,7 @@ img {
     /* 设置文本居中 */
     text-align: center;
     /* 设置阴影效果 */
-    box-shadow: 0px 0px 10px #888888;
+    box-shadow: 0 0 10px #888888;
     transition: height 0.3s ease
 }
 
@@ -189,7 +196,7 @@ img {
     height: 98%;
 }
 
-.footer-butten-fold {
+.footer-button-fold {
     transform: rotate(-180deg);
 }
 
@@ -227,13 +234,13 @@ img {
     transition: filter 0.3s ease
 }
 
-.playbutten.playing {
+.play-button.playing {
     display: none;
 }
 
 /* 设置上一首歌曲封面样式 */
 .last-song-cover,
-/* 设置下一首歌曲封面样式 */
+    /* 设置下一首歌曲封面样式 */
 .next-song-cover {
     /* 设置宽度 */
     width: 30px;
@@ -266,7 +273,7 @@ img {
 
 /* 设置上一首歌曲控件样式 */
 .last-song,
-/* 设置下一首歌曲控件样式 */
+    /* 设置下一首歌曲控件样式 */
 .next-song {
     /* 设置宽度 */
     width: 70px;
@@ -306,7 +313,7 @@ img {
     filter: brightness(0%);
 }
 
-.playbutten {
+.play-button {
     /* 绝对定位图标 */
     position: absolute;
     /* 距离顶部的距离 */
@@ -321,7 +328,7 @@ img {
     transition: opacity 0.3s ease
 }
 
-.current-song:hover .playbutten {
+.current-song:hover .play-button {
     opacity: 1;
 }
 

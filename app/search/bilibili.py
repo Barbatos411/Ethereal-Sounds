@@ -1,11 +1,13 @@
 import httpx
+
 from app.search.base import BaseSearch
 
-class BilibiliSearch:
+
+class BilibiliSearch(BaseSearch):
     name = "哔哩哔哩"  # 平台名称
     key = "bilibili"  # 平台唯一标识
-    id = 5 #顺序
-    
+    id = 5  # 顺序
+
     def __init__(self):
         self.client = httpx.AsyncClient()
         self.base_url = "https://api.bilibili.com/x/web-interface/search/type"
@@ -15,7 +17,7 @@ class BilibiliSearch:
 
         }
 
-    async def search(self, keyword: str, page: int = 1):
+    async def search(self, keyword: str, page: int = 1, limit: int = 20):
         """实现搜索功能，支持分页"""
 
         search_url = f"{self.base_url}?page={page}&keyword={keyword}&search_type=video&platform=pc"
@@ -30,12 +32,12 @@ class BilibiliSearch:
             results = data.get("data", {}).get("result", [])
             results_list = [
                 {
-                "author": song["author"], # 作者
-                "title": song["title"], # 标题
-                "cover": f"http:{song['pic']}", # 封面
-                "play": song["play"], # 播放量
-                "duration": song["duration"], # 时长
-                "url": song["arcurl"], # 链接
+                    "title": song["title"],  # 标题
+                    "author": song["author"],  # 作者
+                    "cover": f"http:{song['pic']}",  # 封面
+                    "play": song["play"],  # 播放量
+                    "duration": song["duration"],  # 时长
+                    "url": song["arcurl"],  # 链接
                 }
                 for song in results
             ]

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class BaseSearch(ABC):
     @abstractmethod
     async def search(self, keyword: str, page: int = 1, limit: int = 20):

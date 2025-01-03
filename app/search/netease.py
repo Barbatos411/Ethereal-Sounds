@@ -1,10 +1,12 @@
 import httpx
+
 from app.search.base import BaseSearch
+
 
 class NeteaseSearch(BaseSearch):
     name = "网易云音乐"  # 平台名称
     key = "netease"  # 平台唯一标识
-    id = 1 #顺序
+    id = 1  # 顺序
 
     def __init__(self):
         self.client = httpx.AsyncClient()
@@ -31,21 +33,20 @@ class NeteaseSearch(BaseSearch):
 
             # 假设返回的格式符合以下结构
             songs = data.get("result", {}).get("songs", [])
-            songCount = data.get("result", {}).get("songCount", 0) # 歌曲总数
             song_list = [
                 {
-                    "title": song["name"], # 歌曲名称
-                    "status": song["status"], # 歌曲状态，1为正常，-1未知
-                    "author": ", ".join(artist["name"] for artist in song.get("artists", [])), # 歌手
-                    "url": f"https://music.163.com/song?id={song['id']}",  # 歌曲链接
+                    "title": song["name"],  # 歌曲名称
+                    "status": song["status"],  # 歌曲状态，1为正常，-1未知
+                    "author": ", ".join(artist["name"] for artist in song.get("artists", [])),  # 歌手
                     "cover": song["album"].get("picUrl", ""),  # 歌曲封面图片
+                    "url": f"https://music.163.com/song?id={song['id']}",  # 歌曲链接
                     "album": song["album"]["name"],  # 专辑名称
                     "fee": song["fee"],  # 付费状态8为免费，1为VIP
                     "mvid": song["mvid"]  # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=
                 }
                 for song in songs
             ]
-            return songCount, song_list
+            return song_list
         except httpx.RequestError as e:
             # 错误处理
             return {"error": f"请求失败: {e}"}
