@@ -142,7 +142,7 @@ body {
     /* 宽度变为 150px */
     width: 150px;
     /* 添加底部阴影 */
-    box-shadow: 0 2px 0 var(--shadow);
+    box-shadow: 0 2px 0 var(--text-primary);
 }
 
 /* 设置标题样式 */
