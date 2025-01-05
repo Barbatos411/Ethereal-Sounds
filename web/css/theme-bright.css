@@ -1,0 +1,16 @@
+:root {
+    --text-primary: #000000;
+    --text-secondary: #7a7a7b;
+    --color-primary: #ffffff;
+    --color-secondary: #f2f2f7;
+    --shadow: #888888;
+    --search: #f2f2f3;
+
+    /* RGB 颜色变量 */
+    --text-primary-rgb: 0, 0, 0;
+    --text-secondary-rgb: 122, 122, 123;
+    --color-primary-rgb: 255, 255, 255;
+    --color-secondary-rgb: 242, 242, 247;
+    --shadow-rgb: 136, 136, 136;
+    --search-rgb: 242, 242, 243;
+}
