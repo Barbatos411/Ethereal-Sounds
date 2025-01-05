@@ -4,7 +4,7 @@ function footer_fold() {
     const svgElement = document.querySelector('.fold svg');
     // 切换.footer元素的类
     footer.classList.toggle('footer-full-height');
-    svgElement.classList.toggle('footer-butten-fold');
+    svgElement.classList.toggle('footer-button-fold');
 }
 
 function sidebar_fold() {
