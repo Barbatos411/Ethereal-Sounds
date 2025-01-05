@@ -1,9 +1,5 @@
-import httpx
-from app.search.base import BaseSearch
-
 class QQMusicSearch:
-    name = "QQ 音乐"  # 平台名称
-    key = "qq"  # 平台唯一标识
+    name = "QQ音乐"  # 平台名称
     id = 2 # 顺序
     
     async def search(self, keyword: str, page: int = 1, limit: int = 20):

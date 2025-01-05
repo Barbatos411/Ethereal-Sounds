@@ -1,9 +1,8 @@
 import httpx
-from app.search.base import BaseSearch
+
 
 class KuwoMusicSearch:
     name = "酷我音乐" # 平台名称
-    key = "kuwo" # 平台唯一标识
     id = 4 #顺序
 
     def __init__(self):

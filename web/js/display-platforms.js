@@ -35,13 +35,13 @@ async function displayPlatforms() {
 
         console.log('平台元素生成完成'); // 添加调试日志
 
-        // 动态导入 selectPlatform.js
-        import('./selectPlatform.js')
+        // 动态导入 select-platform.js
+        import('./select-platform.js')
             .then(module => {
-                console.log('selectPlatform.js 已加载'); // 添加调试日志
+                console.log('select-platform.js 已加载'); // 添加调试日志
             })
             .catch(error => {
-                console.error('加载 selectPlatform.js 时出错:', error); // 添加错误处理
+                console.error('加载 select-platform.js 时出错:', error); // 添加错误处理
             });
     } catch (error) {
         console.error('生成平台元素时出错:', error); // 添加错误处理

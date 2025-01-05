@@ -1,5 +1,6 @@
 import importlib
 import os
+import sqlite3
 
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.staticfiles import StaticFiles
@@ -78,3 +79,27 @@ async def search_song(
             except Exception as e:
                 raise HTTPException(status_code=500, detail=str(e))
     raise HTTPException(status_code=400, detail="指定的平台不受支持")
+
+
+@app.get("/data")
+async def get_data(
+        database: str = Query("data", description="数据库"),
+        table: str = Query(..., description="搜索表"),
+        keyword: str = Query(..., description="关键词"),
+        select: str = Query(..., description="返回列"),
+        where: str = Query(..., description="查找列"),
+):
+    try:
+        with sqlite3.connect(f'app/data/{database}.db') as conn:
+            cursor = conn.cursor()
+            # 使用参数化查询防止SQL注入
+            query = f"SELECT {select} FROM {table} WHERE {where} = ?"
+            cursor.execute(query, (keyword,))
+            result = cursor.fetchone()
+
+        if result:
+            return {"cookie": result[0]}
+        else:
+            return {"error": "未找到匹配的记录"}
+    except sqlite3.Error as e:
+        raise HTTPException(status_code=500, detail=str(e))

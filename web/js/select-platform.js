@@ -1,4 +1,4 @@
-import {searchSongs} from './searchSongs.js';
+import {searchSongs} from './search-songs.js';
 
 // 获取所有平台元素
 const platforms = document.querySelectorAll('.music-platform');
