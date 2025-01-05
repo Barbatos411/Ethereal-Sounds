@@ -1,137 +1,160 @@
 /* 设置页面的基本样式 */
 body {
-    /* 设置页面的字体为Arial或无衬线字体，确保在不同系统上有良好的可读性 */
-    font-family: Arial, sans-serif;
     /* 使用Flex布局，使页面内容在水平和垂直方向上居中对齐 */
     display: flex;
-    /* 在水平方向上居中对齐内容 */
-    justify-content: center;
-    /* 在垂直方向上居中对齐内容 */
-    align-items: center;
     /* 设置页面的高度为视口高度的100%，确保内容充满整个屏幕 */
     height: 100vh;
     /* 移除默认的margin */
     margin: 0;
 }
 
+.app {
+    /* 使用Flex布局，使页面内容在水平和垂直方向上居中对齐 */
+    display: flex;
+    /* 设置页面的高度为视口高度的100%，确保内容充满整个屏幕 */
+    height: 100vh;
+    /* 设置页面的宽度为视口宽度的100%，确保内容充满整个屏幕 */
+    width: 100vw;
+    /* 移除默认的margin */
+    margin: 0;
+    /* 设置该元素为弹性项目，并使其平分父容器中的可用空间 */
+    flex: 1;
+}
+
 /* 设置侧边栏样式 */
 .sidebar {
-    /* 固定位置 */
-    position: fixed;
-    top: 0;
-    left: 0;
+    /* 设置背景颜色 */
+    background-color: var(--color-primary);
+    /* 使用Flex布局 */
+    display: flex;
     /* 设置宽度和高度 */
     width: 200px;
-    height: 100%;
     /* 设置内边距 */
     padding: 10px;
-    /* 设置背景颜色 */
-    background-color: #ffffff;
-    transition: width 0.3s ease
+    /* 移除默认的margin */
+    margin: 0;
+    transition: width 0.3s ease, background-color 0.5s ease;
 }
 
 /* 设置侧边栏容器样式 */
 .sidebar-container {
-    /* 使用Flex布局 */
-    display: flex;
     /* 设置背景颜色 */
-    background-color: #f2f2f7;
+    background-color: var(--color-secondary);
     /* 设置宽度和高度 */
     width: 90%;
-    height: 83%;
+    height: 87%;
     /* 设置内边距 */
     padding: 5px;
     /* 设置圆角 */
     border-radius: 10px;
-    /* 添加垂直滚动条 */
-    overflow-y: auto;
+    transition: background-color 0.5s ease;
 }
 
 
 /* 设置主要内容区域样式 */
 .main {
-    /* 固定位置 */
-    position: fixed;
-    top: 0;
-    left: 200px;
+    /* 设置背景颜色 */
+    background-color: var(--color-primary);
+    /* 使用Flex布局 */
+    display: flex;
     /* 设置宽度和高度 */
-    width: calc(100% - 200px);
-    height: 100%;
+    flex: 1;
     /* 设置内边距 */
     padding: 10px;
-    /* 设置背景颜色 */
-    background-color: #ffffff;
-    /* 添加垂直滚动条 */
-    overflow-y: auto;
-    transition: width 0.3s ease, left 0.3s ease
+    /* 移除默认的margin */
+    margin: 0;
+    transition: width 0.3s ease, left 0.3s ease, background-color 0.5s ease;
 }
 
 /* 设置头部样式 */
 .header {
-    top: 0;
-    /* 设置文字颜色 */
-    color: #000000;
-    /* 设置内边距 */
-    padding: 0;
-    height: 50px;
     /* 设置背景颜色 */
-    background-color: #ffffff;
+    background-color: var(--color-primary);
     /* 使用Flex布局 */
     display: flex;
-    /* 设置垂直居中子元素 */
+    /* 水平分布子元素 */
+    justify-content: space-between;
+    /* 设置内边距 */
+    padding: 0;
+    /* 设置高度 */
+    height: 50px;
+    /* 设置宽度 */
+    flex: 1;
+    /* 移除默认的margin */
+    margin: 8px 0;
+    transition: background-color 0.5s ease;
+}
+
+.platforms-container {
+    /* 使用Flex布局 */
+    display: flex;
+    /* 水平分布子元素 */
+    justify-content: space-between;
+    /* 垂直分布子元素 */
     align-items: center;
 }
 
+/* 定义音乐平台的样式 */
 .music-platform {
+    /* 宽度为 80px */
     width: 80px;
+    /* 内边距为 5px */
     padding: 5px;
-    color: #7a7a7b;
+    /* 文字颜色为 #7a7a7b */
+    color: var(--text-secondary);
+    /* 字体大小为 16px */
     font-size: 16px;
+    /* 圆角半径为 10px */
     border-radius: 10px;
+    /* 文本居中对齐 */
     text-align: center;
+    /* 鼠标指针样式为指针 */
     cursor: pointer;
     /* 阻止文本被选中 */
     user-select: none;
-    transition: font-size 0.3s ease, background-color 0.3s ease, width 0.3s ease,
+    /* 过渡效果：字体大小 0.3s 渐变，背景颜色 0.3s 渐变，宽度 0.3s 渐变，字体粗细 0.3s 渐变 */
+    transition: font-size 0.3s ease, background-color 0.5s ease, width 0.3s ease,
     font-weight 0.3s ease;
 }
 
+/* 鼠标悬停在音乐平台上时的样式 */
 .music-platform:hover {
-    color: #000000;
+    /* 文字颜色变为黑色 */
+    color: var(--text-primary);
+    /* 字体大小变为 30px */
     font-size: 30px;
+    /* 字体加粗 */
     font-weight: bold;
-    background-color: #f2f2f7;
+    /* 背景颜色变为 #f2f2f7 */
+    background-color: var(--color-secondary);
+    /* 宽度变为 150px */
     width: 150px;
 }
 
+/* 定义选中状态的样式 */
 .selected {
-    color: #000000;
+    /* 文字颜色变为黑色 */
+    color: var(--text-primary);
+    /* 字体大小变为 30px */
     font-size: 30px;
+    /* 字体加粗 */
     font-weight: bold;
+    /* 宽度变为 150px */
     width: 150px;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 1);
-}
-
-.search {
-    width: 174px;
-    background-color: transparent;
-    border-style: none;
-    font-size: 16px;
-    font-weight: 600;
-    color: #000000;
-    outline: none;
+    /* 添加底部阴影 */
+    box-shadow: 0 2px 0 var(--shadow);
 }
 
 /* 设置标题样式 */
 .title {
+    /* 设置背景颜色 */
+    background-color: var(--color-primary);
     /* 设置高度 */
     height: 60px;
     /* 设置圆角 */
     border-radius: 10px;
     /* 使用Flex布局 */
     display: flex;
-    /* 设置背景颜色 */
-    background-color: #ffffff;
     /* 设置宽度 */
     width: 100%;
     /* 设置内边距 */
@@ -146,13 +169,13 @@ body {
     cursor: pointer;
     /* 阻止文本被选中 */
     user-select: none;
-    transition: box-shadow 0.3s ease
+    transition: box-shadow 0.3s ease, background-color 0.5s ease;
 }
 
 /* 设置标题悬停效果 */
 .title:hover {
     /* 设置阴影效果 */
-    box-shadow: 0 0 10px #888888;
+    box-shadow: 0 0 10px var(--shadow);
 }
 
 /* 设置图片样式 */
@@ -163,19 +186,19 @@ img {
 
 /* 设置页脚样式 */
 .footer {
+    /* 设置外边框 */
+    margin: 0 10px;
     /* 设置高度 */
     height: 100px;
     /* 设置圆角 */
     border-radius: 10px;
     /* 设置宽度 */
-    width: 98%;
+    width: calc(100% - 20px);
     /* 固定位置 */
     position: fixed;
     bottom: 10px;
-    /* 设置背景颜色 */
-    background-color: #f2f2f7;
     /* 半透明背景 */
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(var(--color-primary-rgb), 0.8);
     /* 毛玻璃效果 */
     backdrop-filter: blur(10px);
     /* 设置内边距 */
@@ -188,8 +211,8 @@ img {
     /* 设置文本居中 */
     text-align: center;
     /* 设置阴影效果 */
-    box-shadow: 0 0 10px #888888;
-    transition: height 0.3s ease
+    box-shadow: 0 0 10px var(--shadow);
+    transition: height 0.3s ease, background-color 0.5s ease;
 }
 
 .footer-full-height {

@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>listen2</title>
+    <link href="css/theme-bright.css" id="theme-link" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
     <link href="./res/icon.png" rel="icon">
 
 </head>
 
 <body>
-<div id="app">
+<div class="app">
     <div class="sidebar">
         <div class="sidebar-container">
             <div class="title" onclick="sidebar_fold()">
@@ -20,7 +21,7 @@
                     <img alt="logo" height="50px" src="./res/logo.png" style="left: 0;" width="50px">
                 </div>
                 <div>
-                    <h2 id="title">LISTEN2</h2>
+                    <h2 id="title" style="color: var(--text-primary)">LISTEN2</h2>
                 </div>
             </div>
             <div class="menu">
@@ -29,46 +30,57 @@
     </div>
     <div class="main">
         <div class="header">
-            <div id="platforms-container" style="display: flex; align-items: center;">
+            <div class="platforms-container">
                 <!-- 平台将会生成在这里显示 -->
             </div>
-            <div style="display: flex; align-items: center; justify-content: flex-end; flex: 1;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
                 <div
-                        style="background-color: #f2f2f7; width: 200px; height: 32px; border-radius: 10px; display: flex; margin-right: 16px;">
-                    <svg aria-labelledby="searchIconTitle"
-                         color="#000" fill="none" height="32px" role="img" stroke="#afafaf"
-                         stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                        style="background-color: var(--search); width: 200px; height: 32px; border-radius: 10px; display: flex; margin-right: 16px;">
+                    <svg aria-labelledby="searchIconTitle" color="#000" fill="none" height="32px" role="img"
+                         stroke="var(--text-primary)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                          style="margin-left: 5px ;display: flex; width: 32px; height: 32px; cursor: default;"
                          viewBox="0 0 24 24" width="32px" xmlns="http://www.w3.org/2000/svg">
                         <title id="searchIconTitle">Search</title>
                         <path d="M14.4121122,14.4121122 L20,20"/>
                         <circle cx="10" cy="10" r="6"/>
                     </svg>
-                    <input class="search" id="searchInput" placeholder="搜索" type="text">
+                    <input
+                            id="searchInput"
+                            placeholder="搜索" style="width: 174px; background-color: transparent; border-style: none; font-size: 16px; font-weight: 600; color: var(--text-primary); outline: none; user-select: none;" type="text">
                 </div>
-                <div id="user"
-                     onmouseout="this.style.backgroundColor='transparent'"
-                     onmouseover="this.style.backgroundColor='#f2f2f7'"
-                     style="display: flex; justify-content: center; align-items: center; width: 48px; height: 48px; cursor: pointer; border-radius: 10px; transition: background-color 0.3s ease;">
-                    <svg aria-labelledby="peopleIconTitle"
-                         color="#000" fill="#fff" height="32px" role="img"
-                         stroke="#000" stroke-linecap="round" stroke-linejoin="round"
+                <div id="theme" onmouseout="this.style.backgroundColor='transparent'"
+                     onmouseover="this.style.backgroundColor='var(--color-secondary)'"
+                     style="display: flex; justify-content: center; align-items: center; cursor: pointer; border-radius: 10px; transition: background-color 0.3s ease;margin: 10px">
+                    <svg aria-labelledby="brightnessIconTitle" color="#000" fill="none" height="32px"
+                         stroke="var(--text-primary)" stroke-linecap="round"
+                         stroke-linejoin="round" stroke-width="1.7142857142857142" viewBox="0 0 24 24" width="32px"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <title id="brightnessIconTitle">主题</title>
+                        <path
+                                d="M15 6L12 3L9.00001 6H6.00001V9L3 12L6.00001 15V18H8.99999L12 21L15 18H18V15L21 12L18 9V6H15Z"/>
+                        <path d="M16 12C16 9.79086 14.2091 8 12 8V16C14.2091 16 16 14.2091 16 12Z"/>
+                    </svg>
+                </div>
+                <div id="user" onmouseout="this.style.backgroundColor='transparent'"
+                     onmouseover="this.style.backgroundColor='var(--color-secondary)'"
+                     style="display: flex; justify-content: center; align-items: center; cursor: pointer; border-radius: 10px; transition: background-color 0.3s ease;margin: 10px">
+                    <svg aria-labelledby="peopleIconTitle" color="#000" fill="none" height="32px" role="img"
+                         stroke="var(--text-primary)" stroke-linecap="round" stroke-linejoin="round"
                          stroke-width="1.7142857142857142" viewBox="0 0 24 24" width="32px"
                          xmlns="http://www.w3.org/2000/svg">
-                        <title id="peopleIconTitle">People</title>
+                        <title id="peopleIconTitle">账号</title>
                         <path
                                 d="M1 18C1 15.75 4 15.75 5.5 14.25 6.25 13.5 4 13.5 4 9.75 4 7.25025 4.99975 6 7 6 9.00025 6 10 7.25025 10 9.75 10 13.5 7.75 13.5 8.5 14.25 10 15.75 13 15.75 13 18M12.7918114 15.7266684C13.2840551 15.548266 13.6874862 15.3832994 14.0021045 15.2317685 14.552776 14.9665463 15.0840574 14.6659426 15.5 14.25 16.25 13.5 14 13.5 14 9.75 14 7.25025 14.99975 6 17 6 19.00025 6 20 7.25025 20 9.75 20 13.5 17.75 13.5 18.5 14.25 20 15.75 23 15.75 23 18"/>
                         <path d="M12,16 C12.3662741,15.8763472 12.6302112,15.7852366 12.7918114,15.7266684"
                               stroke-linecap="round"/>
                     </svg>
                 </div>
-                <div id="setting"
-                     onmouseout="this.style.backgroundColor='transparent'"
-                     onmouseover="this.style.backgroundColor='#f2f2f7'"
-                     style="display: flex; justify-content: center; align-items: center; width: 48px; height: 48px; margin-right: 50px; cursor: pointer; border-radius: 10px; transition: background-color 0.3s ease;">
-                    <svg aria-labelledby="settingsIconTitle" color="#000" fill="none" height="32px"
-                         role="img" stroke="#000" stroke-linecap="round"
-                         stroke-linejoin="round" stroke-width="1.7142857142857142" viewBox="0 0 24 24" width="32px"
+                <div id="setting" onmouseout="this.style.backgroundColor='transparent'"
+                     onmouseover="this.style.backgroundColor='var(--color-secondary)'"
+                     style="display: flex; justify-content: center; align-items: center; margin-left: 10px; margin-right: 30px; cursor: pointer; border-radius: 10px; transition: background-color 0.3s ease;">
+                    <svg aria-labelledby="settingsIconTitle" color="#000" fill="none" height="32px" role="img"
+                         stroke="var(--text-primary)" stroke-linecap="round" stroke-linejoin="round"
+                         stroke-width="1.7142857142857142" viewBox="0 0 24 24" width="32px"
                          xmlns="http://www.w3.org/2000/svg">
                         <title id="settingsIconTitle">设置</title>
                         <path
@@ -76,18 +88,19 @@
                         <circle cx="12" cy="12" r="1"/>
                     </svg>
                 </div>
+                </div>
             </div>
             <div class="content">
                 <div class="music-ranking">
-                    <!--                    此处是音乐排行榜-->
+                    <!--此处是音乐排行榜-->
                 </div>
                 <div class="music-search-list">
-                    <!--                    此处是搜索结果-->
+                    <!--此处是搜索结果-->
                 </div>
             </div>
         </div>
     </div>
-</div>
+
 <div class="footer">
     <div class="footer-left">
         <div class="list">
@@ -96,12 +109,11 @@
             <div class="list-item">
             </div>
         </div>
-        <div class="list-button"
-             onmouseout="this.style.backgroundColor='transparent'"
-             onmouseover="this.style.backgroundColor='#f2f2f7'"
+        <div class="list-button" onmouseout="this.style.backgroundColor='transparent'"
+             onmouseover="this.style.backgroundColor='var(--color-secondary)'"
              style="cursor: pointer;display: flex; justify-content: center; align-items: center;position: absolute;width: 48px; height: 48px; left: 32px;bottom: 24px; border-radius: 10px; transition: background-color 0.3s ease;">
             <svg aria-labelledby="listIconTitle" color="#000" fill="none" height="48px" role="img"
-                 stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                 stroke="var(--text-primary)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                  viewBox="0 0 24 24" width="48px" xmlns="http://www.w3.org/2000/svg">
                 <title id="listIconTitle">列表</title>
                 <path d="M10 7L18 7M10 12L18 12M10 17L18 17"/>
@@ -111,7 +123,7 @@
             </svg>
         </div>
         <div
-                style="background-color: #7a7a7b;width: 1px;height: 48px;position: absolute;left: 110px; bottom: 24px;border-radius: 50%;">
+                style="background-color: var(--text-secondary);width: 1px;height: 48px;position: absolute;left: 110px; bottom: 24px;border-radius: 50%;">
         </div>
     </div>
     <div class="footer-center">
@@ -119,9 +131,10 @@
             <div class="last-song">
                 <img alt="cover" class="last-song-cover" height="100%" onclick="play_music_last()"
                      src="./res/last-song-cover.png" width="100%">
-                <svg aria-labelledby="previousIconTitle" class="overlay-icon" color="#000" fill="#fff"
-                     height="24px" onclick="play_music_last()" role="img" stroke="#fff" stroke-linecap="round"
-                     stroke-linejoin="round" stroke-width="2.142857142857143" viewBox="0 0 24 24" width="24px"
+                <svg aria-labelledby="previousIconTitle" class="overlay-icon" color="#000"
+                     fill="var(--color-primary)" height="24px" onclick="play_music_last()" role="img"
+                     stroke="var(--color-primary)" stroke-linecap="round" stroke-linejoin="round"
+                     stroke-width="2.142857142857143" viewBox="0 0 24 24" width="24px"
                      xmlns="http://www.w3.org/2000/svg">
                     <title id="previousIconTitle">上一首</title>
                     <path d="M7 11.5L18 18V5z"/>
@@ -131,9 +144,9 @@
             <div class="current-song" onclick="togglePlayPause()">
                 <img alt="cover" class="current-song-cover" height="100%" src="./res/current-song-cover.png"
                      width="100%">
-                <svg aria-labelledby="playIconTitle" class="play-button" color="#000" fill="#fff"
+                <svg aria-labelledby="playIconTitle" class="play-button" color="#000" fill="var(--color-primary)"
                      height="48px" id="playPauseButton" onclick="togglePlayPause()" role="img"
-                     stroke="#fff" stroke-linecap="round" stroke-linejoin="round"
+                     stroke="var(--color-primary)" stroke-linecap="round" stroke-linejoin="round"
                      stroke-width="1.7142857142857142" viewBox="0 0 24 24" width="48px"
                      xmlns="http://www.w3.org/2000/svg">
                     <title id="playIconTitle">播放</title>
@@ -143,10 +156,10 @@
             <div class="next-song">
                 <img alt="cover" class="next-song-cover" height="100%" onclick="play_music_next()"
                      src="./res/next-song-cover.png" width="100%">
-                <svg aria-labelledby="nextIconTitle" class="overlay-icon" color="#000" fill="#fff"
-                     height="24px" onclick="play_music_next()" role="img" stroke="#fff" stroke-linecap="round"
-                     stroke-linejoin="round" stroke-width="2.142857142857143" viewBox="0 0 24 24" width="24px"
-                     xmlns="http://www.w3.org/2000/svg">
+                <svg aria-labelledby="nextIconTitle" class="overlay-icon" color="#000" fill="var(--color-primary)"
+                     height="24px" onclick="play_music_next()" role="img" stroke="var(--color-primary)"
+                     stroke-linecap="round" stroke-linejoin="round" stroke-width="2.142857142857143"
+                     viewBox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg">
                     <title id="nextIconTitle">下一首</title>
                     <path d="M17 11.5L6 18V5z"/>
                     <path d="M18 18V5"/>
@@ -156,23 +169,23 @@
     </div>
     <div class="footer-right">
         <!-- <div class="add-list"
-            style="display: flex; justify-content: center; align-items: center;position: absolute;width: 48px; height: 48px; right: 150px;bottom: 24px; border-radius: 10px; transition: background-color 0.3s ease;"
-            onmouseover="this.style.backgroundColor='#f2f2f7'"
-            onmouseout="this.style.backgroundColor='transparent'">
-            <svg role="img" xmlns="http://www.w3.org/2000/svg" width="32px" height="32px" viewBox="0 0 24 24"
-                aria-labelledby="plusIconTitle" stroke="#000" stroke-width="1.7142857142857142"
-                stroke-linecap="round" stroke-linejoin="round" fill="none" color="#000">
-                <title id="plusIconTitle">添加到歌单</title>
-                <path d="M20 12L4 12M12 4L12 20" />
-            </svg>
-        </div> -->
-        <div class="random"
-             onmouseout="this.style.backgroundColor='transparent'"
-             onmouseover="this.style.backgroundColor='#f2f2f7'"
+        style="display: flex; justify-content: center; align-items: center;position: absolute;width: 48px; height: 48px; right: 150px;bottom: 24px; border-radius: 10px; transition: background-color 0.3s ease;"
+        onmouseover="this.style.backgroundColor='#f2f2f7'"
+        onmouseout="this.style.backgroundColor='transparent'">
+        <svg role="img" xmlns="http://www.w3.org/2000/svg" width="32px" height="32px" viewBox="0 0 24 24"
+            aria-labelledby="plusIconTitle" stroke="#000" stroke-width="1.7142857142857142"
+            stroke-linecap="round" stroke-linejoin="round" fill="none" color="#000">
+            <title id="plusIconTitle">添加到歌单</title>
+            <path d="M20 12L4 12M12 4L12 20" />
+        </svg>
+    </div> -->
+        <div class="random" onmouseout="this.style.backgroundColor='transparent'"
+             onmouseover="this.style.backgroundColor='var(--color-secondary)'"
              style="cursor: pointer;display: flex; justify-content: center; align-items: center;position: absolute;width: 48px; height: 48px; right: 85px;bottom: 24px; border-radius: 10px; transition: background-color 0.3s ease;">
             <svg aria-labelledby="rotateIconTitle" color="#000" fill="none" height="32px" role="img"
-                 stroke="#000" stroke-linecap="round" stroke-linejoin="round"
-                 stroke-width="1.7142857142857142" viewBox="0 0 24 24" width="32px" xmlns="http://www.w3.org/2000/svg">
+                 stroke="var(--text-primary)" stroke-linecap="round" stroke-linejoin="round"
+                 stroke-width="1.7142857142857142" viewBox="0 0 24 24" width="32px"
+                 xmlns="http://www.w3.org/2000/svg">
                 <title id="rotateIconTitle">顺序</title>
                 <path d="M22 12l-3 3-3-3"/>
                 <path d="M2 12l3-3 3 3"/>
@@ -182,14 +195,12 @@
                 <path d="M19 15v-1" stroke-linecap="round"/>
             </svg>
         </div>
-        <div class="fold"
-             onmouseout="this.style.backgroundColor='transparent'"
-             onmouseover="this.style.backgroundColor='#f2f2f7'"
+        <div class="fold" onmouseout="this.style.backgroundColor='transparent'"
+             onmouseover="this.style.backgroundColor='var(--color-secondary)'"
              style="position: absolute;width: 32px; height: 32px; right: 32px;bottom: 32px; border-radius: 50%; transition: background-color 0.3s ease;">
-            <svg aria-labelledby="chevronDownIconTitle" class="footer-button-fold"
-                 color="#000" fill="none"
-                 height="32px" onclick="footer_fold()" role="img" stroke="#000"
-                 stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7142857142857142"
+            <svg aria-labelledby="chevronDownIconTitle" class="footer-button-fold" color="#000" fill="none"
+                 height="32px" onclick="footer_fold()" role="img" stroke="var(--text-primary)" stroke-linecap="round"
+                 stroke-linejoin="round" stroke-width="1.7142857142857142"
                  style="cursor: pointer;transition: transform 0.3s ease;" viewBox="0 0 24 24" width="32px"
                  xmlns="http://www.w3.org/2000/svg">
                 <title id="chevronDownIconTitle">展开</title>
@@ -198,8 +209,10 @@
         </div>
     </div>
 </div>
-<script src="js/UI.js"></script>
+
+<script src="js/FooterAndSidebar.js"></script>
 <script src="js/displayPlatforms.js"></script>
+<script src="js/ButtonInteractions.js"></script>
 </body>
 
 </html>

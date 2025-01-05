@@ -3,7 +3,7 @@ async function displayPlatforms() {
         const response = await fetch('/platforms');
         const data = await response.json();
 
-        const platformsContainer = document.getElementById('platforms-container');
+        const platformsContainer = document.querySelector('.platforms-container');
 
         // 按照 id 排序平台
         data.platforms.sort((a, b) => a.id - b.id);
