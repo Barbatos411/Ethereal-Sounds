@@ -48,7 +48,8 @@ class NeteaseSearch(BaseSearch):
                     "url": f"https://music.163.com/song?id={song['id']}",  # 歌曲链接
                     "album": song["album"]["name"],  # 专辑名称
                     "fee": song["fee"],  # 付费状态8为免费，1为VIP
-                    "mvid": song["mvid"]  # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=
+                    "mvid": song["mvid"],  # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=
+                    "duration": self.ms_to_mmss(song["duration"])  # 歌曲时长，单位ms
                 }
                 for song in songs
             ]
@@ -57,6 +58,7 @@ class NeteaseSearch(BaseSearch):
                 "song_list": song_list,
                 "songCount": songCount
             }
+            print(result)
             return result
 
         except httpx.RequestError as e:
@@ -65,3 +67,12 @@ class NeteaseSearch(BaseSearch):
         except Exception as e:
             # 其他错误处理
             return {"error": f"发生错误: {e}"}
+
+    @staticmethod
+    def ms_to_mmss(ms):
+        # 计算总秒数
+        total_seconds = ms / 1000
+        # 计算分钟和秒
+        minutes = int(total_seconds // 60)
+        seconds = int(total_seconds % 60)
+        return f"{minutes:02}:{seconds:02}"

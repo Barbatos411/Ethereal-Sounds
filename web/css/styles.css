@@ -59,6 +59,8 @@ body {
     display: flex;
     /* 设置宽度和高度 */
     flex: 1;
+    /* 设置垂直分布子元素 */
+    flex-direction: column;
     /* 设置内边距 */
     padding: 10px;
     /* 移除默认的margin */
@@ -78,8 +80,6 @@ body {
     padding: 0;
     /* 设置高度 */
     height: 50px;
-    /* 设置宽度 */
-    flex: 1;
     /* 移除默认的margin */
     margin: 8px 0;
     transition: background-color 0.5s ease;
@@ -182,6 +182,78 @@ body {
 img {
     /* 设置圆角 */
     border-radius: 5px;
+}
+
+.content {
+    /* 使用Flex布局 */
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto
+}
+
+.music-container {
+    /* 使用Flex布局 */
+    display: flex;
+    /* 水平分布子元素 */
+    justify-content: space-between;
+    /* 垂直居中子元素 */
+    align-items: center;
+    /* 设置内边距 */
+    padding: 10px;
+    /* 设置圆角 */
+    border-radius: 15px;
+    /* 设置高度 */
+    height: 5vh;
+    /* 设置背景颜色 */
+    background-color: var(--color-primary);
+    transition: background-color 0.5s ease;
+}
+
+.music-container:hover {
+    background-color: var(--color-secondary);
+}
+
+.music-container-left {
+    display: flex;
+    flex-direction: row;
+    height: 5vh
+}
+
+.music-container-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 50px;
+}
+
+.music-name {
+    display: flex;
+    flex-direction: column;
+    height: 5vh;
+    align-content: space-between;
+    padding: 0;
+    margin: 0 20px
+}
+
+.tag-vip, .tag-mv {
+    color: white;
+    border-radius: 1.25vh;
+    width: 40px;
+    height: 2vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5vh;
+    margin: 0.2vh
+}
+
+.tag-vip {
+    background-color: #dd1f20;
+}
+
+.tag-mv {
+    background-color: #ffaf0f;
 }
 
 /* 设置页脚样式 */
