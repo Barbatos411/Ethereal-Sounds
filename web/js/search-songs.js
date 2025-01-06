@@ -22,6 +22,12 @@ export async function searchSongs(platform, keyword, page) {
                 // 清空之前的搜索结果
                 list.innerHTML = '';
 
+                const song_title = document.createElement('h3');
+                song_title.innerHTML = `
+                    <h3 style="color: var(--text-primary); margin: 0; user-select: none">搜索 ${keyword} 结果共 ${data.results.songCount} 首</h3>
+                `;
+                list.appendChild(song_title);
+                // 遍历搜索结果并创建歌曲项
                 data.results.song_list.forEach(song => {
                     const songItem = document.createElement('div');
                     songItem.className = 'music-container';
