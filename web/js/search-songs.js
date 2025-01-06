@@ -27,9 +27,9 @@ export async function searchSongs(platform, keyword, page) {
                     songItem.className = 'music-container';
                     songItem.innerHTML = `
                         <div class="music-container-left">
-                            <img class="song-cover" src="${song.cover}" alt="${song.title}">
+                            <img class="music-cover" src="${song.cover}" alt="cover">
                             <div class="music-name">
-                                <h3 style="margin: 0">${song.title}</h3>
+                                <h3 style="color: var(--text-primary); margin: 0">${song.title}</h3>
                                 <p style="margin: 0">${song.author}</p>
                             </div>
                             <div class="song-tags">
@@ -37,7 +37,7 @@ export async function searchSongs(platform, keyword, page) {
                                 ${song.mvid !== 0 ? '<div class="tag-mv">MV</div>' : ''}
                             </div>
                         </div>
-                        <div class="music-container-center">${song.album}</div>
+                        ${song.album !== undefined ? `<div class="music-container-center">${song.album}</div>` : ''}
                         <div class="music-container-right">
                             <div class="add-playlist" style="display: flex; align-items: center">
                                 <!-- 添加播放列表按钮或其他内容 -->

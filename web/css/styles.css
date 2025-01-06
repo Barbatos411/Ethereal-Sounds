@@ -8,6 +8,10 @@ body {
     margin: 0;
 }
 
+em {
+    color: #f2c55c;
+}
+
 .app {
     /* 使用Flex布局，使页面内容在水平和垂直方向上居中对齐 */
     display: flex;
@@ -193,6 +197,8 @@ img {
 }
 
 .music-container {
+    user-select: none;
+    color: var(--text-secondary);
     /* 使用Flex布局 */
     display: flex;
     /* 水平分布子元素 */
@@ -218,6 +224,11 @@ img {
     display: flex;
     flex-direction: row;
     height: 5vh
+}
+
+.music-cover {
+    width: 5vh;
+    height: 5vh;
 }
 
 .music-container-right {

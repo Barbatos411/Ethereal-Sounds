@@ -58,7 +58,6 @@ class NeteaseSearch(BaseSearch):
                 "song_list": song_list,
                 "songCount": songCount
             }
-            print(result)
             return result
 
         except httpx.RequestError as e:

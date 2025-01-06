@@ -26,6 +26,9 @@ class BilibiliSearch(BaseSearch):
         if not self.cookie:
             self.cookie = await search_cookie(self.name)
             self.headers["cookie"] = self.cookie
+            print(f"更新 {self.name} cookie")
+            print(self.headers["cookie"])
+            print(self.headers)
 
         try:
             # 发起请求
@@ -39,14 +42,20 @@ class BilibiliSearch(BaseSearch):
                 {
                     "title": song["title"],  # 标题
                     "author": song["author"],  # 作者
-                    "cover": f"http:{song['pic']}",  # 封面
+                    "cover": f"https:{song['pic']}?param=224y224",  # 封面
                     "play": song["play"],  # 播放量
                     "duration": song["duration"],  # 时长
                     "url": song["arcurl"],  # 链接
+                    "mvid": song["arcurl"],
                 }
                 for song in results
             ]
-            return results_list
+            songCount = data.get("data", {}).get("numResults", 0)
+            result = {
+                "song_list": results_list,
+                "songCount": songCount
+            }
+            return result
         except httpx.RequestError as e:
             # 错误处理
             return {"error": f"请求失败: {e}"}
