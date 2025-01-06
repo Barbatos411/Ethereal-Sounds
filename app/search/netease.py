@@ -52,7 +52,13 @@ class NeteaseSearch(BaseSearch):
                 }
                 for song in songs
             ]
-            return song_list
+            songCount = data.get("result", {}).get("songCount", 0)  # 歌曲总数
+            result = {
+                "song_list": song_list,
+                "songCount": songCount
+            }
+            return result
+
         except httpx.RequestError as e:
             # 错误处理
             return {"error": f"请求失败: {e}"}
