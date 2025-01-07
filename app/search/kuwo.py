@@ -1,9 +1,10 @@
 import httpx
 
 from app.cookie.search_cookie import search_cookie
+from app.search.base import BaseSearch
 
 
-class KuwoMusicSearch:
+class KuwoMusicSearch(BaseSearch):
     name = "酷我音乐"  # 平台名称
     id = 4  # 顺序
 
