@@ -1,7 +1,7 @@
 import httpx
 
 from app.cookie.search_cookie import search_cookie
-from app.search.base import BaseSearch
+from app.platforms.base import BaseSearch
 
 
 class NeteaseSearch(BaseSearch):

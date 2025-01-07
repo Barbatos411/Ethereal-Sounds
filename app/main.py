@@ -31,12 +31,12 @@ platforms = []
 
 
 def load_platforms():
-    # 获取 /app/search 目录下的所有 .py 文件
-    search_dir = os.path.join(os.path.dirname(__file__), 'search')
+    # 获取 /app/platforms 目录下的所有 .py 文件
+    search_dir = os.path.join(os.path.dirname(__file__), 'platforms')
     for filename in os.listdir(search_dir):
         if filename.endswith('.py') and filename != '__init__.py' and filename != 'base.py':
             # 排除 base.py 文件
-            module_name = f"app.search.{filename[:-3]}"  # 去掉 .py 后缀
+            module_name = f"app.platforms.{filename[:-3]}"  # 去掉 .py 后缀
             module = importlib.import_module(module_name)
             for attr_name in dir(module):
                 platform_class = getattr(module, attr_name)
