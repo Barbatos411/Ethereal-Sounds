@@ -81,6 +81,24 @@ async def search_song(
     raise HTTPException(status_code=400, detail="指定的平台不受支持")
 
 
+@app.get("/get_audio")
+async def get_audio(
+        platform: str = Query(..., description="搜索平台"),
+        url: str = Query(..., description="歌曲链接")
+):
+    """
+    根据指定平台和关键词进行歌曲搜索
+    """
+    # 根据平台名称找到对应的平台类
+    for p in platforms:
+        if p.name == platform:
+            try:
+                results = await p.get_audio(platform, url)
+                return {"platform": platform, "results": results}
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=400, detail="指定的平台不受支持")
+
 @app.get("/data")
 async def get_data(
         database: str = Query("data", description="数据库"),

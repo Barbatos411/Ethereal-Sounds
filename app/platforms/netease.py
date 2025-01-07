@@ -44,7 +44,7 @@ class NeteaseSearch(BaseSearch):
                     "title": song["name"],  # 歌曲名称
                     "status": song["status"],  # 歌曲状态，1为正常，-1未知
                     "author": ", ".join(artist["name"] for artist in song.get("artists", [])),  # 歌手
-                    "cover": song["album"].get("picUrl", ""),  # 歌曲封面图片
+                    "cover": song["album"].get("picUrl", "") + "?param=300y300",  # 歌曲封面图片
                     "url": f"https://music.163.com/song?id={song['id']}",  # 歌曲链接
                     "album": song["album"]["name"],  # 专辑名称
                     "fee": song["fee"],  # 付费状态8为免费，1为VIP
@@ -66,6 +66,16 @@ class NeteaseSearch(BaseSearch):
         except Exception as e:
             # 其他错误处理
             return {"error": f"发生错误: {e}"}
+
+    async def get_audio(self, platform: str, url: str):
+        """
+        定义抽象的获取音频方法，每个平台都必须实现
+        :param platform: 平台名称
+        :param url: 音频链接
+        :return: 音频文件
+        """
+        pass
+
 
     @staticmethod
     def ms_to_mmss(ms):

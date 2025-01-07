@@ -35,12 +35,12 @@ export async function searchSongs(platform, keyword, page) {
                         <div class="music-container-left">
                             <img class="music-cover" src="${song.cover}" alt="cover">
                             <div class="music-name">
-                                <h3 style="color: var(--text-primary); margin: 0">${song.title}</h3>
+                                <h3 class="song-title" style="color: var(--text-primary); margin: 0" data-url: ${song.url} data-platform: ${encodeURIComponent(platform)}>${song.title}</h3>
                                 <p style="margin: 0">${song.author}</p>
                             </div>
                             <div class="song-tags">
                                 ${song.fee === 1 ? '<div class="tag-vip">VIP</div>' : ''}
-                                ${song.mvid !== 0 ? '<div class="tag-mv">MV</div>' : ''}
+                                ${song.mvid && song.mvid !== 0 ? '<div class="tag-mv">MV</div>' : ''}
                             </div>
                         </div>
                         ${song.album !== undefined ? `<div class="music-container-center">${song.album}</div>` : ''}

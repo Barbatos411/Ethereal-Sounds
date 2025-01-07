@@ -12,7 +12,7 @@ async def search_cookie(platform):
         cursor.execute("SELECT cookie FROM account WHERE 平台 = ?", (platform,))
         result = cursor.fetchone()
         if result:
-            print(f"查询到 {platform} 平台的 cookie: {result[0]}")
+            print(f"查询到 {platform}")
             return result[0]
         else:
             return None

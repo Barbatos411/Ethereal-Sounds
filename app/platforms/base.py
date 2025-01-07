@@ -12,3 +12,13 @@ class BaseSearch(ABC):
         :return: 搜索结果
         """
         pass
+
+    @abstractmethod
+    async def get_audio(self, platform: str, url: str):
+        """
+        定义抽象的获取音频方法，每个平台都必须实现
+        :param platform: 平台名称
+        :param url: 音频链接
+        :return: 音频文件
+        """
+        pass

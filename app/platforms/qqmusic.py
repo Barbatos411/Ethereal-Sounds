@@ -59,9 +59,9 @@ class QQMusicSearch(BaseSearch):
                 {
                     "title": song.get("title"),  # 歌曲名称
                     "author": ", ".join(singer.get("name", "") for singer in song.get("singer", [])),  # 歌手,  # 歌手
-                    "cover": f"https://y.gtimg.cn/music/photo_new/T002R300x300M000{song.get('album').get('mid')}.jpg" if song.get(
+                    "cover": f"https://y.gtimg.cn/music/photo_new/T002R300x300M000{song.get('album').get('mid')}.jpg?param=224y224" if song.get(
                         'album').get(
-                        'mid') else f"https://y.qq.com/music/photo_new/T062R300x300M000{next((vs for vs in song.get('vs', []) if vs), '')}.jpg",
+                        'mid') else f"https://y.qq.com/music/photo_new/T062R300x300M000{next((vs for vs in song.get('vs', []) if vs), '')}.jpg?param=224y224",
                     # 歌曲封面图片，可能需要进一步处理
                     "url": f"https://y.qq.com/n/ryqq/songDetail/{song.get('mid')}?songtype=[type]",  # 歌曲链接
                     "album": song.get("album").get("name"),  # 专辑名称
@@ -84,6 +84,16 @@ class QQMusicSearch(BaseSearch):
         except Exception as e:
             # 其他错误处理
             return {"error": f"发生错误: {e}"}
+
+    async def get_audio(self, platform: str, url: str):
+        """
+        定义抽象的获取音频方法，每个平台都必须实现
+        :param platform: 平台名称
+        :param url: 音频链接
+        :return: 音频文件
+        """
+        pass
+
 
     @staticmethod
     def s_to_mmss(s):
