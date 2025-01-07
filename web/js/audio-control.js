@@ -9,22 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (target.classList.contains('song-title')) {
             const songUrl = target.getAttribute('data-url');
             const platform = target.getAttribute('data-platform');
-
-            // 发送点击事件到后端
-            fetch('/api/log-click', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({songId: songId})
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Click logged:', data);
-                })
-                .catch(error => {
-                    console.error('Error logging click:', error);
-                });
         }
     });
 });

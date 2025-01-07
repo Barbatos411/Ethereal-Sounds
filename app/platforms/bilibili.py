@@ -43,6 +43,7 @@ class BilibiliSearch(BaseSearch):
                     "play": song["play"],  # 播放量
                     "duration": song["duration"],  # 时长
                     "url": song["arcurl"],  # 链接
+                    "id": song["bvid"]
                 }
                 for song in results
             ]
@@ -59,11 +60,31 @@ class BilibiliSearch(BaseSearch):
             # 其他错误处理
             return {"error": f"发生错误: {e}"}
 
-    async def get_audio(self, platform: str, url: str):
-        """
-        定义抽象的获取音频方法，每个平台都必须实现
-        :param platform: 平台名称
-        :param url: 音频链接
-        :return: 音频文件
-        """
-        pass
+    async def get_audio(self, platform: str, id: str):
+        bvid = id.strip('"')
+        url = f"https://api.bilibili.com/x/web-interface/view?bvid={bvid}"
+
+        # 检查是否需要更新 cookie
+        if not self.cookie:
+            self.cookie = await search_cookie(self.name)
+            self.headers["cookie"] = self.cookie
+
+        try:
+            response = await self.client.get(url, headers=self.headers)
+            response.raise_for_status()  # 如果请求失败则抛出异常
+            data = response.json()
+            audio_url = f"https://api.bilibili.com/x/player/playurl?fnval=16&bvid={bvid}&cid={data.get('data', {}).get('pages', [{}])[0].get('cid', '')}"
+            try:
+                response = await self.client.get(audio_url, headers=self.headers)
+                response.raise_for_status()  # 如果请求失败则抛出异常
+                data = response.json()
+                audio_url = data.get('data', {}).get('dash', {}).get('audio', [{}])[0].get('baseUrl', '')
+                return {"audio_url": audio_url}
+            except httpx.RequestError as e:
+                return {"error": f"请求失败: {e}"}
+            except Exception as e:
+                return {"error": f"发生错误: {e}"}
+        except httpx.RequestError as e:
+            return {"error": f"请求失败: {e}"}
+        except Exception as e:
+            return {"error": f"发生错误: {e}"}
