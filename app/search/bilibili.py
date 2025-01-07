@@ -26,9 +26,6 @@ class BilibiliSearch(BaseSearch):
         if not self.cookie:
             self.cookie = await search_cookie(self.name)
             self.headers["cookie"] = self.cookie
-            print(f"更新 {self.name} cookie")
-            print(self.headers["cookie"])
-            print(self.headers)
 
         try:
             # 发起请求

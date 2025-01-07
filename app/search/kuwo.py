@@ -4,8 +4,8 @@ from app.cookie.search_cookie import search_cookie
 
 
 class KuwoMusicSearch:
-    name = "酷我音乐" # 平台名称
-    id = 4 #顺序
+    name = "酷我音乐"  # 平台名称
+    id = 4  # 顺序
 
     def __init__(self):
         self.client = httpx.AsyncClient()
@@ -15,7 +15,7 @@ class KuwoMusicSearch:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
             "cookie": ""  # 从数据库获取 cookie
         }
-    
+
     async def search(self, keyword: str, page: int = 1, limit: int = 20):
 
         # 构建请求 URL
