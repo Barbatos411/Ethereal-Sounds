@@ -1,10 +1,8 @@
-/* 设置页面的基本样式 */
-body {
-    /* 使用Flex布局，使页面内容在水平和垂直方向上居中对齐 */
+/* 页面基本样式 */
+body, .app {
     display: flex;
-    /* 设置页面的高度为视口高度的100%，确保内容充满整个屏幕 */
     height: 100vh;
-    /* 移除默认的margin */
+    width: 100vw;
     margin: 0;
 }
 
@@ -12,207 +10,91 @@ em {
     color: #f2c55c;
 }
 
-.app {
-    /* 使用Flex布局，使页面内容在水平和垂直方向上居中对齐 */
-    display: flex;
-    /* 设置页面的高度为视口高度的100%，确保内容充满整个屏幕 */
-    height: 100vh;
-    /* 设置页面的宽度为视口宽度的100%，确保内容充满整个屏幕 */
-    width: 100vw;
-    /* 移除默认的margin */
-    margin: 0;
-    /* 设置该元素为弹性项目，并使其平分父容器中的可用空间 */
-    flex: 1;
-}
-
-/* 设置侧边栏样式 */
+/* 侧边栏样式 */
 .sidebar {
-    /* 设置背景颜色 */
     background-color: var(--color-primary);
-    /* 使用Flex布局 */
     display: flex;
-    /* 设置宽度和高度 */
     width: 200px;
-    /* 设置内边距 */
     padding: 10px;
-    /* 移除默认的margin */
-    margin: 0;
     transition: width 0.3s ease, background-color 0.5s ease;
 }
 
-/* 设置侧边栏容器样式 */
 .sidebar-container {
-    /* 设置背景颜色 */
     background-color: var(--color-secondary);
-    /* 设置宽度和高度 */
     width: 90%;
     height: 87%;
-    /* 设置内边距 */
     padding: 5px;
-    /* 设置圆角 */
     border-radius: 10px;
     transition: background-color 0.5s ease;
 }
 
-
-/* 设置主要内容区域样式 */
+/* 主要内容样式 */
 .main {
-    /* 设置背景颜色 */
     background-color: var(--color-primary);
-    /* 使用Flex布局 */
     display: flex;
-    /* 设置宽度和高度 */
     flex: 1;
-    /* 设置垂直分布子元素 */
     flex-direction: column;
-    /* 设置内边距 */
     padding: 10px;
-    /* 移除默认的margin */
     margin: 0;
     transition: width 0.3s ease, left 0.3s ease, background-color 0.5s ease;
 }
 
-/* 设置头部样式 */
 .header {
-    /* 设置背景颜色 */
     background-color: var(--color-primary);
-    /* 使用Flex布局 */
     display: flex;
-    /* 水平分布子元素 */
     justify-content: space-between;
-    /* 设置内边距 */
     padding: 0;
-    /* 设置高度 */
     height: 50px;
-    /* 移除默认的margin */
     margin: 8px 0;
     transition: background-color 0.5s ease;
 }
 
 .platforms-container {
-    /* 使用Flex布局 */
     display: flex;
-    /* 水平分布子元素 */
     justify-content: space-between;
-    /* 垂直分布子元素 */
     align-items: center;
 }
 
-/* 定义音乐平台的样式 */
+/* 音乐平台样式 */
 .music-platform {
-    /* 宽度为 80px */
     width: 80px;
-    /* 内边距为 5px */
     padding: 5px;
-    /* 文字颜色为 #7a7a7b */
     color: var(--text-secondary);
-    /* 字体大小为 16px */
     font-size: 16px;
-    /* 圆角半径为 10px */
     border-radius: 10px;
-    /* 文本居中对齐 */
     text-align: center;
-    /* 鼠标指针样式为指针 */
     cursor: pointer;
-    /* 阻止文本被选中 */
     user-select: none;
-    /* 过渡效果：字体大小 0.3s 渐变，背景颜色 0.3s 渐变，宽度 0.3s 渐变，字体粗细 0.3s 渐变 */
-    transition: font-size 0.3s ease, background-color 0.5s ease, width 0.3s ease,
-    font-weight 0.3s ease;
+    transition: font-size 0.3s ease, background-color 0.5s ease, width 0.3s ease, font-weight 0.3s ease;
 }
 
-/* 鼠标悬停在音乐平台上时的样式 */
-.music-platform:hover {
-    /* 文字颜色变为黑色 */
+.music-platform:hover, .selected {
     color: var(--text-primary);
-    /* 字体大小变为 30px */
     font-size: 30px;
-    /* 字体加粗 */
     font-weight: bold;
-    /* 背景颜色变为 #f2f2f7 */
     background-color: var(--color-secondary);
-    /* 宽度变为 150px */
     width: 150px;
-}
-
-/* 定义选中状态的样式 */
-.selected {
-    /* 文字颜色变为黑色 */
-    color: var(--text-primary);
-    /* 字体大小变为 30px */
-    font-size: 30px;
-    /* 字体加粗 */
-    font-weight: bold;
-    /* 宽度变为 150px */
-    width: 150px;
-    /* 添加底部阴影 */
     box-shadow: 0 2px 0 var(--text-primary);
 }
 
-/* 设置标题样式 */
-.title {
-    /* 设置背景颜色 */
-    background-color: var(--color-primary);
-    /* 设置高度 */
-    height: 60px;
-    /* 设置圆角 */
-    border-radius: 10px;
-    /* 使用Flex布局 */
-    display: flex;
-    /* 设置宽度 */
-    width: 100%;
-    /* 设置内边距 */
-    padding: 5%;
-    /* 确保内边距和边框不会增加元素的总大小 */
-    box-sizing: border-box;
-    /* 垂直居中子元素 */
-    align-items: center;
-    /* 水平居中子元素 */
-    justify-content: center;
-    /* 设置鼠标悬停时的光标样式 */
-    cursor: pointer;
-    /* 阻止文本被选中 */
-    user-select: none;
-    transition: box-shadow 0.3s ease, background-color 0.5s ease;
-}
-
-/* 设置标题悬停效果 */
-.title:hover {
-    /* 设置阴影效果 */
-    box-shadow: 0 0 10px var(--shadow);
-}
-
-/* 设置图片样式 */
-img {
-    /* 设置圆角 */
-    border-radius: 5px;
-}
-
+/* 内容区域样式 */
 .content {
-    /* 使用Flex布局 */
     display: flex;
     flex-direction: column;
     flex: 1;
-    overflow-y: auto
+    overflow-y: auto;
 }
 
 .music-container {
-    user-select: none;
-    color: var(--text-secondary);
-    /* 使用Flex布局 */
     display: flex;
-    /* 水平分布子元素 */
     justify-content: space-between;
-    /* 垂直居中子元素 */
     align-items: center;
-    /* 设置内边距 */
     padding: 10px;
-    /* 设置圆角 */
     border-radius: 15px;
-    /* 设置高度 */
     height: 5vh;
-    /* 设置背景颜色 */
     background-color: var(--color-primary);
+    color: var(--text-secondary);
+    user-select: none;
     transition: background-color 0.5s ease;
 }
 
@@ -223,7 +105,7 @@ img {
 .music-container-left {
     display: flex;
     flex-direction: row;
-    height: 5vh
+    height: 5vh;
 }
 
 .music-cover {
@@ -242,11 +124,10 @@ img {
     display: flex;
     flex-direction: column;
     height: 5vh;
-    align-content: space-between;
-    padding: 0;
-    margin: 0 20px
+    margin: 0 20px;
 }
 
+/* 标签样式 */
 .tag-vip, .tag-mv {
     color: white;
     border-radius: 1.25vh;
@@ -256,7 +137,7 @@ img {
     justify-content: center;
     align-items: center;
     font-size: 1.5vh;
-    margin: 0.2vh
+    margin: 0.2vh;
 }
 
 .tag-vip {
@@ -267,33 +148,45 @@ img {
     background-color: #ffaf0f;
 }
 
+/* 标题样式 */
+.title {
+    background-color: var(--color-primary);
+    height: 60px;
+    border-radius: 10px;
+    display: flex;
+    width: 100%;
+    padding: 5%;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: box-shadow 0.3s ease, background-color 0.5s ease;
+}
+
+.title:hover {
+    box-shadow: 0 0 10px var(--shadow);
+}
+
+/* 图片样式 */
+img {
+    border-radius: 5px;
+}
 /* 设置页脚样式 */
 .footer {
-    /* 设置外边框 */
     margin: 0 10px;
-    /* 设置高度 */
     height: 100px;
-    /* 设置圆角 */
     border-radius: 10px;
-    /* 设置宽度 */
     width: calc(100% - 20px);
-    /* 固定位置 */
     position: fixed;
     bottom: 10px;
-    /* 半透明背景 */
     background-color: rgba(var(--color-primary-rgb), 0.8);
-    /* 毛玻璃效果 */
     backdrop-filter: blur(10px);
-    /* 设置内边距 */
     padding: 10px;
-    /* 确保内边距和边框不会增加元素的总大小 */
     box-sizing: border-box;
-    /* 使用Flex布局，水平分布子元素 */
     display: flex;
     justify-content: space-between;
-    /* 设置文本居中 */
     text-align: center;
-    /* 设置阴影效果 */
     box-shadow: 0 0 10px var(--shadow);
     transition: height 0.3s ease, background-color 0.5s ease;
 }
@@ -306,138 +199,11 @@ img {
     transform: rotate(-180deg);
 }
 
-/* 设置页脚左侧样式 */
-.footer-left,
-.footer-right {
-    /* 设置宽度 */
+/* 页脚左侧和右侧样式 */
+.footer-left, .footer-right {
     width: 30%;
-    /* 设置高度 */
     height: 100%;
-    /* 设置边框 */
-}
-
-/* 设置页脚中间样式 */
-.footer-center {
-    /* 设置宽度 */
-    width: 450px;
-    /* 设置高度 */
-    height: 100%;
-    /* 使用Flex布局，水平和垂直居中子元素 */
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-/* 设置当前歌曲封面样式 */
-.current-song-cover {
-    /* 设置宽度 */
-    width: 120px;
-    /* 设置高度 */
-    height: 120px;
-    /* 设置圆角 */
-    border-radius: 50%;
-    cursor: pointer;
-    transition: filter 0.3s ease
-}
-
-.play-button.playing {
-    display: none;
-}
-
-/* 设置上一首歌曲封面样式 */
-.last-song-cover,
-    /* 设置下一首歌曲封面样式 */
-.next-song-cover {
-    /* 设置宽度 */
-    width: 30px;
-    /* 设置高度 */
-    height: 50px;
-    /* 设置椭圆形圆角 */
-    border-radius: 50% / 25%;
-    /* 设置垂直居中 */
-    align-items: center;
-    /* 设置图片覆盖方式 */
-    object-fit: cover;
-    cursor: pointer;
-    transition: filter 0.3s ease
-}
-
-/* 设置歌曲播放控件样式 */
-.song {
-    /* 使用Flex布局 */
-    display: flex;
-    /* 固定位置 */
-    position: fixed;
-    bottom: 30px;
-    /* 垂直居中子元素 */
-    align-items: flex-end;
-    /* 水平分布子元素 */
-    justify-content: space-between;
-    /* 阻止文本被选中 */
-    user-select: none;
-}
-
-/* 设置上一首歌曲控件样式 */
-.last-song,
-    /* 设置下一首歌曲控件样式 */
-.next-song {
-    /* 设置宽度 */
-    width: 70px;
-    /* 设置垂直居中 */
-    align-items: center;
-    position: relative;
-}
-
-.overlay-icon {
-    /* 绝对定位图标 */
-    position: absolute;
-    /* 距离顶部的距离 */
-    top: 50%;
-    /* 距离左侧的距离 */
-    left: 50%;
-    /* 水平和垂直居中 */
-    transform: translate(-50%, -50%);
-    /* 可选：添加鼠标悬停效果 */
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.3s ease
-}
-
-.last-song:hover .overlay-icon {
-    opacity: 1;
-}
-
-.last-song:hover .last-song-cover {
-    filter: brightness(0%);
-}
-
-.next-song:hover .overlay-icon {
-    opacity: 1;
-}
-
-.next-song:hover .next-song-cover {
-    filter: brightness(0%);
-}
-
-.play-button {
-    /* 绝对定位图标 */
-    position: absolute;
-    /* 距离顶部的距离 */
-    top: 50%;
-    /* 距离左侧的距离 */
-    left: 50%;
-    /* 水平和垂直居中 */
-    transform: translate(-50%, -50%);
-    /* 可选：添加鼠标悬停效果 */
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.3s ease
-}
-
-.current-song:hover .play-button {
-    opacity: 1;
-}
-
-.current-song:hover .current-song-cover {
-    filter: brightness(0%);
 }

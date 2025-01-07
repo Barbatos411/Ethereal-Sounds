@@ -126,59 +126,7 @@
                 style="background-color: var(--text-secondary);width: 1px;height: 48px;position: absolute;left: 110px; bottom: 24px;border-radius: 50%;">
         </div>
     </div>
-    <div class="footer-center">
-        <div class="song">
-            <div class="last-song">
-                <img alt="cover" class="last-song-cover" height="100%" onclick="play_music_last()"
-                     src="./res/last-song-cover.png" width="100%">
-                <svg aria-labelledby="previousIconTitle" class="overlay-icon" color="#000"
-                     fill="var(--color-primary)" height="24px" onclick="play_music_last()" role="img"
-                     stroke="var(--color-primary)" stroke-linecap="round" stroke-linejoin="round"
-                     stroke-width="2.142857142857143" viewBox="0 0 24 24" width="24px"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <title id="previousIconTitle">上一首</title>
-                    <path d="M7 11.5L18 18V5z"/>
-                    <path d="M6 18V5"/>
-                </svg>
-            </div>
-            <div class="current-song" onclick="togglePlayPause()">
-                <img alt="cover" class="current-song-cover" height="100%" src="./res/current-song-cover.png"
-                     width="100%">
-                <svg aria-labelledby="playIconTitle" class="play-button" color="#000" fill="var(--color-primary)"
-                     height="48px" id="playPauseButton" onclick="togglePlayPause()" role="img"
-                     stroke="var(--color-primary)" stroke-linecap="round" stroke-linejoin="round"
-                     stroke-width="1.7142857142857142" viewBox="0 0 24 24" width="48px"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <title id="playIconTitle">播放</title>
-                    <path d="M20 12L5 21V3z"/>
-                </svg>
-            </div>
-            <div class="next-song">
-                <img alt="cover" class="next-song-cover" height="100%" onclick="play_music_next()"
-                     src="./res/next-song-cover.png" width="100%">
-                <svg aria-labelledby="nextIconTitle" class="overlay-icon" color="#000" fill="var(--color-primary)"
-                     height="24px" onclick="play_music_next()" role="img" stroke="var(--color-primary)"
-                     stroke-linecap="round" stroke-linejoin="round" stroke-width="2.142857142857143"
-                     viewBox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg">
-                    <title id="nextIconTitle">下一首</title>
-                    <path d="M17 11.5L6 18V5z"/>
-                    <path d="M18 18V5"/>
-                </svg>
-            </div>
-        </div>
-    </div>
     <div class="footer-right">
-        <!-- <div class="add-list"
-        style="display: flex; justify-content: center; align-items: center;position: absolute;width: 48px; height: 48px; right: 150px;bottom: 24px; border-radius: 10px; transition: background-color 0.3s ease;"
-        onmouseover="this.style.backgroundColor='#f2f2f7'"
-        onmouseout="this.style.backgroundColor='transparent'">
-        <svg role="img" xmlns="http://www.w3.org/2000/svg" width="32px" height="32px" viewBox="0 0 24 24"
-            aria-labelledby="plusIconTitle" stroke="#000" stroke-width="1.7142857142857142"
-            stroke-linecap="round" stroke-linejoin="round" fill="none" color="#000">
-            <title id="plusIconTitle">添加到歌单</title>
-            <path d="M20 12L4 12M12 4L12 20" />
-        </svg>
-    </div> -->
         <div class="random" onmouseout="this.style.backgroundColor='transparent'"
              onmouseover="this.style.backgroundColor='var(--color-secondary)'"
              style="cursor: pointer;display: flex; justify-content: center; align-items: center;position: absolute;width: 48px; height: 48px; right: 85px;bottom: 24px; border-radius: 10px; transition: background-color 0.3s ease;">
