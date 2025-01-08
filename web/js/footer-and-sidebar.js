@@ -10,7 +10,7 @@ function footer_fold() {
 function sidebar_fold() {
     const sidebar = document.querySelector('.sidebar');
     const main = document.querySelector('.main');
-    const h2 = document.getElementById('title');
+    const h2 = document.querySelector('.title-text');
 
     // 检查sidebar是否已经折叠
     const isSidebarFolded = sidebar.classList.contains('sidebar-fold');
@@ -20,18 +20,15 @@ function sidebar_fold() {
         sidebar.style.width = '200px';
         main.style.width = 'calc(100% - 200px)';
         main.style.left = '200px';
-        if (h2) {
-            h2.style.display = 'block'; // 恢复h2显示
-        }
+        h2.classList.toggle('title-text-fold');
     } else {
         // 折叠状态
         sidebar.style.width = '60px';
         main.style.width = 'calc(100% - 80px)';
         main.style.left = '80px';
-        if (h2) {
-            h2.style.display = 'none'; // 隐藏h2
-        }
+        h2.classList.toggle('title-text-fold');
     }
+
 
     // 切换折叠类
     sidebar.classList.toggle('sidebar-fold');

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta content="never" name="referrer">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>listen2</title>
-    <link href="css/theme-dark.css" id="theme-link" rel="stylesheet">
+    <title>浮声</title>
+    <link href="css/theme-bright.css" id="theme-link" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
     <link href="./res/icon.png" rel="icon">
 
@@ -21,7 +21,7 @@
                     <img alt="logo" height="50px" src="./res/logo.png" style="left: 0;" width="50px">
                 </div>
                 <div>
-                    <h2 id="title" style="color: var(--text-primary)">LISTEN2</h2>
+                    <h2 class="title-text">浮声</h2>
                 </div>
             </div>
             <div class="menu">
@@ -102,60 +102,70 @@
 </div>
 
 <div class="footer">
-    <div class="footer-left">
-        <div class="list">
-            <div class="list-title">
+    <div class="footer-container">
+        <div class="footer-left">
+            <div class="list">
+                <div class="list-title">
+                </div>
+                <div class="list-item">
+                </div>
             </div>
-            <div class="list-item">
+            <div class="list-button" onmouseout="this.style.backgroundColor='transparent'"
+                 onmouseover="this.style.backgroundColor='var(--color-secondary)'"
+                 style="cursor: pointer;display: flex; justify-content: center; align-items: center;position: absolute;width: 48px; height: 48px; left: 32px;bottom: 24px; border-radius: 10px; transition: background-color 0.3s ease;">
+                <svg aria-labelledby="listIconTitle" color="#000" fill="none" height="48px" role="img"
+                     stroke="var(--text-primary)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                     viewBox="0 0 24 24" width="48px" xmlns="http://www.w3.org/2000/svg">
+                    <title id="listIconTitle">列表</title>
+                    <path d="M10 7L18 7M10 12L18 12M10 17L18 17"/>
+                    <line x1="7" x2="7" y1="7" y2="7"/>
+                    <line x1="7" x2="7" y1="12" y2="12"/>
+                    <line x1="7" x2="7" y1="17" y2="17"/>
+                </svg>
+            </div>
+            <div
+                    style="background-color: var(--text-secondary);width: 1px;height: 48px;position: absolute;left: 110px; bottom: 24px;border-radius: 50%;">
             </div>
         </div>
-        <div class="list-button" onmouseout="this.style.backgroundColor='transparent'"
-             onmouseover="this.style.backgroundColor='var(--color-secondary)'"
-             style="cursor: pointer;display: flex; justify-content: center; align-items: center;position: absolute;width: 48px; height: 48px; left: 32px;bottom: 24px; border-radius: 10px; transition: background-color 0.3s ease;">
-            <svg aria-labelledby="listIconTitle" color="#000" fill="none" height="48px" role="img"
-                 stroke="var(--text-primary)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                 viewBox="0 0 24 24" width="48px" xmlns="http://www.w3.org/2000/svg">
-                <title id="listIconTitle">列表</title>
-                <path d="M10 7L18 7M10 12L18 12M10 17L18 17"/>
-                <line x1="7" x2="7" y1="7" y2="7"/>
-                <line x1="7" x2="7" y1="12" y2="12"/>
-                <line x1="7" x2="7" y1="17" y2="17"/>
-            </svg>
+        <div class="footer-center">
+            <div class="music-player">
+                <div class="music-player-container">
+                </div>
+            </div>
         </div>
-        <div
-                style="background-color: var(--text-secondary);width: 1px;height: 48px;position: absolute;left: 110px; bottom: 24px;border-radius: 50%;">
+        <div class="footer-right">
+            <div class="random" onmouseout="this.style.backgroundColor='transparent'"
+                 onmouseover="this.style.backgroundColor='var(--color-secondary)'"
+                 style="cursor: pointer;display: flex; justify-content: center; align-items: center;position: absolute;width: 48px; height: 48px; right: 85px;bottom: 24px; border-radius: 10px; transition: background-color 0.3s ease;">
+                <svg aria-labelledby="rotateIconTitle" color="#000" fill="none" height="32px" role="img"
+                     stroke="var(--text-primary)" stroke-linecap="round" stroke-linejoin="round"
+                     stroke-width="1.7142857142857142" viewBox="0 0 24 24" width="32px"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <title id="rotateIconTitle">顺序</title>
+                    <path d="M22 12l-3 3-3-3"/>
+                    <path d="M2 12l3-3 3 3"/>
+                    <path d="M19.016 14v-1.95A7.05 7.05 0 0 0 8 6.22"/>
+                    <path d="M16.016 17.845A7.05 7.05 0 0 1 5 12.015V10"/>
+                    <path d="M5 10V9" stroke-linecap="round"/>
+                    <path d="M19 15v-1" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="fold" onmouseout="this.style.backgroundColor='transparent'"
+                 onmouseover="this.style.backgroundColor='var(--color-secondary)'"
+                 style="position: absolute;width: 32px; height: 32px; right: 32px;bottom: 32px; border-radius: 50%; transition: background-color 0.3s ease;">
+                <svg aria-labelledby="chevronDownIconTitle" class="footer-button-fold" color="#000" fill="none"
+                     height="32px" onclick="footer_fold()" role="img" stroke="var(--text-primary)"
+                     stroke-linecap="round"
+                     stroke-linejoin="round" stroke-width="1.7142857142857142"
+                     style="cursor: pointer;transition: transform 0.3s ease;" viewBox="0 0 24 24" width="32px"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <title id="chevronDownIconTitle">展开</title>
+                    <polyline points="6 10 12 16 18 10"/>
+                </svg>
+            </div>
         </div>
     </div>
-    <div class="footer-right">
-        <div class="random" onmouseout="this.style.backgroundColor='transparent'"
-             onmouseover="this.style.backgroundColor='var(--color-secondary)'"
-             style="cursor: pointer;display: flex; justify-content: center; align-items: center;position: absolute;width: 48px; height: 48px; right: 85px;bottom: 24px; border-radius: 10px; transition: background-color 0.3s ease;">
-            <svg aria-labelledby="rotateIconTitle" color="#000" fill="none" height="32px" role="img"
-                 stroke="var(--text-primary)" stroke-linecap="round" stroke-linejoin="round"
-                 stroke-width="1.7142857142857142" viewBox="0 0 24 24" width="32px"
-                 xmlns="http://www.w3.org/2000/svg">
-                <title id="rotateIconTitle">顺序</title>
-                <path d="M22 12l-3 3-3-3"/>
-                <path d="M2 12l3-3 3 3"/>
-                <path d="M19.016 14v-1.95A7.05 7.05 0 0 0 8 6.22"/>
-                <path d="M16.016 17.845A7.05 7.05 0 0 1 5 12.015V10"/>
-                <path d="M5 10V9" stroke-linecap="round"/>
-                <path d="M19 15v-1" stroke-linecap="round"/>
-            </svg>
-        </div>
-        <div class="fold" onmouseout="this.style.backgroundColor='transparent'"
-             onmouseover="this.style.backgroundColor='var(--color-secondary)'"
-             style="position: absolute;width: 32px; height: 32px; right: 32px;bottom: 32px; border-radius: 50%; transition: background-color 0.3s ease;">
-            <svg aria-labelledby="chevronDownIconTitle" class="footer-button-fold" color="#000" fill="none"
-                 height="32px" onclick="footer_fold()" role="img" stroke="var(--text-primary)" stroke-linecap="round"
-                 stroke-linejoin="round" stroke-width="1.7142857142857142"
-                 style="cursor: pointer;transition: transform 0.3s ease;" viewBox="0 0 24 24" width="32px"
-                 xmlns="http://www.w3.org/2000/svg">
-                <title id="chevronDownIconTitle">展开</title>
-                <polyline points="6 10 12 16 18 10"/>
-            </svg>
-        </div>
-    </div>
+
 </div>
 
 <script src="js/footer-and-sidebar.js"></script>

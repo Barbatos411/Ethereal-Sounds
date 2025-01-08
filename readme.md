@@ -1,4 +1,4 @@
-# Listen 2
+# 浮声
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![platform](https://img.shields.io/badge/python-3.10-green.svg)]()
@@ -14,6 +14,8 @@ Listen 1 介绍:让你用一个网页就能听到多个网站的在线音乐（�
 ### 已实现
 
 ✅搜索 - 网易云音乐、QQ音乐、酷我音乐、哔哩哔哩
+
+✅获取音频 - 哔哩哔哩
 
 ### 咕咕咕
 
