@@ -1,13 +1,39 @@
 /* 页面基本样式 */
-body, .app {
+body,
+.app {
     display: flex;
     height: 100vh;
     width: 100vw;
     margin: 0;
 }
 
+.button {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-primary);
+    border-radius: 10px;
+    transition: background-color 0.5s ease;
+    margin: 0 10px;
+}
+
+.button:hover {
+    background-color: var(--color-secondary);
+}
+
 em {
     color: #f2c55c;
+}
+
+.search {
+    background-color: var(--search);
+    width: 200px;
+    height: 32px;
+    border-radius: 10px;
+    display: flex;
+    margin-right: 16px;
+    transition: width 0.3s ease, background-color 0.5s ease;
 }
 
 /* 侧边栏样式 */
@@ -68,7 +94,8 @@ em {
     transition: font-size 0.3s ease, background-color 0.5s ease, width 0.3s ease, font-weight 0.3s ease;
 }
 
-.music-platform:hover, .selected {
+.music-platform:hover,
+.selected {
     color: var(--text-primary);
     font-size: 30px;
     font-weight: bold;
@@ -88,6 +115,7 @@ em {
 .music-container {
     display: flex;
     justify-content: space-between;
+    position: relative;
     align-items: center;
     padding: 10px;
     border-radius: 15px;
@@ -100,6 +128,14 @@ em {
 
 .music-container:hover {
     background-color: var(--color-secondary);
+}
+
+.music-container-center {
+    position: absolute;
+    left: 60%;
+    transform: translateX(-50%);
+    display: flex;
+    text-align: left;
 }
 
 .music-container-left {
@@ -123,12 +159,13 @@ em {
 .music-name {
     display: flex;
     flex-direction: column;
-    height: 5vh;
+    height: auto;
     margin: 0 20px;
 }
 
 /* 标签样式 */
-.tag-vip, .tag-mv {
+.tag-vip,
+.tag-mv {
     color: white;
     border-radius: 1.25vh;
     width: 40px;
@@ -182,6 +219,7 @@ em {
 img {
     border-radius: 5px;
 }
+
 /* 设置页脚样式 */
 .footer {
     margin: 0 10px;
@@ -192,8 +230,6 @@ img {
     bottom: 10px;
     background-color: rgba(var(--color-primary-rgb), 0.8);
     backdrop-filter: blur(10px);
-    padding: 10px;
-    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     text-align: center;
@@ -209,11 +245,24 @@ img {
     transform: rotate(-180deg);
 }
 
+
+.footer-container {
+    margin: 0 10px;
+    height: 100px;
+    border-radius: 10px;
+    width: calc(100% - 20px);
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
 /* 页脚左侧和右侧样式 */
-.footer-left, .footer-right {
-    width: 30%;
+.footer-left,
+.footer-right {
     height: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
