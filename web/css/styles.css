@@ -7,6 +7,7 @@ body,
     margin: 0;
 }
 
+
 .button {
     cursor: pointer;
     display: flex;
@@ -63,6 +64,7 @@ em {
     padding: 10px;
     margin: 0;
     transition: width 0.3s ease, left 0.3s ease, background-color 0.5s ease;
+    width: 100%;
 }
 
 .header {
@@ -70,15 +72,26 @@ em {
     display: flex;
     justify-content: space-between;
     padding: 0;
-    height: 50px;
+    height: auto;
     margin: 8px 0;
     transition: background-color 0.5s ease;
+    width: 100%;
 }
 
 .platforms-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    width: auto;
+    overflow-x: auto;
+    /* 允许水平滚动 */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    /* 平滑滚动（适用于iOS） */
+}
+
+/* 确保子元素不会超出容器的宽度 */
+.platforms-container > * {
+    flex-shrink: 0;
 }
 
 /* 音乐平台样式 */
@@ -103,6 +116,13 @@ em {
     width: 150px;
     box-shadow: 0 2px 0 var(--text-primary);
 }
+
+.header-right-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 
 /* 内容区域样式 */
 .content {
