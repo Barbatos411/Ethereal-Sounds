@@ -45,11 +45,15 @@ class KuwoMusicSearch(BaseSearch):
                     "cover": f"https://img2.kuwo.cn/star/albumcover/{song.get('web_albumpic_short')}" if song.get(
                         'web_albumpic_short') else f"https://img1.kuwo.cn/star/starheads/{song['web_artistpic_short']}",
                     # 歌曲封面图片
-                    "url": f"https://www.kuwo.cn/play_detail/{song['DC_TARGETID']}",  # 歌曲链接
+                    # 歌曲链接
+                    "url": f"https://www.kuwo.cn/play_detail/{song['DC_TARGETID']}",
                     "album": song["ALBUM"],  # 专辑名称
-                    "fee": 1 if int(song["payInfo"]["play"]) > 1100 else 0,  # 付费状态8为免费，1为VIP
-                    "mvid": int(song["MVFLAG"]),  # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=
-                    "duration": self.s_to_mmss(int(song["DURATION"]))  # 歌曲时长，单位ms
+                    # 付费状态8为免费，1为VIP
+                    "fee": 1 if int(song["payInfo"]["play"]) > 1100 else 0,
+                    # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=
+                    "mvid": int(song["MVFLAG"]),
+                    # 歌曲时长，单位ms
+                    "duration": self.s_to_mmss(int(song["DURATION"]))
                 }
                 for song in songs
             ]
@@ -75,7 +79,6 @@ class KuwoMusicSearch(BaseSearch):
         :return: 音频文件
         """
         pass
-
 
     @staticmethod
     def s_to_mmss(s):

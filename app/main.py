@@ -23,7 +23,8 @@ templates = Jinja2Templates(directory="web")  # web 目录包含 html 模板文�
 async def read_item(request: Request):
     # 你可以从数据库查询数据或者传递静态数据
     example_data = {"message": "Welcome to the music player"}
-    return templates.TemplateResponse("index.html", {"request": request, "data": example_data})
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "data": example_data})
 
 
 # 获取平台类并注册
@@ -34,7 +35,8 @@ def load_platforms():
     # 获取 /app/platforms 目录下的所有 .py 文件
     search_dir = os.path.join(os.path.dirname(__file__), 'platforms')
     for filename in os.listdir(search_dir):
-        if filename.endswith('.py') and filename != '__init__.py' and filename != 'base.py':
+        if filename.endswith(
+                '.py') and filename != '__init__.py' and filename != 'base.py':
             # 排除 base.py 文件
             module_name = f"app.platforms.{filename[:-3]}"  # 去掉 .py 后缀
             module = importlib.import_module(module_name)
@@ -58,7 +60,8 @@ async def get_platforms():
     返回支持的平台名称
     :return: 平台名称列表
     """
-    return {"platforms": [{"id": platform.id, "name": platform.name} for platform in platforms]}
+    return {"platforms": [{"id": platform.id, "name": platform.name}
+                          for platform in platforms]}
 
 
 @app.get("/search")
@@ -98,6 +101,7 @@ async def get_audio(
             except Exception as e:
                 raise HTTPException(status_code=500, detail=str(e))
     raise HTTPException(status_code=400, detail="指定的平台不受支持")
+
 
 @app.get("/data")
 async def get_data(

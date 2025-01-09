@@ -43,12 +43,16 @@ class NeteaseSearch(BaseSearch):
                 {
                     "title": song["name"],  # 歌曲名称
                     "status": song["status"],  # 歌曲状态，1为正常，-1未知
-                    "author": ", ".join(artist["name"] for artist in song.get("artists", [])),  # 歌手
-                    "cover": song["album"].get("picUrl", "") + "?param=300y300",  # 歌曲封面图片
-                    "url": f"https://music.163.com/song?id={song['id']}",  # 歌曲链接
+                    # 歌手
+                    "author": ", ".join(artist["name"] for artist in song.get("artists", [])),
+                    # 歌曲封面图片
+                    "cover": song["album"].get("picUrl", "") + "?param=300y300",
+                    # 歌曲链接
+                    "url": f"https://music.163.com/song?id={song['id']}",
                     "album": song["album"]["name"],  # 专辑名称
                     "fee": song["fee"],  # 付费状态8为免费，1为VIP
-                    "mvid": song["mvid"],  # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=
+                    # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=
+                    "mvid": song["mvid"],
                     "duration": self.ms_to_mmss(song["duration"])  # 歌曲时长，单位ms
                 }
                 for song in songs
@@ -75,7 +79,6 @@ class NeteaseSearch(BaseSearch):
         :return: 音频文件
         """
         pass
-
 
     @staticmethod
     def ms_to_mmss(ms):

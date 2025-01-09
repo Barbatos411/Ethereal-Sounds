@@ -78,7 +78,12 @@ class BilibiliSearch(BaseSearch):
                 response = await self.client.get(audio_url, headers=self.headers)
                 response.raise_for_status()  # 如果请求失败则抛出异常
                 data = response.json()
-                audio_url = data.get('data', {}).get('dash', {}).get('audio', [{}])[0].get('baseUrl', '')
+                audio_url = data.get(
+                    'data', {}).get(
+                    'dash', {}).get(
+                    'audio', [
+                        {}])[0].get(
+                    'baseUrl', '')
                 return {"audio_url": audio_url}
             except httpx.RequestError as e:
                 return {"error": f"请求失败: {e}"}

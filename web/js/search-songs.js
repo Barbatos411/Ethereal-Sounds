@@ -1,37 +1,41 @@
 export async function searchSongs(platform, keyword, page) {
-    console.log('搜索平台:', platform);
-    console.log('搜索歌曲:', keyword);
-    console.log('搜索页码:', page);
-    let data = []; // 初始化 data 变量
+  console.log("搜索平台:", platform);
+  console.log("搜索歌曲:", keyword);
+  console.log("搜索页码:", page);
+  let data = []; // 初始化 data 变量
 
-    // 使用模板字符串动态生成请求 URL
-    const url = `/search?platform=${encodeURIComponent(platform)}&keyword=${encodeURIComponent(keyword)}&page=${page}`;
+  // 使用模板字符串动态生成请求 URL
+  const url = `/search?platform=${encodeURIComponent(platform)}&keyword=${encodeURIComponent(keyword)}&page=${page}`;
 
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        data = await response.json(); // 移除 const 关键字
-        console.log('搜索结果:', data);
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    data = await response.json(); // 移除 const 关键字
+    console.log("搜索结果:", data);
 
-        // 确保 data.results.song_list 存在并且包含数据
-        if (data.results && data.results.song_list && data.results.song_list.length > 0) {
-            const list = document.querySelector('.music-search-list');
-            if (list) {
-                // 清空之前的搜索结果
-                list.innerHTML = '';
+    // 确保 data.results.song_list 存在并且包含数据
+    if (
+      data.results &&
+      data.results.song_list &&
+      data.results.song_list.length > 0
+    ) {
+      const list = document.querySelector(".music-search-list");
+      if (list) {
+        // 清空之前的搜索结果
+        list.innerHTML = "";
 
-                const song_title = document.createElement('h3');
-                song_title.innerHTML = `
+        const song_title = document.createElement("h3");
+        song_title.innerHTML = `
                     <h3 style="color: var(--text-primary); margin: 0; user-select: none">搜索 ${keyword} 结果共 ${data.results.songCount} 首</h3>
                 `;
-                list.appendChild(song_title);
-                // 遍历搜索结果并创建歌曲项
-                data.results.song_list.forEach(song => {
-                    const songItem = document.createElement('div');
-                    songItem.className = 'music-container';
-                    songItem.innerHTML = `
+        list.appendChild(song_title);
+        // 遍历搜索结果并创建歌曲项
+        data.results.song_list.forEach((song) => {
+          const songItem = document.createElement("div");
+          songItem.className = "music-container";
+          songItem.innerHTML = `
                         <div class="music-container-left">
                             <img class="music-cover" src="${song.cover}" alt="cover">
                             <div class="music-name">
@@ -39,11 +43,11 @@ export async function searchSongs(platform, keyword, page) {
                                 <p style="margin: 0">${song.author}</p>
                             </div>
                             <div class="song-tags">
-                                ${song.fee === 1 ? '<div class="tag-vip">VIP</div>' : ''}
-                                ${song.mvid && song.mvid !== 0 ? '<div class="tag-mv">MV</div>' : ''}
+                                ${song.fee === 1 ? '<div class="tag-vip">VIP</div>' : ""}
+                                ${song.mvid && song.mvid !== 0 ? '<div class="tag-mv">MV</div>' : ""}
                             </div>
                         </div>
-                        ${song.album !== undefined ? `<div class="music-container-center">${song.album}</div>` : ''}
+                        ${song.album !== undefined ? `<div class="music-container-center">${song.album}</div>` : ""}
                         <div class="music-container-right">
                             <div class="add-playlist" style="display: flex; align-items: center">
                                 <!-- 添加播放列表按钮或其他内容 -->
@@ -59,15 +63,15 @@ export async function searchSongs(platform, keyword, page) {
                             <div style="display: flex; align-items: center; margin: 10px">${song.duration}</div>
                         </div>
                     `;
-                    list.appendChild(songItem);
-                });
-            } else {
-                console.error('未找到 .music-search-list 元素');
-            }
-        } else {
-            console.error('搜索结果为空或格式不正确');
-        }
-    } catch (error) {
-        console.error('搜索失败:', error);
+          list.appendChild(songItem);
+        });
+      } else {
+        console.error("未找到 .music-search-list 元素");
+      }
+    } else {
+      console.error("搜索结果为空或格式不正确");
     }
+  } catch (error) {
+    console.error("搜索失败:", error);
+  }
 }
