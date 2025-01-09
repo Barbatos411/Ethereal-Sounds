@@ -37,20 +37,27 @@ class BilibiliSearch(BaseSearch):
             results = data.get("data", {}).get("result", [])
             results_list = [
                 {
-                    "title": song["title"],  # 标题
-                    "author": song["author"],  # 作者
-                    "cover": f"https:{song['pic']}?param=224y224",  # 封面
-                    "play": song["play"],  # 播放量
-                    "duration": self.format_duration(song["duration"]),  # 时长
-                    "url": song["arcurl"],  # 链接
+                    "title": song["title"],
+                    # 标题
+                    "author": song["author"],
+                    # 作者
+                    "cover": f"https:{song['pic']}?param=224y224",
+                    # 封面
+                    "play": song["play"],
+                    # 播放量
+                    "duration": self.format_duration(song["duration"]),
+                    # 时长
+                    "url": song["arcurl"],
+                    # 链接
                     "id": song["bvid"]
+                    # id
                 }
                 for song in results
             ]
-            songCount = data.get("data", {}).get("numResults", 0)
+            song_count = data.get("data", {}).get("numResults", 0)
             result = {
                 "song_list": results_list,
-                "songCount": songCount
+                "songCount": song_count
             }
             return result
         except httpx.RequestError as e:
@@ -60,8 +67,8 @@ class BilibiliSearch(BaseSearch):
             # 其他错误处理
             return {"error": f"发生错误: {e}"}
 
-    async def get_audio(self, platform: str, id: str):
-        bvid = id.strip('"')
+    async def get_audio(self, platform: str, audio_id: str):
+        bvid = audio_id.strip('"')
         url = f"https://api.bilibili.com/x/web-interface/view?bvid={bvid}"
 
         # 检查是否需要更新 cookie
