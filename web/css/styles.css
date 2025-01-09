@@ -130,7 +130,8 @@ em {
 }
 
 /* 内容区域样式 */
-.content {
+.content,
+.music-search-list {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -208,6 +209,33 @@ em {
 
 .tag-mv {
     background-color: #ffaf0f;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0 150px 0;
+}
+
+#prevPage,
+#nextPage {
+    padding: 8px 16px;
+    width: auto;
+    height: auto;
+    min-width: 40px;
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 600;
+    transition: 0.2s all;
+    color: var(--text-primary);
+    background-color: var(--color-secondary);
+    border-radius: 10px;
+    user-select: none;
+}
+
+#prevPage:hover,
+#nextPage:hover {
+    background-color: rgb(169, 169, 173);
 }
 
 /* 标题样式 */

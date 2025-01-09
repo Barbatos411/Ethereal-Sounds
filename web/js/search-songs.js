@@ -65,6 +65,19 @@ export async function searchSongs(platform, keyword, page) {
                     `;
           list.appendChild(songItem);
         });
+        const pageContainer = document.createElement("div");
+        pageContainer.className = "pagination-container";
+        pageContainer.innerHTML = `
+                <div id="prevPage"">上一页</div>
+                <span id="currentPage" style="color: var(--text-primary); font-weight: 600; margin: 10px"></span>
+                <span style="color: var(--text-primary); font-weight: 600; margin: 10px;">/</span>
+                <span id="totalPages" style="color: var(--text-primary); font-weight: 600; margin: 10px;"></span>
+                <div id="nextPage"">下一页</div>
+                `;
+        list.appendChild(pageContainer);
+        const totalPages = Math.ceil(data.results.songCount / 30);
+        updatePagination(page, totalPages);
+        add_page_control();
       } else {
         console.error("未找到 .music-search-list 元素");
       }
@@ -74,4 +87,37 @@ export async function searchSongs(platform, keyword, page) {
   } catch (error) {
     console.error("搜索失败:", error);
   }
+}
+
+// 更新页码显示
+function updatePagination(current, total) {
+  currentPage.textContent = current;
+  totalPages.textContent = total;
+}
+
+function add_page_control() {
+  // 获取页码显示和翻页按钮
+  const currentPage = document.getElementById("currentPage");
+  const totalPages = document.getElementById("totalPages");
+  const prevPage = document.getElementById("prevPage");
+  const nextPage = document.getElementById("nextPage");
+  const query = searchInput.value.trim();
+  // 添加翻页按钮的点击事件监听器
+  prevPage.addEventListener("click", () => {
+    const current = parseInt(currentPage.textContent);
+    const query = searchInput.value.trim();
+    const selectedPlatform = document.querySelector(".music-platform.selected");
+    if (current > 1) {
+      searchSongs(selectedPlatform.textContent, query, current - 1);
+    }
+  });
+
+  nextPage.addEventListener("click", () => {
+    const current = parseInt(currentPage.textContent);
+    const query = searchInput.value.trim();
+    const selectedPlatform = document.querySelector(".music-platform.selected");
+    if (current < totalPages.textContent) {
+      searchSongs(selectedPlatform.textContent, query, current + 1);
+    }
+  });
 }
