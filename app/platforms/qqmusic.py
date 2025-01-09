@@ -19,7 +19,7 @@ class QQMusicSearch(BaseSearch):
             "cookie": ""  # 从数据库获取 cookie
         }
 
-    async def search(self, keyword: str, page: int = 1, limit: int = 20):
+    async def search(self, keyword: str, page: int = 1, limit: int = 30):
         # 构建请求负载
         payload = {
             "comm": {

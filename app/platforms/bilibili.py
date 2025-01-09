@@ -17,10 +17,10 @@ class BilibiliSearch(BaseSearch):
             "cookie": ""
         }
 
-    async def search(self, keyword: str, page: int = 1, limit: int = 20):
+    async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """实现搜索功能，支持分页"""
 
-        search_url = f"{self.base_url}?page={page}&keyword={keyword}&search_type=video&platform=pc"
+        search_url = f"{self.base_url}?page={page}&keyword={keyword}&search_type=video&platform=pc&page_size={limit}"
 
         # 检查是否需要更新 cookie
         if not self.cookie:

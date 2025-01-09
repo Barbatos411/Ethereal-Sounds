@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class BaseSearch(ABC):
     @abstractmethod
-    async def search(self, keyword: str, page: int = 1, limit: int = 20):
+    async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """
         定义抽象的搜索方法，每个平台都必须实现
         :param keyword: 搜索的关键字
