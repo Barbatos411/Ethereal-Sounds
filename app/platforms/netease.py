@@ -41,26 +41,33 @@ class NeteaseSearch(BaseSearch):
             songs = data.get("result", {}).get("songs", [])
             song_list = [
                 {
-                    "title": song["name"],  # 歌曲名称
-                    "status": song["status"],  # 歌曲状态，1为正常，-1未知
-                    # 歌手
+                    "title": song["name"],
+                    # 歌曲名称
+                    "status": song["status"],
+                    # 歌曲状态，1为正常，-1未知
                     "author": ", ".join(artist["name"] for artist in song.get("artists", [])),
-                    # 歌曲封面图片
+                    # 歌手
                     "cover": song["album"].get("picUrl", "") + "?param=300y300",
-                    # 歌曲链接
+                    # 歌曲封面图片
                     "url": f"https://music.163.com/song?id={song['id']}",
-                    "album": song["album"]["name"],  # 专辑名称
-                    "fee": song["fee"],  # 付费状态8为免费，1为VIP
-                    # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=
+                    # 歌曲链接
+                    "album": song["album"]["name"],
+                    # 专辑名称
+                    "fee": song["fee"],
+                    # 付费状态8为免费，1为VIP
                     "mvid": song["mvid"],
-                    "duration": self.ms_to_mmss(song["duration"])  # 歌曲时长，单位ms
+                    # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=
+                    "duration": self.ms_to_mmss(song["duration"]),
+                    # 歌曲时长，单位ms
+                    "id": song["id"]
+                    # 歌曲ID
                 }
                 for song in songs
             ]
-            songCount = data.get("result", {}).get("songCount", 0)  # 歌曲总数
+            song_count = data.get("result", {}).get("songCount", 0)  # 歌曲总数
             result = {
                 "song_list": song_list,
-                "songCount": songCount
+                "song_count": song_count
             }
             return result
 
@@ -71,14 +78,30 @@ class NeteaseSearch(BaseSearch):
             # 其他错误处理
             return {"error": f"发生错误: {e}"}
 
-    async def get_audio(self, platform: str, id: str):
-        """
-        定义抽象的获取音频方法，每个平台都必须实现
-        :param platform: 平台名称
-        :param id: 音频链接
-        :return: 音频文件
-        """
-        pass
+    async def get_audio(self, platform: str, audio_id: str):
+        audio_id = audio_id.strip('"')
+        url = f'https://music.163.com/song/media/outer/url?id={audio_id}'
+
+        # 检查是否需要更新 cookie
+        if not self.cookie:
+            self.cookie = await search_cookie(self.name)
+            self.headers["cookie"] = self.cookie
+
+        try:
+            response = await self.client.get(url, headers=self.headers, follow_redirects=True)
+            if response.status_code == 200:
+                # 获取最终的重定向 URL
+                audio_url = str(response.url)
+                return {"final_audio_url": audio_url}
+            else:
+                return {"error": f"请求失败，状态码: {response.status_code}"}
+
+        except httpx.RequestError as e:
+            # 错误处理
+            return {"error": f"请求失败: {e}"}
+        except Exception as e:
+            # 其他错误处理
+            return {"error": f"发生错误: {e}"}
 
     @staticmethod
     def ms_to_mmss(ms):

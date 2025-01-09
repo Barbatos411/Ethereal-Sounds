@@ -28,7 +28,7 @@ export async function searchSongs(platform, keyword, page) {
 
         const song_title = document.createElement("h3");
         song_title.innerHTML = `
-                    <h3 style="color: var(--text-primary); margin: 0; user-select: none">搜索 ${keyword} 结果共 ${data.results.songCount} 首</h3>
+                    <h3 style="color: var(--text-primary); margin: 0; user-select: none">搜索 ${keyword} 结果共 ${data.results.song_count} 首</h3>
                 `;
         list.appendChild(song_title);
         // 遍历搜索结果并创建歌曲项
@@ -75,7 +75,7 @@ export async function searchSongs(platform, keyword, page) {
                 <div id="nextPage"">下一页</div>
                 `;
         list.appendChild(pageContainer);
-        const totalPages = Math.ceil(data.results.songCount / 30);
+        const totalPages = Math.ceil(data.results.song_count / 30);
         updatePagination(page, totalPages);
         add_page_control();
       } else {
@@ -91,6 +91,8 @@ export async function searchSongs(platform, keyword, page) {
 
 // 更新页码显示
 function updatePagination(current, total) {
+  const currentPage = document.getElementById("currentPage");
+  const totalPages = document.getElementById("totalPages");
   currentPage.textContent = current;
   totalPages.textContent = total;
 }
@@ -101,7 +103,6 @@ function add_page_control() {
   const totalPages = document.getElementById("totalPages");
   const prevPage = document.getElementById("prevPage");
   const nextPage = document.getElementById("nextPage");
-  const query = searchInput.value.trim();
   // 添加翻页按钮的点击事件监听器
   prevPage.addEventListener("click", () => {
     const current = parseInt(currentPage.textContent);
