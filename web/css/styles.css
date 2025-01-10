@@ -288,8 +288,7 @@ img {
     justify-content: space-between;
     text-align: center;
     box-shadow: 0 0 10px var(--shadow);
-    transition: height 0.3s ease,
-    background-color 0.5s ease;
+    transition: all 0.5s ease;
 }
 
 .footer-full-height {
@@ -319,4 +318,84 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.footer-center {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    align-items: flex-start;
+}
+
+.music-player-container {
+    display: flex;
+    align-items: flex-end;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: 40px;
+    user-select: none;
+    transition: all 1s ease;
+}
+
+.music-control {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.music-control.prev,
+.music-control.next {
+    position: relative;
+    width: 30px;
+    /* 调整宽度以适应竖直椭圆 */
+    height: 50px;
+    /* 调整高度以适应竖直椭圆 */
+    background-color: var(--text-primary);
+    /* 背景颜色 */
+    border-radius: 15px;
+    /* 椭圆形状 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* 裁剪模式 */
+}
+
+.music-control.play-pause {
+    width: 100px;
+    /* 调整宽度以适应圆形 */
+    height: 100px;
+    /* 调整高度以适应圆形 */
+    background-color: var(--text-primary);
+    /* 背景颜色 */
+    border-radius: 50%;
+    /* 圆形形状 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* 裁剪模式 */
+}
+
+.song-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 裁剪模式 */
+    z-index: 2; /* 确保标志在图片下方 */
+}
+
+.song-cover:hover {
+    opacity: 0; /* 悬浮时图片透明度为0 */
+    transition: opacity 0.3s ease;
+}
+
+.music-control-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* 确保标志在图片下方 */
 }
