@@ -42,8 +42,8 @@ def load_platforms():
             module = importlib.import_module(module_name)
             for attr_name in dir(module):
                 platform_class = getattr(module, attr_name)
-                if isinstance(platform_class, type) and hasattr(platform_class, 'name') and hasattr(platform_class,
-                                                                                                    'id'):
+                if isinstance(platform_class, type) and hasattr(
+                        platform_class, 'name') and hasattr(platform_class, 'id'):
                     platforms.append(platform_class())
 
 
@@ -87,7 +87,7 @@ async def search_song(
 @app.get("/get_audio")
 async def get_audio(
         platform: str = Query(..., description="搜索平台"),
-        id: str = Query(..., description="歌曲链接")
+        audio_id: str = Query(..., description="歌曲链接")
 ):
     """
     根据指定平台和关键词进行歌曲搜索
@@ -96,7 +96,7 @@ async def get_audio(
     for p in platforms:
         if p.name == platform:
             try:
-                results = await p.get_audio(platform, id)
+                results = await p.get_audio(platform, audio_id)
                 return {"platform": platform, "results": results}
             except Exception as e:
                 raise HTTPException(status_code=500, detail=str(e))

@@ -18,7 +18,13 @@ class BilibiliSearch(BaseSearch):
         }
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
-        """实现搜索功能，支持分页"""
+        """
+        定义抽象的搜索方法，每个平台都必须实现
+        :param keyword: 搜索的关键字
+        :param page: 当前页码，默认为1
+        :param limit: 每页返回的结果数，默认为10
+        :return: 搜索结果
+        """
 
         search_url = f"{self.base_url}?page={page}&keyword={keyword}&search_type=video&platform=pc&page_size={limit}"
 
@@ -68,6 +74,12 @@ class BilibiliSearch(BaseSearch):
             return {"error": f"发生错误: {e}"}
 
     async def get_audio(self, platform: str, audio_id: str):
+        """
+        定义抽象的获取音频方法，每个平台都必须实现
+        :param platform: 平台名称
+        :param audio_id: 音频链接
+        :return: 音频文件/链接，歌词
+        """
         bvid = audio_id.strip('"')
         url = f"https://api.bilibili.com/x/web-interface/view?bvid={bvid}"
 
@@ -91,7 +103,7 @@ class BilibiliSearch(BaseSearch):
                     'audio', [
                         {}])[0].get(
                     'baseUrl', '')
-                return {"audio_url": audio_url}
+                return {"final_audio_url": audio_url}
             except httpx.RequestError as e:
                 return {"error": f"请求失败: {e}"}
             except Exception as e:
@@ -100,6 +112,14 @@ class BilibiliSearch(BaseSearch):
             return {"error": f"请求失败: {e}"}
         except Exception as e:
             return {"error": f"发生错误: {e}"}
+
+    async def Home(self):
+        """
+        定义抽象的获取主页方法，每个平台都必须实现
+        :return: 主页
+        """
+        # TODO : 首页数据
+        pass
 
     @staticmethod
     def format_duration(duration_str):

@@ -39,7 +39,7 @@ export async function searchSongs(platform, keyword, page) {
                         <div class="music-container-left">
                             <img class="music-cover" src="${song.cover}" alt="cover">
                             <div class="music-name">
-                                <h3 class="song-title" style="color: var(--text-primary); margin: 0" data-id:=${song.id} data-platform:=${encodeURIComponent(platform)}>${song.title}</h3>
+                                <h3 class="song-title" onclick=add_play_music(this) style="color: var(--text-primary); margin: 0" data-id=${song.id} data-platform=${encodeURIComponent(platform)}>${song.title}</h3>
                                 <p style="margin: 0">${song.author}</p>
                             </div>
                             <div class="song-tags">

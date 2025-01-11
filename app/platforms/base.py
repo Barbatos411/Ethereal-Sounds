@@ -19,6 +19,14 @@ class BaseSearch(ABC):
         定义抽象的获取音频方法，每个平台都必须实现
         :param platform: 平台名称
         :param audio_id: 音频链接
-        :return: 音频文件
+        :return: 音频文件/链接，歌词
+        """
+        pass
+
+    @abstractmethod
+    async def Home(self):
+        """
+        定义抽象的获取主页方法，每个平台都必须实现
+        :return: 主页
         """
         pass
