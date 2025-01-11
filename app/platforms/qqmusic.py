@@ -109,10 +109,9 @@ class QQMusicSearch(BaseSearch):
             # 其他错误处理
             return {"error": f"发生错误: {e}"}
 
-    async def get_audio(self, platform: str, audio_id: str):
+    async def get_audio(self, audio_id: str):
         """
         定义抽象的获取音频方法，每个平台都必须实现
-        :param platform: 平台名称
         :param audio_id: 音频链接
         :return: 音频文件/链接，歌词
         """

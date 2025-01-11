@@ -1,6 +1,12 @@
+from app.cookie.search_cookie import search_cookie
+
+
 class KugouMusicSearch:
     name = "酷狗音乐"  # 平台名称
     id = 3  # 顺序
+
+    def __init__(self):
+        self.cookie = search_cookie(self.name)
 
     async def search(self, keyword: str, page: int = 1, limit: int = 20):
         """
@@ -13,10 +19,9 @@ class KugouMusicSearch:
         # TODO : KUGOU的搜索逻辑
         pass
 
-    async def get_audio(self, platform: str, audio_id: str):
+    async def get_audio(self, audio_id: str):
         """
         定义抽象的获取音频方法，每个平台都必须实现
-        :param platform: 平台名称
         :param audio_id: 音频链接
         :return: 音频文件/链接，歌词
         """

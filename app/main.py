@@ -96,7 +96,7 @@ async def get_audio(
     for p in platforms:
         if p.name == platform:
             try:
-                results = await p.get_audio(platform, audio_id)
+                results = await p.get_audio(audio_id)
                 return {"platform": platform, "results": results}
             except Exception as e:
                 raise HTTPException(status_code=500, detail=str(e))
