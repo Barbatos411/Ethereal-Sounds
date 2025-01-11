@@ -30,8 +30,17 @@ async function add_play_music(element) {
   }
 }
 
+let currentSource = null; // 用于存储当前播放的音频源
+
 async function loadAudio(platform, url) {
   try {
+    // 如果当前有音频正在播放，则停止并断开它
+    if (currentSource) {
+      currentSource.stop();
+      currentSource.disconnect();
+      currentSource = null;
+    }
+
     // 获取 Cookie
     const cookieResponse = await fetch(
       `/data?database=data&table=account&keyword=${platform}&select=cookie&where=平台`,
@@ -57,19 +66,22 @@ async function loadAudio(platform, url) {
 
     const arrayBuffer = await response.arrayBuffer();
 
-    //  解码音频文件
+    // 解码音频文件
     const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
 
     // 播放音频
-    const source = audioCtx.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(audioCtx.destination);
-    source.start();
+    currentSource = audioCtx.createBufferSource();
+    currentSource.buffer = audioBuffer;
+    currentSource.connect(audioCtx.destination);
+    currentSource.start();
 
     console.log("音频开始播放");
 
     // 监听音频播放结束
-    source.onended = () => console.log("音频播放结束");
+    currentSource.onended = () => {
+      console.log("音频播放结束");
+      currentSource = null; // 清空当前音频源
+    };
   } catch (error) {
     console.error("加载音频失败:", error);
   }

@@ -57,7 +57,6 @@ class QQMusicSearch(BaseSearch):
 
             # 解析数据
             data = response.json()
-
             # 假设返回的格式符合以下结构
             songs = data.get(
                 "req",
@@ -91,8 +90,6 @@ class QQMusicSearch(BaseSearch):
                 for song in songs
             ]
             song_count = data.get(
-                "result",
-                {}).get(
                 "req",
                 {}).get(
                 "data",
