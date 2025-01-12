@@ -1,7 +1,20 @@
 # 浮声
 
+<div align="center">
+
+![GitHub stars](https://img.shields.io/github/stars/Barbatos411/Ethereal-Sounds?style=social)
+![GitHub forks](https://img.shields.io/github/forks/Barbatos411/Ethereal-Sounds?style=social)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![platform](https://img.shields.io/badge/python-3.10-green.svg)]()
+![GitHub issues](https://img.shields.io/github/issues/Barbatos411/Ethereal-Sounds)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Barbatos411/Ethereal-Sounds)
+![GitHub repo size](https://img.shields.io/github/repo-size/Barbatos411/Ethereal-Sounds)
+
+<img src="https://count.getloli.com/@Ethereal-Sounds?name=Ethereal-Sounds&theme=random&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" />
+
+</div>
+
+![Star History Chart](https://api.star-history.com/svg?repos=Barbatos411/Ethereal-Sounds&type=Date)
 
 一高中牲闹着玩写的
 
@@ -45,3 +58,17 @@
 “网易云音乐”、"QQ音乐"、“酷狗音乐”、"酷我音乐"、“哔哩哔哩”等文字、图形和商业标识，其著作权或商标权归其各自公司所有。
 相关平台享有其授权音乐内容的版权，请勿随意下载、复制或传播版权内容。
 如需了解更多，请参考对应平台的用户协议或版权政策。
+
+## 贡献者
+
+> 🌟 星光闪烁，你们的智慧如同璀璨的夜空。感谢所有为 **Ethereal-Sounds** 做出贡献的人！
+
+<a href="https://github.com/Barbatos411/Ethereal-Sounds/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Barbatos411/Ethereal-Sounds" />
+</a>
+
+![Alt](https://repobeats.axiom.co/api/embed/002c2203d71e30e71dde64f255706628de6a498c.svg "Repobeats analytics image")
+
+## 其他
+
+如果觉得此插件对你有帮助的话,可以点一个 star,你的支持就是不断更新的动力~
