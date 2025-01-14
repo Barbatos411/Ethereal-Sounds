@@ -31,6 +31,7 @@ async def read_item(request: Request):
 platforms = []
 
 
+# 加载/app/platforms 目录下的所有平台
 def load_platforms():
     # 获取 /app/platforms 目录下的所有 .py 文件
     search_dir = os.path.join(os.path.dirname(__file__), 'platforms')
@@ -47,8 +48,8 @@ def load_platforms():
                     platforms.append(platform_class())
 
 
-# 加载平台并按 id 排序
-load_platforms()  # 加载平台
+# 加载平台
+load_platforms()
 
 # 按 id 排序平台
 platforms.sort(key=lambda platform: platform.id)
@@ -90,7 +91,7 @@ async def get_audio(
         audio_id: str = Query(..., description="歌曲链接")
 ):
     """
-    根据指定平台和关键词进行歌曲搜索
+    根据指定平台和关键词进行歌曲音频获取
     """
     # 根据平台名称找到对应的平台类
     for p in platforms:
@@ -111,6 +112,9 @@ async def get_data(
         select: str = Query(..., description="返回列"),
         where: str = Query(..., description="查找列"),
 ):
+    """
+    根据指定数据库和表进行数据查询
+    """
     try:
         with sqlite3.connect(f'app/data/{database}.db') as conn:
             cursor = conn.cursor()
@@ -123,5 +127,46 @@ async def get_data(
             return {"cookie": result[0]}
         else:
             return {"error": "未找到匹配的记录"}
+    except sqlite3.Error as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/set_data")
+async def set_data(
+        database: str = Query(..., description="数据库"),
+        table: str = Query(..., description="数据表"),
+        where_column: str = Query(..., description="查找列"),
+        keyword: str = Query(None, description="关键词"),
+        set_column: str = Query(..., description="更新列"),
+        value: str = Query(None, description="更新值"),
+        value_list: list = Query(None, description="批量值")
+):
+    """
+    根据指定数据库和表进行数据更新或插入
+    value_list规范:
+    value_list = [
+        ("key1", "value1"),
+        ("key2", "value2"),
+    ]
+    """
+    # 参数验证
+    if value and value_list:
+        raise HTTPException(status_code=400, detail="`value` 和 `value_list` 不能同时提供")
+    if not value and not value_list:
+        raise HTTPException(status_code=400, detail="缺少参数")
+    try:
+        with sqlite3.connect(f'app/data/{database}.db') as conn:
+            cursor = conn.cursor()
+            # 使用参数化查询防止SQL注入
+            query = f"INSERT OR REPLACE INTO {table} ({where_column}, {set_column}) VALUES (?, ?);"
+            if keyword and value:
+                # 单条更新
+                cursor.execute(query, (keyword, value))
+                return {"message": "数据更新成功"}
+            elif value_list:
+                # 批量更新
+                cursor.executemany(query, value_list)
+                return {"message": "数据更新成功"}
+            conn.commit()
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))
