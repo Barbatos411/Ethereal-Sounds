@@ -10,7 +10,7 @@
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/Barbatos411/Ethereal-Sounds)
 ![GitHub repo size](https://img.shields.io/github/repo-size/Barbatos411/Ethereal-Sounds)
 
-<img src="https://count.getloli.com/@Ethereal-Sounds?name=Ethereal-Sounds&theme=random&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" />
+<img src="https://count.getloli.com/@Ethereal-Sounds?name=Ethereal-Sounds&theme=random&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" alt="访问数量"/>
 
 </div>
 
@@ -27,7 +27,7 @@
 
 ### 已实现
 
-- [x] 搜索 - 网易云音乐、QQ音乐、酷我音乐、哔哩哔哩
+- [x] 搜索 - 网易云音乐、QQ音乐、酷狗音乐、酷我音乐、哔哩哔哩
 
 - [x] 播放音乐 - 网易云音乐
 
@@ -64,7 +64,7 @@
 > 🌟 星光闪烁，你们的智慧如同璀璨的夜空。感谢所有为 **Ethereal-Sounds** 做出贡献的人！
 
 <a href="https://github.com/Barbatos411/Ethereal-Sounds/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Barbatos411/Ethereal-Sounds" />
+  <img src="https://contrib.rocks/image?repo=Barbatos411/Ethereal-Sounds" alt="贡献者"/>
 </a>
 
 ![Alt](https://repobeats.axiom.co/api/embed/002c2203d71e30e71dde64f255706628de6a498c.svg "Repobeats analytics image")

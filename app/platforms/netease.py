@@ -43,30 +43,30 @@ class NeteaseSearch(BaseSearch):
             # 解析数据
             data = response.json()
 
-            # 假设返回的格式符合以下结构
+            # 提取搜索结果
             songs = data.get("result", {}).get("songs", [])
             song_list = [
                 {
-                    "title": song["name"],
                     # 歌曲名称
-                    "status": song["status"],
+                    "title": song["name"],
                     # 歌曲状态，1为正常，-1未知
-                    "author": ", ".join(artist["name"] for artist in song.get("artists", [])),
+                    "status": song["status"],
                     # 歌手
-                    "cover": song["album"].get("picUrl", "") + "?param=300y300",
+                    "author": ", ".join(artist["name"] for artist in song.get("artists", [])),
                     # 歌曲封面图片
-                    "url": f"https://music.163.com/song?id={song['id']}",
+                    "cover": song["album"].get("picUrl", "") + "?param=300y300",
                     # 歌曲链接
-                    "album": song["album"]["name"],
+                    "url": f"https://music.163.com/song?id={song['id']}",
                     # 专辑名称
-                    "fee": song["fee"],
+                    "album": song["album"]["name"],
                     # 付费状态8为免费，1为VIP
-                    "mvid": song["mvid"],
+                    "fee": song["fee"],
                     # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=
-                    "duration": self.ms_to_mmss(song["duration"]),
+                    "mvid": song["mvid"],
                     # 歌曲时长，单位ms
-                    "id": song["id"]
+                    "duration": self.ms_to_mmss(song["duration"]),
                     # 歌曲ID
+                    "id": song["id"]
                 }
                 for song in songs
             ]
