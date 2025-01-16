@@ -85,7 +85,7 @@ class BasePlatform(ABC):
                 cursor = conn.cursor()
 
                 # 查询指定平台的 cookie
-                cursor.execute("SELECT cookie FROM account WHERE 平台 = ?", (platform,))
+                cursor.execute("SELECT cookie FROM account WHERE platforms = ?", (platform,))
                 result = cursor.fetchone()
                 if result:
                     print(f"查询到 {platform}")

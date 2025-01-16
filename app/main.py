@@ -137,7 +137,7 @@ async def get_data(
             result = cursor.fetchone()
 
         if result:
-            return {"cookie": result[0]}
+            return {"value": result[0]}
         else:
             return {"error": "未找到匹配的记录"}
     except sqlite3.Error as e:
