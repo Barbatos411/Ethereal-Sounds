@@ -5,15 +5,13 @@ async function displayPlatforms() {
 
     const platformsContainer = document.querySelector(".platforms-container");
 
-    // 按照 id 排序平台
-    data.platforms.sort((a, b) => a.id - b.id);
-
     // 遍历排序后的平台，生成对应的 <div> 元素
     data.platforms.forEach((platform, index) => {
       // 创建平台的 <div> 元素
       const platformDiv = document.createElement("div");
       platformDiv.className = "music-platform";
       platformDiv.textContent = platform.name;
+      platformDiv.id = platform.id;
 
       // 如果是第一个平台，添加 selected 类
       if (index === 0) {
@@ -35,7 +33,7 @@ async function displayPlatforms() {
 
     console.log("平台元素生成完成"); // 添加调试日志
 
-    // 动态导入 select-platform.js
+    // 动态导入 select-platform.js 防止生成平台前加载
     import("./select-platform.js")
       .then((module) => {
         console.log("select-platform.js 已加载"); // 添加调试日志

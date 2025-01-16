@@ -22,7 +22,7 @@ platforms.forEach((platform) => {
     // 获取搜索框的值并执行搜索
     const query = searchInput.value.trim();
     if (query) {
-      searchSongs(platform.textContent, query, 1);
+      searchSongs(platform.id, query, 1);
     }
   });
 });
@@ -36,7 +36,7 @@ function handleEnterKeyPress(event) {
     const query = searchInput.value.trim();
     const selectedPlatform = document.querySelector(".music-platform.selected");
     if (selectedPlatform && query) {
-      searchSongs(selectedPlatform.textContent, query, 1);
+      searchSongs(selectedPlatform.id, query, 1);
     }
   }
 }

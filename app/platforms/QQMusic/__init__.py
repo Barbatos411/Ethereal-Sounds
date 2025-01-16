@@ -6,7 +6,8 @@ from .search import search
 
 class QQMusic(BasePlatform):
     name = "QQ音乐"  # 平台名称
-    id = 2  # 顺序
+    id = "QQMusic"  # 平台ID
+    order = 2  # 顺序
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """

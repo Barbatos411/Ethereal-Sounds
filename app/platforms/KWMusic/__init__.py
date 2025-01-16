@@ -4,9 +4,10 @@ from .home import home
 from .search import search
 
 
-class KGMusic(BasePlatform):
+class KWMusic(BasePlatform):
     name = "酷我音乐"  # 平台名称
-    id = 4  # 顺序
+    id = "KWMusic"
+    order = 4  # 顺序
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """

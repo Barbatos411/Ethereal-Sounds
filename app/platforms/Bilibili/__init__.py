@@ -6,7 +6,8 @@ from .search import search
 
 class Bilibili(BasePlatform):
     name = "哔哩哔哩"  # 平台名称
-    id = 5  # 顺序
+    id = "Bilibili"  # 平台ID
+    order = 5  # 顺序
 
     def __init__(self):
         super().__init__()

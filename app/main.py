@@ -7,6 +7,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 
+from app.platforms.base import BasePlatform
+
 app = FastAPI()
 
 # 设置静态文件的目录（'css', 'js', 'res' 目录需要映射）
@@ -27,40 +29,37 @@ async def read_item(request: Request):
         "index.html", {"request": request, "data": example_data})
 
 
-# 存储加载的各平台实例
 platforms = []
 
 
-# 加载 /app/platforms 目录下的所有平台类
 def load_platforms():
     search_dir = os.path.join(os.path.dirname(__file__), 'platforms')
+    # 存储加载的各平台实例
 
-    # 遍历 /app/platforms 目录下所有的子文件夹
-    for platform_folder in os.listdir(search_dir):
-        platform_folder_path = os.path.join(search_dir, platform_folder)
+    # 查找所有含有 __init__.py 的目录
+    for root, dirs, files in os.walk(search_dir):
+        if '__init__.py' in files:
+            platform_folder = os.path.basename(root)  # 目录名即平台名
+            module_name = f"app.platforms.{platform_folder}"
 
-        # 确保是目录并且排除 base.py 文件和隐藏目录
-        if os.path.isdir(platform_folder_path):
-            init_file_path = os.path.join(platform_folder_path, '__init__.py')
-            if os.path.isfile(init_file_path):
-                # 动态导入该平台的 __init__.py 文件
-                module_name = f"app.platforms.{platform_folder}"  # 根据目录生成模块路径
+            try:
+                # 动态导入模块
                 module = importlib.import_module(module_name)
-                # 尝试从 __init__.py 文件中获取平台类
+
+                # 自动查找继承 BasePlatform 的类
                 for attr_name in dir(module):
-                    platform_class = getattr(module, attr_name)
+                    obj = getattr(module, attr_name)
+                    if isinstance(obj, type) and issubclass(obj, BasePlatform) and obj is not BasePlatform:
+                        platforms.append(obj())  # 实例化平台类
+            except Exception as e:
+                print(f"加载模块 {platform_folder} 失败: {e}")
 
-                    # 确保属性是一个平台类，并且有 name 和 id 属性
-                    if isinstance(platform_class, type) and hasattr(platform_class, 'name') and hasattr(platform_class,
-                                                                                                        'id'):
-                        platforms.append(platform_class())  # 实例化并添加到平台列表
+    # 按平台 ID 排序
+    platforms.sort(key=lambda platform: platform.order)
 
 
-# 加载平台
+# 调用加载函数
 load_platforms()
-
-# 按 id 排序平台
-platforms.sort(key=lambda platform: platform.id)
 
 
 @app.get("/platforms")
@@ -69,7 +68,7 @@ async def get_platforms():
     返回支持的平台名称
     :return: 平台名称列表
     """
-    return {"platforms": [{"id": platform.id, "name": platform.name}
+    return {"platforms": [{"name": platform.name, "id": platform.id, "order": platform.order}
                           for platform in platforms]}
 
 
@@ -84,7 +83,7 @@ async def search_song(
     """
     # 根据平台名称找到对应的平台类
     for p in platforms:
-        if p.name == platform:
+        if p.id == platform:
             try:
                 results = await p.search(keyword, page)
                 return {"platform": platform, "results": results}
@@ -103,7 +102,7 @@ async def get_audio(
     """
     # 根据平台名称找到对应的平台类
     for p in platforms:
-        if p.name == platform:
+        if p.id == platform:
             try:
                 Bool, content = await p.get_audio(audio_id)
                 if Bool:
