@@ -183,3 +183,26 @@ async def set_data(
             conn.commit()
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/del_data")
+async def delete_data(
+        database: str = Query(..., description="数据库"),
+        table: str = Query(..., description="搜索表"),
+        keyword: str = Query(..., description="关键词"),
+        where: str = Query(..., description="查找列"),
+):
+    """
+    删除指定数据库和表中的数据
+    """
+    try:
+        with sqlite3.connect(f'app/data/{database}.db') as conn:
+            cursor = conn.cursor()
+            # 使用参数化查询防止SQL注入
+            query = f"DELETE FROM {table} WHERE {where} = ?"
+            cursor.execute(query, (keyword,))
+            conn.commit()  # 提交事务以保存更改
+
+        return {"message": "记录已删除"}
+    except sqlite3.Error as e:
+        raise HTTPException(status_code=500, detail=str(e))
