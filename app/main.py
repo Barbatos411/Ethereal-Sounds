@@ -2,7 +2,7 @@ import importlib
 import os
 import sqlite3
 
-from fastapi import FastAPI, Query, HTTPException
+from fastapi import FastAPI, Query, HTTPException, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
@@ -59,9 +59,6 @@ def load_platforms():
 # 加载平台
 load_platforms()
 
-# 按 id 排序平台（如果需要根据 id 排序）
-platforms.sort(key=lambda platform: platform.id)
-
 # 按 id 排序平台
 platforms.sort(key=lambda platform: platform.id)
 
@@ -99,7 +96,7 @@ async def search_song(
 @app.get("/get_audio")
 async def get_audio(
         platform: str = Query(..., description="搜索平台"),
-        audio_id: str = Query(..., description="歌曲链接")
+        audio_id: str = Query(..., description="歌曲ID")
 ):
     """
     根据指定平台和关键词进行歌曲音频获取
@@ -108,8 +105,14 @@ async def get_audio(
     for p in platforms:
         if p.name == platform:
             try:
-                results = await p.get_audio(audio_id)
-                return {"platform": platform, "results": results}
+                Bool, content = await p.get_audio(audio_id)
+                if Bool:
+                    return Response(content=content,
+                                    media_type="audio/mpeg",
+                                    headers={"Content-Disposition": "inline", "Accept-Ranges": "bytes"}  # 提示浏览器为直接播放
+                                    )
+                else:
+                    return {"audio_url": content}
             except Exception as e:
                 raise HTTPException(status_code=500, detail=str(e))
     raise HTTPException(status_code=400, detail="指定的平台不受支持")

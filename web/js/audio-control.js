@@ -2,8 +2,8 @@ const prev_audio = document.getElementById("prev-audio");
 const next_audio = document.getElementById("next-audio");
 const play_pause = document.getElementById("play-pause");
 
-// 检查浏览器是否支持 AudioContext 接口，如果不支持，则尝试使用 webkitAudioContext 接口
-const AudioContext = window.AudioContext || window.webkitAudioContext;
+// 使用 AudioContext 接口
+const AudioContext = window.AudioContext;
 
 // 创建一个新的 AudioContext 实例，用于处理音频
 const audioCtx = new AudioContext();
@@ -13,18 +13,27 @@ async function add_play_music(element) {
   const platform = element.dataset.platform;
   const url = `/get_audio?platform=${platform}&audio_id=${audio_id}`;
   console.log(url);
-  console.log(audio_id);
-  console.log(platform);
+
   try {
     const response = await fetch(url);
+    const contentType = response.headers.get("Content-Type");
+
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    data = await response.json();
-    console.log(data);
-    audio_url = data.results.final_audio_url;
-    loadAudio(platform, audio_url);
-    console.log(response);
+
+    if (contentType && contentType.startsWith("audio/")) {
+      console.log("音频文件");
+      // 直接加载音频流
+      await loadAudio(url);
+    } else {
+      console.log("非音频文件");
+      // 解析 JSON 数据并获取 audio_url
+      const data = await response.json();
+      const audio_url = data.audio_url; // 修正：正确访问 JSON 字段
+      // 加载音频
+      await loadAudio(audio_url);
+    }
   } catch (error) {
     console.error("请求失败:", error);
   }
@@ -32,7 +41,7 @@ async function add_play_music(element) {
 
 let currentSource = null; // 用于存储当前播放的音频源
 
-async function loadAudio(platform, url) {
+async function loadAudio(url) {
   try {
     // 如果当前有音频正在播放，则停止并断开它
     if (currentSource) {
@@ -41,27 +50,7 @@ async function loadAudio(platform, url) {
       currentSource = null;
     }
 
-    // 获取 Cookie
-    const cookieResponse = await fetch(
-      `/data?database=data&table=account&keyword=${platform}&select=cookie&where=平台`,
-    );
-    if (!cookieResponse.ok) throw new Error("获取 Cookie 失败");
-
-    const cookie = await cookieResponse.text(); // 假设返回值是纯文本
-
-    // 配置 fetch 选项
-    const options = {
-      method: "GET",
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
-        cookie, // 添加从上一步获取的 cookie
-      },
-    };
-    console.log("Fetch Headers:", options.headers);
-
-    // 获取音频文件
-    const response = await fetch(url, options);
+    const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP 错误！状态: ${response.status}`);
 
     const arrayBuffer = await response.arrayBuffer();
