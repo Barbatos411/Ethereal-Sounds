@@ -104,8 +104,8 @@ async def get_audio(
     for p in platforms:
         if p.id == platform:
             try:
-                Bool, content = await p.get_audio(audio_id)
-                if Bool:
+                bool_value, content = await p.get_audio(audio_id)
+                if bool_value:
                     return Response(content=content,
                                     media_type="audio/mpeg",
                                     headers={"Content-Disposition": "inline", "Accept-Ranges": "bytes"}  # 提示浏览器为直接播放

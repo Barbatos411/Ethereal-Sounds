@@ -1,3 +1,6 @@
+import hashlib
+import urllib.parse
+
 from app.platforms.base import BasePlatform
 from .get_audio import get_audio
 from .home import home
@@ -33,3 +36,24 @@ class KGMusic(BasePlatform):
         :return: 主页
         """
         return await home()
+
+    @staticmethod
+    async def signature(base_url: str, params: dict):
+        """
+        定义酷狗的签名方法
+        :param base_url: 基础URL
+        :param params: 签名参数
+        :return: 签名值
+        """
+        # 固定值前后包裹
+        fixed_value = "NVPh5oo715z5DIWAeQlhMDsWXXQV4hwt"
+        # 按字母顺序排列参数并拼接为字符串
+        sorted_params = ''.join(f"{k}={v}" for k, v in sorted(params.items()))
+        # 包裹固定值
+        to_sign = f"{fixed_value}{sorted_params}{fixed_value}"
+        # 使用 MD5 加密
+        md5 = hashlib.md5()
+        md5.update(to_sign.encode('utf-8'))
+        signature = md5.hexdigest()
+        # 构建完整 URL
+        return f'{base_url}?{urllib.parse.urlencode(params)}&signature={signature}'

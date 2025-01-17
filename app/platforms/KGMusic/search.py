@@ -1,13 +1,11 @@
-import hashlib
 import time
-import urllib.parse
 
 import httpx
 
 from app.platforms.utils import search_cookie, s_to_mmss, cookie_to_dict
 
 
-async def search(self, keyword: str, page: int = 1, limit: int = 1):
+async def search(self, keyword: str, page: int = 1, limit: int = 30):
     """
     实现搜素功能
     :param self: 平台类
@@ -25,8 +23,34 @@ async def search(self, keyword: str, page: int = 1, limit: int = 1):
     # 将 Cookie 字符串解析为 Python 字典格式。以便于解析 cookie
     cookies = cookie_to_dict(self.headers["cookie"])
 
+    # 基础地址
+    base_url = "https://complexsearch.kugou.com/v2/search/song"
+
+    # 请求参数
+    params = {
+        "appid": cookies.get("a_id") if cookies.get("a_id") else "1014",
+        "bitrate": "0",
+        "clienttime": int(time.time() * 1000),
+        "clientver": "1000",
+        "dfid": cookies.get("kg_dfid"),
+        "filter": "10",
+        "inputtype": "0",
+        "iscorrection": "1",
+        "isfuzzy": "0",
+        "keyword": keyword,
+        "mid": cookies.get("kg_mid"),
+        "page": page,
+        "pagesize": limit,
+        "platform": "WebFilter",
+        "privilege_filter": "0",
+        "srcappid": "2919",
+        "token": cookies.get("t") if cookies.get("t") else "0",  # 对应 token
+        "userid": cookies.get("KugooID") if cookies.get("KugooID") else "0",
+        "uuid": cookies.get("ku_mid"),  # 通常与 mid 相同
+    }
+
     # 构建请求 URL
-    search_url = build_kugou_search_url(cookies, keyword, page, limit)
+    search_url = await self.signature(base_url, params)
 
     # 发送 GET 请求并获取响应
     try:
@@ -66,47 +90,3 @@ async def search(self, keyword: str, page: int = 1, limit: int = 1):
     except httpx.HTTPError as e:
         # 处理请求失败的情况
         return {"error": f"请求失败: {e}"}
-
-
-def build_kugou_search_url(cookies: dict, keyword: str, page: int, pagesize: int):
-    """根据 cookie 和关键字签名并生成搜索地址"""
-    # 当前时间戳（毫秒级）
-    clienttime = int(time.time() * 1000)
-
-    base_url = "https://complexsearch.kugou.com/v2/search/song"
-
-    # 参数参数
-    params = {
-        "appid": cookies.get("a_id") if cookies.get("a_id") else "1014",
-        "bitrate": "0",
-        "clienttime": clienttime,
-        "clientver": "1000",
-        "dfid": cookies.get("kg_dfid"),
-        "filter": "10",
-        "inputtype": "0",
-        "iscorrection": "1",
-        "isfuzzy": "0",
-        "keyword": keyword,
-        "mid": cookies.get("kg_mid"),
-        "page": page,
-        "pagesize": pagesize,
-        "platform": "WebFilter",
-        "privilege_filter": "0",
-        "srcappid": "2919",
-        "token": cookies.get("t") if cookies.get("t") else "0",  # 对应 token
-        "userid": cookies.get("KugooID") if cookies.get("KugooID") else "0",
-        "uuid": cookies.get("ku_mid"),  # 通常与 mid 相同
-    }
-
-    # 固定值前后包裹
-    fixed_value = "NVPh5oo715z5DIWAeQlhMDsWXXQV4hwt"
-    # 按字母顺序排列参数并拼接为字符串
-    sorted_params = ''.join(f"{k}={v}" for k, v in sorted(params.items()))
-    # 包裹固定值
-    to_sign = f"{fixed_value}{sorted_params}{fixed_value}"
-    # 使用 MD5 加密
-    md5 = hashlib.md5()
-    md5.update(to_sign.encode('utf-8'))
-    signature = md5.hexdigest()
-    # 构建完整 URL
-    return f"{base_url}?{urllib.parse.urlencode(params)}&signature={signature}"

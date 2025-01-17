@@ -1,6 +1,6 @@
 import httpx
 
-from app.platforms.utils import search_cookie
+from app.platforms.utils import search_cookie, s_to_mmss
 
 
 async def search(self, keyword: str, page: int = 1, limit: int = 30):
@@ -74,7 +74,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
                 "fee": song.get("pay", {}).get("pay_play", 0),
                 "mvid": song.get("mv", {}).get("id"),  # 歌曲MV, 0表示无MV
                 # 歌曲时长，单位ms
-                "duration": self.s_to_mmss(song.get("interval", 0))
+                "duration": s_to_mmss(song.get("interval", 0))
             }
             for song in songs
         ]
