@@ -109,7 +109,7 @@ function add_page_control() {
     const query = searchInput.value.trim();
     const selectedPlatform = document.querySelector(".music-platform.selected");
     if (current > 1) {
-      searchSongs(selectedPlatform.textContent, query, current - 1);
+      searchSongs(selectedPlatform.id, query, current - 1);
     }
   });
 
@@ -118,7 +118,7 @@ function add_page_control() {
     const query = searchInput.value.trim();
     const selectedPlatform = document.querySelector(".music-platform.selected");
     if (current < totalPages.textContent) {
-      searchSongs(selectedPlatform.textContent, query, current + 1);
+      searchSongs(selectedPlatform.id, query, current + 1);
     }
   });
 }
