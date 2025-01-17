@@ -1,6 +1,6 @@
 import httpx
 
-from app.platforms.utils import get_data, s_to_mmss
+from app.platforms.utils import s_to_mmss
 
 
 async def search(self, keyword: str, page: int = 1, limit: int = 30):
@@ -15,11 +15,6 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
     base_url = "https://www.kuwo.cn/search/searchMusicBykeyWord"
     # 构建请求 URL
     search_url = f"{base_url}?vipver=1&client=kt&ft=music&cluster=0&strategy=2012&encoding=utf8&rformat=json&mobi=1&issubtitle=1&show_copyright_off=1&pn={page - 1}&rn={limit}&all={keyword}"
-
-    # 检查是否需要更新 cookie
-    if not self.cookie:
-        self.cookie = await get_data("data", "account", "platforms", self.name, "cookie")
-        self.headers["cookie"] = self.cookie
 
     try:
         print(search_url)

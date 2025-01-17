@@ -1,6 +1,6 @@
 import httpx
 
-from app.platforms.utils import get_data, ms_to_mmss
+from app.platforms.utils import ms_to_mmss
 
 
 async def search(self, keyword: str, page: int = 1, limit: int = 30):
@@ -16,11 +16,6 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
     base_url = "https://music.163.com/api/search/pc"
     # 构建请求 URL
     search_url = f"{base_url}?s={keyword}&offset={offset}&limit={limit}&type=1"
-
-    # 检查是否需要更新 cookie
-    if not self.cookie:
-        self.cookie = await get_data("data", "account", "platforms", self.name, "cookie")
-        self.headers["cookie"] = self.cookie
 
     try:
         # 发起请求

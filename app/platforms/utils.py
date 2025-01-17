@@ -84,5 +84,7 @@ async def get_data(database, table, where, keyword, select):
             return result[0]
         else:
             print(f"未找到匹配的记录: {where} = {keyword}")
+            return None
     except sqlite3.Error as e:
         print(f"数据库操作出现错误: {e}")
+        return None

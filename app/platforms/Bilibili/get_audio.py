@@ -1,8 +1,6 @@
 import httpx
 from fastapi import HTTPException
 
-from app.platforms.utils import get_data
-
 
 async def get_audio(self, audio_id: str):
     """
@@ -11,11 +9,6 @@ async def get_audio(self, audio_id: str):
     :param audio_id: 音频id
     :return: Bool, audio/text Bool为True时返回音频，为False时返回音频地址
     """
-
-    # 检查是否需要更新 cookie
-    if not self.cookie:
-        self.cookie = await get_data("data", "account", "platforms", self.name, "cookie")
-        self.headers["cookie"] = self.cookie
 
     bvid = audio_id.strip('"')
     url = f"https://api.bilibili.com/x/web-interface/view?bvid={bvid}"

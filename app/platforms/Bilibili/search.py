@@ -1,6 +1,6 @@
 import httpx
 
-from app.platforms.utils import format_duration, get_data
+from app.platforms.utils import format_duration
 
 
 async def search(self, keyword: str, page: int = 1, limit: int = 30):
@@ -14,11 +14,6 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
     """
     base_url = "https://api.bilibili.com/x/web-interface/search/type?&search_type=video&platform=pc"
     search_url = f"{base_url}&page={page}&keyword={keyword}&page_size={limit}"
-
-    # 检查是否需要更新 cookie
-    if not self.cookie:
-        self.cookie = await get_data("data", "account", "platforms", self.name, "cookie")
-        self.headers["cookie"] = self.cookie
 
     try:
         # 发起请求
