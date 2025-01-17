@@ -2,7 +2,7 @@ import time
 
 import httpx
 
-from app.platforms.utils import search_cookie, s_to_mmss, cookie_to_dict
+from app.platforms.utils import get_data, s_to_mmss, cookie_to_dict
 
 
 async def search(self, keyword: str, page: int = 1, limit: int = 30):
@@ -17,7 +17,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
 
     # 检查是否需要更新 cookie
     if not self.cookie:
-        self.cookie = await search_cookie(self.name)
+        self.cookie = await get_data("data", "account", "platforms", self.name, "cookie")
         self.headers["cookie"] = self.cookie
 
     # 将 Cookie 字符串解析为 Python 字典格式。以便于解析 cookie

@@ -63,20 +63,26 @@ def cookie_to_dict(cookie_string: str):
     return cookie_dict
 
 
-async def search_cookie(platform):
+async def get_data(database, table, where, keyword, select):
+    """
+    获取指定数据库和表中的数据
+    :param database: 数据库名称
+    :param table: 表名称
+    :param where: 查找列
+    :param keyword: 条件值
+    :param select: 返回值
+    """
     try:
-        # 使用 `with` 语句管理数据库连接
-        with sqlite3.connect('app/data/data.db') as conn:
+        with sqlite3.connect(f'app/data/{database}.db') as conn:
             cursor = conn.cursor()
-
-            # 查询指定平台的 cookie
-            cursor.execute("SELECT cookie FROM account WHERE platforms = ?", (platform,))
+            # 使用参数化查询防止SQL注入
+            query = f"SELECT {select} FROM {table} WHERE {where} = ?"
+            cursor.execute(query, (keyword,))
             result = cursor.fetchone()
-            if result:
-                print(f"查询到 {platform}")
-                return result[0]
-            else:
-                return None
+
+        if result:
+            return result[0]
+        else:
+            print(f"未找到匹配的记录: {where} = {keyword}")
     except sqlite3.Error as e:
         print(f"数据库操作出现错误: {e}")
-        return None

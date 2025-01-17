@@ -1,6 +1,6 @@
 import httpx
 
-from app.platforms.utils import search_cookie
+from app.platforms.utils import get_data
 
 
 async def get_audio(self, audio_id: str):
@@ -15,7 +15,7 @@ async def get_audio(self, audio_id: str):
 
     # 检查是否需要更新 cookie
     if not self.cookie:
-        self.cookie = await search_cookie(self.name)
+        self.cookie = await get_data("data", "account", "platforms", self.name, "cookie")
         self.headers["cookie"] = self.cookie
 
     try:

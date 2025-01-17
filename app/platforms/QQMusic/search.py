@@ -1,6 +1,6 @@
 import httpx
 
-from app.platforms.utils import search_cookie, s_to_mmss
+from app.platforms.utils import get_data, s_to_mmss
 
 
 async def search(self, keyword: str, page: int = 1, limit: int = 30):
@@ -36,7 +36,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
 
     # 检查是否需要更新 cookie
     if not self.cookie:
-        self.cookie = await search_cookie(self.name)
+        self.cookie = await get_data("data", "account", "platforms", self.name, "cookie")
         self.headers["cookie"] = self.cookie
 
     try:
