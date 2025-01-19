@@ -10,14 +10,14 @@ async def get_lrc(self, audio_id: str, trans: bool):
     :param trans: 是否翻译歌词
     :return: 歌词
     """
-    url = f"https://i.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?songmid={audio_id}&g_tk=5381&format=json&inCharset=utf8&outCharset=utf-8&nobase64=1"
+    url = f"https://music.163.com/api/song/lyric?os=pc&id={audio_id}&lv=-1&tv=-1"
     try:
         response = await self.client.get(url, headers=self.headers)
         response.raise_for_status()
         data = response.json()
-        lrc = data.get('lyric', "")
+        lrc = data.get("lrc", {}).get('lyric', "")
         if trans:
-            trans = data.get('trans', "")
+            trans = data.get("tlyric", {}).get('lyric', "")
             return {"lyric": merge_lyrics_and_translation(lrc, trans)}
         return {"lyric": lrc.strip()}
     except httpx.RequestError as e:

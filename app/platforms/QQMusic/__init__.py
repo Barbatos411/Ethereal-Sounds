@@ -36,6 +36,7 @@ class QQMusic(BasePlatform):
         """
         定义抽象地获取歌词方法，每个平台都必须实现
         :param audio_id: 音频链接
+        :param trans: 是否翻译歌词
         :return: 歌词
         """
         return await get_lrc(self, audio_id, trans)

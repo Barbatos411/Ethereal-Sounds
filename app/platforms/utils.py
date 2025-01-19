@@ -91,26 +91,31 @@ async def get_data(database, table, where, keyword, select):
         return None
 
 
-def remove_metadata(lyric):
-    # 使用正则表达式去除歌词中的元数据
-    lyric = re.sub(r"\[.*?\]", "", lyric).strip()  # 去除所有方括号中的内容
-    return lyric
-
-
 def merge_lyrics_and_translation(lyric, trans):
-    # 使用正则表达式获取时间戳与歌词
+    """
+    保留时间戳并合并原歌词与翻译歌词。
+
+    参数:
+    - lyric: 原始歌词（带时间戳）
+    - trans: 翻译歌词（带时间戳）
+
+    返回:
+    - 合并后的歌词内容，时间戳、原歌词、翻译在一起。
+    """
+    # 使用正则表达式获取时间戳和内容
     lyric_lines = re.findall(r"\[([0-9:.]+)\](.*?)\n", lyric)
     trans_lines = re.findall(r"\[([0-9:.]+)\](.*?)\n", trans)
 
-    # 使用字典按时间戳映射每个歌词行
+    # 构建时间戳与歌词的映射
     lyrics_dict = {time: line for time, line in lyric_lines}
     trans_dict = {time: line for time, line in trans_lines}
 
-    # 合并结果：每一句歌词配上一句翻译
+    # 合并两种内容
     merged_lines = []
-    for time in lyrics_dict:
-        lyric_line = lyrics_dict[time]
-        trans_line = trans_dict.get(time, '')
-        merged_lines.append(f"{lyric_line}\n{trans_line}")
+    for time, lyric_line in lyrics_dict.items():
+        trans_line = trans_dict.get(time, '')  # 若翻译中无对应时间，则空白
+        merged_lines.append(f"[{time}]{lyric_line}")
+        if trans_line:  # 若翻译非空，则加到下一行
+            merged_lines.append(f"[{time}]{trans_line}")
 
     return "\n".join(merged_lines).replace("//", "")
