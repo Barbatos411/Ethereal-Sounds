@@ -42,6 +42,13 @@ class BasePlatform(ABC):
         pass
 
     @abstractmethod
+    async def get_lrc(self, audio_id: str):
+        """
+        定义抽象的获取音频方法，每个平台都必须实现
+        """
+        pass
+
+    @abstractmethod
     async def home(self):
         """
         定义抽象的获取主页方法，每个平台都必须实现
