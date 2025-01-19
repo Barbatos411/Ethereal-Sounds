@@ -1,5 +1,6 @@
 from app.platforms.base import BasePlatform
 from .get_audio import get_audio
+from .get_lrc import get_lrc
 from .home import home
 from .search import search
 
@@ -8,6 +9,10 @@ class QQMusic(BasePlatform):
     name = "QQ音乐"  # 平台名称
     id = "QQMusic"  # 平台ID
     order = 2  # 顺序
+
+    def __init__(self):
+        super().__init__()
+        self.headers["Referer"] = "https://y.qq.com/"
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """
@@ -27,13 +32,13 @@ class QQMusic(BasePlatform):
         """
         return await get_audio(self, audio_id)
 
-    async def get_lrc(self, audio_id: str):
+    async def get_lrc(self, audio_id: str, trans: bool):
         """
         定义抽象地获取歌词方法，每个平台都必须实现
         :param audio_id: 音频链接
         :return: 歌词
         """
-        pass
+        return await get_lrc(self, audio_id, trans)
 
     async def home(self):
         """

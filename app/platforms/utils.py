@@ -1,3 +1,4 @@
+import re
 import sqlite3
 import urllib.parse
 
@@ -88,3 +89,28 @@ async def get_data(database, table, where, keyword, select):
     except sqlite3.Error as e:
         print(f"数据库操作出现错误: {e}")
         return None
+
+
+def remove_metadata(lyric):
+    # 使用正则表达式去除歌词中的元数据
+    lyric = re.sub(r"\[.*?\]", "", lyric).strip()  # 去除所有方括号中的内容
+    return lyric
+
+
+def merge_lyrics_and_translation(lyric, trans):
+    # 使用正则表达式获取时间戳与歌词
+    lyric_lines = re.findall(r"\[([0-9:.]+)\](.*?)\n", lyric)
+    trans_lines = re.findall(r"\[([0-9:.]+)\](.*?)\n", trans)
+
+    # 使用字典按时间戳映射每个歌词行
+    lyrics_dict = {time: line for time, line in lyric_lines}
+    trans_dict = {time: line for time, line in trans_lines}
+
+    # 合并结果：每一句歌词配上一句翻译
+    merged_lines = []
+    for time in lyrics_dict:
+        lyric_line = lyrics_dict[time]
+        trans_line = trans_dict.get(time, '')
+        merged_lines.append(f"{lyric_line}\n{trans_line}")
+
+    return "\n".join(merged_lines).replace("//", "")

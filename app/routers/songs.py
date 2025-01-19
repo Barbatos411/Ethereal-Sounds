@@ -67,7 +67,8 @@ async def get_audio(
 @router.get("/get_lrc")
 async def get_lrc(
         platform: str = Query(..., description="搜索平台"),
-        audio_id: str = Query(..., description="歌曲ID")
+        audio_id: str = Query(..., description="歌曲ID"),
+        trans: bool = Query(False, description="是否翻译歌词")
 ):
     """
     根据指定平台和关键词进行歌曲歌词获取
@@ -75,7 +76,7 @@ async def get_lrc(
     # 根据平台名称找到对应的平台类
     try:
         platform_obj = platform_manager.get_platform_by_id(platform)
-        results = await platform_obj.get_lrc(audio_id)
+        results = await platform_obj.get_lrc(audio_id, trans)
         return {"results": results}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
