@@ -41,7 +41,6 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
 
         # 解析数据
         data = response.json()
-        # 假设返回的格式符合以下结构
         songs = data.get(
             "req",
             {}).get(
@@ -55,21 +54,26 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
             [])
         song_list = [
             {
-                "title": song.get("title"),  # 歌曲名称
-                # 歌手,  # 歌手
+                # 歌曲名称
+                "title": song.get("title"),
+                # 歌手
                 "author": ", ".join(singer.get("name", "") for singer in song.get("singer", [])),
+                # 歌曲封面图片
                 "cover": f"https://y.gtimg.cn/music/photo_new/T002R300x300M000{song.get('album').get('mid')}.jpg?param=224y224" if song.get(
                     'album').get(
                     'mid') else f"https://y.qq.com/music/photo_new/T062R300x300M000{next((vs for vs in song.get('vs', []) if vs), '')}.jpg?param=224y224",
-                # 歌曲封面图片，可能需要进一步处理
+                # 歌曲ID 详情页https://y.qq.com/n/ryqq/songDetail/mid
+                "id": song.get("mid"),
                 # 歌曲链接
                 "url": f"https://y.qq.com/n/ryqq/songDetail/{song.get('mid')}?songtype=[type]",
-                "album": song.get("album").get("name"),  # 专辑名称
+                # 专辑名称
+                "album": song.get("album").get("name"),
                 # 付费状态，0为免费，1为付费
                 "fee": song.get("pay", {}).get("pay_play", 0),
-                "mvid": song.get("mv", {}).get("id"),  # 歌曲MV, 0表示无MV
+                # 歌曲MV, 0表示无MV
+                "mvid": song.get("mv", {}).get("id"),
                 # 歌曲时长，单位ms
-                "duration": s_to_mmss(song.get("interval", 0))
+                "duration": s_to_mmss(song.get("interval", 0)),
             }
             for song in songs
         ]

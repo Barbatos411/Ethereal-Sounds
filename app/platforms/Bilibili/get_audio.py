@@ -17,13 +17,22 @@ async def get_audio(self, audio_id: str):
         # 通过bvid获取cid
         audio_info = await self.client.get(url, headers=self.headers)
         audio_info.raise_for_status()  # 如果请求失败则抛出异常
-        cid = audio_info.json().get('data', {}).get('pages', [{}])[0].get('cid', '')
+        cid = audio_info.json().get(
+            'data', {}).get(
+            'pages', [
+                {}])[0].get(
+            'cid', '')
         # 通过bvid和cid获取音频链接
         audio_url = f"https://api.bilibili.com/x/player/playurl?fnval=16&bvid={bvid}&cid={cid}"
         response = await self.client.get(audio_url, headers=self.headers)
         response.raise_for_status()  # 如果请求失败则抛出异常
         data = response.json()
-        audio_url = data.get('data', {}).get('dash', {}).get('audio', [{}])[0].get('baseUrl', '')
+        audio_url = data.get(
+            'data', {}).get(
+            'dash', {}).get(
+            'audio', [
+                {}])[0].get(
+            'baseUrl', '')
 
         # 使用 stream 方法获取音频流
         async with self.client.stream("GET", audio_url, headers=self.headers) as audio:

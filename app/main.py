@@ -49,7 +49,8 @@ def load_platforms():
                 # 自动查找继承 BasePlatform 的类
                 for attr_name in dir(module):
                     obj = getattr(module, attr_name)
-                    if isinstance(obj, type) and issubclass(obj, BasePlatform) and obj is not BasePlatform:
+                    if isinstance(obj, type) and issubclass(
+                            obj, BasePlatform) and obj is not BasePlatform:
                         platforms.append(obj())  # 实例化平台类
             except Exception as e:
                 print(f"加载模块 {platform_folder} 失败: {e}")
@@ -108,7 +109,9 @@ async def get_audio(
                 if bool_value:
                     return Response(content=content,
                                     media_type="audio/mpeg",
-                                    headers={"Content-Disposition": "inline", "Accept-Ranges": "bytes"}  # 提示浏览器为直接播放
+                                    headers={
+                                        "Content-Disposition": "inline",
+                                        "Accept-Ranges": "bytes"}  # 提示浏览器为直接播放
                                     )
                 else:
                     return {"audio_url": content}
@@ -164,7 +167,8 @@ async def set_data(
     """
     # 参数验证
     if value and value_list:
-        raise HTTPException(status_code=400, detail="`value` 和 `value_list` 不能同时提供")
+        raise HTTPException(status_code=400,
+                            detail="`value` 和 `value_list` 不能同时提供")
     if not value and not value_list:
         raise HTTPException(status_code=400, detail="缺少参数")
     try:
