@@ -1,7 +1,5 @@
 import httpx
 
-from app.platforms.utils import merge_lyrics_and_translation
-
 
 async def get_lrc(self, audio_id: str, trans: bool):
     """
@@ -18,7 +16,7 @@ async def get_lrc(self, audio_id: str, trans: bool):
         lrc = data.get('lyric', "")
         if trans:
             trans = data.get('trans', "")
-            return {"lyric": merge_lyrics_and_translation(lrc, trans)}
+            return {"lyric": self.merge_lyrics_and_translation(lrc, trans)}
         return {"lyric": lrc.strip()}
     except httpx.RequestError as e:
         return {"error": f"请求失败: {e}"}
