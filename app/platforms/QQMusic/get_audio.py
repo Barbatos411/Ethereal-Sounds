@@ -18,7 +18,7 @@ async def get_audio(self, audio_id):
             "module": "vkey.GetVkeyServer",
             "method": "CgiGetVkey",
             "param": {
-                "filename": [f"M500{audio_id}.mp3"],
+                "filename": [f"M500{audio_id * 2}.mp3"],
                 "guid": "10000",
                 "songmid": [f"{audio_id}"],
                 "songtype": [0],
