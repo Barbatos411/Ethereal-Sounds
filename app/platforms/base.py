@@ -1,3 +1,4 @@
+import re
 import sqlite3
 from abc import ABC, abstractmethod
 
