@@ -29,20 +29,25 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
         songs = data.get("abslist", {})
         song_list = [
             {
-                "title": song["SONGNAME"],  # 歌曲名称
-                "author": song["FARTIST"],  # 歌手
+                # 歌曲名称
+                "title": song["SONGNAME"],
+                # 歌手
+                "author": song["FARTIST"],
+                # 歌曲封面图片
                 "cover": f"https://img2.kuwo.cn/star/albumcover/{song.get('web_albumpic_short')}" if song.get(
                     'web_albumpic_short') else f"https://img1.kuwo.cn/star/starheads/{song['web_artistpic_short']}",
-                # 歌曲封面图片
                 # 歌曲链接
                 "url": f"https://www.kuwo.cn/play_detail/{song['DC_TARGETID']}",
-                "album": song["ALBUM"],  # 专辑名称
-                # 付费状态8为免费，1为VIP
+                # 专辑名称
+                "album": song["ALBUM"],
+                # 付费状态
                 "fee": 1 if int(song["payInfo"]["play"]) > 1100 else 0,
                 # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=
                 "mvid": int(song["MVFLAG"]),
                 # 歌曲时长，单位ms
-                "duration": s_to_mmss(int(song["DURATION"]))
+                "duration": s_to_mmss(int(song["DURATION"])),
+                # 歌曲ID
+                "id": {song['DC_TARGETID']}
             }
             for song in songs
         ]
