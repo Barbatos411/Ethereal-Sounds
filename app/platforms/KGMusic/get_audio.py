@@ -1,9 +1,9 @@
-import requests
 import time
 import hashlib
+import httpx
 from fastapi import HTTPException
 
-def get_audio(self, encode_album_audio_id):
+async def get_audio(self, encode_album_audio_id: str):
     """
     获取播放链接或音频流
     :param self: 平台类 (保留以兼容可能的扩展)
@@ -19,7 +19,7 @@ def get_audio(self, encode_album_audio_id):
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
     }
 
-    # Cookie
+    # 固定的 Cookie 信息
     cookie = {
         "kg_mid": "df8eb959431e3f2696fc23d514fd9bf4",
         "kg_dfid": "3exIvy0NDCiI1x9u9X0MmaUX",
@@ -47,17 +47,27 @@ def get_audio(self, encode_album_audio_id):
     params['signature'] = hashlib.md5(str_reg_params.encode(encoding='UTF-8')).hexdigest()
 
     try:
-        response = requests.get('https://wwwapi.kugou.com/play/songinfo', params=params, headers=headers)
-        response.raise_for_status()
-        data = response.json()
+        async with httpx.AsyncClient() as client:
+            # 获取播放链接
+            response = await client.get(
+                'https://wwwapi.kugou.com/play/songinfo',
+                params=params,
+                headers=headers,
+                timeout=10
+            )
+            response.raise_for_status()  # 检查 HTTP 状态码
+            data = response.json()
 
-        play_url = data.get('data', {}).get('play_url', None)
-        if play_url:
-            return True, play_url
-        else:
-            return False, f"播放链接不存在: {data}"
+            # 解析返回数据
+            play_url = data.get('data', {}).get('play_url', None)
+            if play_url:
+                return True, play_url
+            else:
+                return False, f"播放链接不存在: {data}"
 
-    except requests.RequestException as e:
-        raise HTTPException(status_code=500, detail=f"请求失败: {str(e)}")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"未知错误: {str(e)}")
+    except httpx.RequestError as exc:
+        # 捕获请求异常
+        raise HTTPException(status_code=500, detail=f"请求失败: {str(exc)}")
+    except Exception as exc:
+        # 捕获其他异常
+        raise HTTPException(status_code=500, detail=f"未知错误: {str(exc)}")
