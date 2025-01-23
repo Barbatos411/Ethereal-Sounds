@@ -73,6 +73,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
                 # 歌曲时长，单位ms
                 "duration": s_to_mmss(
                     song.get("HQDuration") if int(song.get("HQDuration")) == 0 else song.get("Duration")),
+                "id": song.get("EMixSongID"),
             }
             for song in songs
         ]
