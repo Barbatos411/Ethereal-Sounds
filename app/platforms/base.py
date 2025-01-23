@@ -11,14 +11,15 @@ class BasePlatform(ABC):
     """
     name = "BasePlatform"  # 平台名称
     id = "base"  # 平台ID
+    Referer = "https://www.example.com/"  # 平台Referer
     order = 0  # 平台排序
 
     def __init__(self):
         self.client = httpx.AsyncClient()
-        self.cookie = None  # 初始化为 None
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
-            "cookie": self.get_cookie(self.name)
+            "cookie": self.get_cookie(self.name),
+            "referer": self.Referer,
         }
         print(f"成功加载平台 {self.name}, 平台ID: {self.id}, 平台排序: {self.order}")
 
@@ -92,8 +93,8 @@ def merge_lyrics_and_translation(lyric, trans):
     - 合并后的歌词内容，时间戳、原歌词、翻译在一起。
     """
     # 使用正则表达式获取时间戳和内容
-    lyric_lines = re.findall(r"\[([0-9:.]+)\](.*?)\n", lyric)
-    trans_lines = re.findall(r"\[([0-9:.]+)\](.*?)\n", trans)
+    lyric_lines = re.findall(r"\[([0-9:.]+)](.*?)\n", lyric)
+    trans_lines = re.findall(r"\[([0-9:.]+)](.*?)\n", trans)
 
     # 构建时间戳与歌词的映射
     lyrics_dict = {time: line for time, line in lyric_lines}

@@ -8,11 +8,8 @@ from .search import search
 class QQMusic(BasePlatform):
     name = "QQ音乐"  # 平台名称
     id = "QQMusic"  # 平台ID
+    Referer = "https://y.qq.com/"  # 平台Referer
     order = 2  # 顺序
-
-    def __init__(self):
-        super().__init__()
-        self.headers["Referer"] = "https://y.qq.com/"
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """

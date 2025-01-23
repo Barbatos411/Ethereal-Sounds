@@ -8,6 +8,7 @@ from .search import search
 class NetEase(BasePlatform):
     name = "网易云音乐"  # 平台名称
     id = "NetEase"
+    Referer = "https://music.163.com/"
     order = 1  # 顺序
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):

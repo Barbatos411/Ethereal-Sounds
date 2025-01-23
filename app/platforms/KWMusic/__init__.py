@@ -9,11 +9,8 @@ from .search import search
 class KWMusic(BasePlatform):
     name = "酷我音乐"  # 平台名称
     id = "KWMusic"
+    Referer = "https://www.kuwo.cn/"
     order = 4  # 顺序
-
-    def __init__(self):
-        super().__init__()
-        self.headers["Referer"] = "https://www.kuwo.cn/"
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """
