@@ -1,6 +1,3 @@
-import httpx
-
-
 async def get_audio(self, audio_id: str):
     """
     实现获取音频功能
@@ -20,10 +17,6 @@ async def get_audio(self, audio_id: str):
             return False, audio_url
         else:
             return {"error": f"请求失败，状态码: {response.status_code}"}
-
-    except httpx.RequestError as e:
-        # 错误处理
-        return {"error": f"请求失败: {e}"}
     except Exception as e:
         # 其他错误处理
         return {"error": f"发生错误: {e}"}

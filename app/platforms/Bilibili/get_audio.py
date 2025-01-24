@@ -1,7 +1,3 @@
-import httpx
-from fastapi import HTTPException
-
-
 async def get_audio(self, audio_id: str):
     """
     实现获取音频功能
@@ -44,9 +40,7 @@ async def get_audio(self, audio_id: str):
             # 返回音频内容和 MIME 类型
             return True, audio_content
 
-    except httpx.RequestError as exc:
-        # 捕获请求中的错误，例如网络问题
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error while fetching audio: {str(exc)}"
-        )
+
+    except Exception as e:
+        # 其他错误处理
+        return {"error": f"发生错误: {e}"}

@@ -1,5 +1,3 @@
-import httpx
-
 from app.platforms.utils import ms_to_mmss
 
 
@@ -58,10 +56,6 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
             "song_count": song_count
         }
         return result
-
-    except httpx.RequestError as e:
-        # 错误处理
-        return {"error": f"请求失败: {e}"}
     except Exception as e:
         # 其他错误处理
         return {"error": f"发生错误: {e}"}

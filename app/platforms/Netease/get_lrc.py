@@ -1,6 +1,3 @@
-import httpx
-
-
 async def get_lrc(self, audio_id: str, trans: bool):
     """
     定义抽象地获取歌词方法，每个平台都必须实现
@@ -18,7 +15,6 @@ async def get_lrc(self, audio_id: str, trans: bool):
             trans = data.get("tlyric", {}).get('lyric', "")
             return {"lyric": self.merge_lyrics_and_translation(lrc, trans)}
         return {"lyric": lrc.strip()}
-    except httpx.RequestError as e:
-        return {"error": f"请求失败: {e}"}
     except Exception as e:
+        # 其他错误处理
         return {"error": f"发生错误: {e}"}

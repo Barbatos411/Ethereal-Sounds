@@ -1,8 +1,5 @@
 import time
 
-import httpx
-from fastapi import HTTPException
-
 from app.platforms.utils import cookie_to_dict
 
 
@@ -53,10 +50,6 @@ async def audio_lyrics(self, method: str, audio_id: str, trans: bool = False):
         #     return {"lyric": self.merge_lyrics_and_translation(lrc, lrc_trans)}
         else:
             return {"lyric": lrc.strip()}
-
-    except httpx.RequestError as exc:
-        # 捕获请求异常
-        raise HTTPException(status_code=500, detail=f"请求失败: {str(exc)}")
-    except Exception as exc:
-        # 捕获其他异常
-        raise HTTPException(status_code=500, detail=f"未知错误: {str(exc)}")
+    except Exception as e:
+        # 其他错误处理
+        return {"error": f"发生错误: {e}"}

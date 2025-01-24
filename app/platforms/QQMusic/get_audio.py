@@ -1,5 +1,3 @@
-import httpx
-
 from app.platforms.utils import cookie_to_dict
 
 
@@ -46,10 +44,6 @@ async def get_audio(self, audio_id):
         # 返回音频文件/链接
         print(audio_url)
         return False, audio_url
-
-    except httpx.RequestError as e:
-        # 错误处理
-        return {"error": f"请求失败: {e}"}
     except Exception as e:
         # 其他错误处理
         return {"error": f"发生错误: {e}"}
