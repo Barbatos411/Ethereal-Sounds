@@ -29,9 +29,9 @@
 
 - [x] 搜索 - 网易云音乐、QQ音乐、酷狗音乐、酷我音乐、哔哩哔哩
 
-- [x] 播放音乐 - 网易云音乐、QQ音乐、哔哩哔哩
+- [x] 播放音乐 - 网易云音乐、QQ音乐、酷狗音乐、哔哩哔哩
 
-- [x] 获取歌词 - 网易云音乐、QQ音乐
+- [x] 获取歌词 - 网易云音乐、QQ音乐、酷狗音乐
 
 ### TODO
 
@@ -53,7 +53,7 @@
 - **[Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)**：提供强大音频处理功能的 Web
   技术
 
-感谢 [@MapleLeaf](https://gitee.com/maple-leaf-sweeping) 大佬提供的技术指导和宝贵建议
+感谢 [MapleLeaf](https://gitee.com/maple-leaf-sweeping) 大佬提供的技术指导和宝贵建议
 
 ## 版权声明
 
