@@ -1,7 +1,7 @@
 import hashlib
 
 from app.platforms.base import BasePlatform
-from .get_audio import get_audio
+from .audio_lyrics import audio_lyrics
 from .home import home
 from .search import search
 
@@ -28,7 +28,7 @@ class KGMusic(BasePlatform):
         :param audio_id: 音频链接
         :return: 音频文件/链接，歌词
         """
-        return await get_audio(self, audio_id)
+        return await audio_lyrics(self, 'audio', audio_id)
 
     async def get_lrc(self, audio_id: str, trans: bool):
         """
@@ -36,7 +36,7 @@ class KGMusic(BasePlatform):
         :param audio_id: 音频链接
         :return: 歌词
         """
-        pass
+        return await audio_lyrics(self, 'lyrics', audio_id)
 
     async def home(self):
         """

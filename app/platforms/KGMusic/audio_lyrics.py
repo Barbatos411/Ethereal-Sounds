@@ -6,11 +6,13 @@ from fastapi import HTTPException
 from app.platforms.utils import cookie_to_dict
 
 
-async def get_audio(self, audio_id: str):
+async def audio_lyrics(self, method: str, audio_id: str, trans: bool = False):
     """
     实现获取音频功能
     :param self: 平台类
+    :param method: 获取音频或歌词
     :param audio_id: 音频链接
+    :param trans: 是否翻译歌词
     :return: Bool, audio/text Bool为True时返回音频，为False时返回音频地址
     """
 
@@ -43,8 +45,14 @@ async def get_audio(self, audio_id: str):
 
         # 解析返回数据
         play_url = data.get('data', {}).get('play_url', None)
-        if play_url:
+        lrc = data.get('data', {}).get('lyrics', None)
+        lrc_trans = data.get('data', {}).get('transLyrics', None)
+        if method == 'audio':
             return False, play_url
+        # elif trans:
+        #     return {"lyric": self.merge_lyrics_and_translation(lrc, lrc_trans)}
+        else:
+            return {"lyric": lrc.strip()}
 
     except httpx.RequestError as exc:
         # 捕获请求异常
