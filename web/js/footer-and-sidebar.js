@@ -7,6 +7,28 @@ function footer_fold() {
   svgElement.classList.toggle("footer-button-fold");
 }
 
+// 获取列表按钮元素
+const list_button = document.getElementById("list-button");
+// 为按钮添加点击监听器
+list_button.addEventListener("click", list_fold);
+// 获取灰色遮罩元素
+const darkElement = document.querySelector(".dark-before");
+// 为灰色遮罩元素添加点击监听器
+darkElement.addEventListener("click", function () {
+  if (darkElement.classList.contains("dark")) {
+    list_fold();
+  }
+});
+// 为按钮添加点击监听器
+function list_fold() {
+  // 获取播放列表元素
+  const list = document.querySelector(".list");
+  // 切换播放列表元素的类
+  list.classList.toggle("list-fold");
+  // 切换 body 元素的类(灰色遮罩)
+  darkElement.classList.toggle("dark");
+}
+
 function sidebar_fold() {
   const sidebar = document.querySelector(".sidebar");
   const main = document.querySelector(".main");

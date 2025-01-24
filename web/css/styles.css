@@ -7,6 +7,25 @@ body,
   margin: 0;
 }
 
+.dark-before::before {
+  background-color: rgba(0, 0, 0, 0);
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  transition: background-color 0.5s ease;
+}
+
+.dark::before {
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 4;
+  transition: background-color 0.5s ease;
+}
+
 .button {
   cursor: pointer;
   display: flex;
@@ -92,7 +111,7 @@ em {
   -webkit-overflow-scrolling: touch;
 }
 
-.platforms-container > * {
+.platforms-container>* {
   flex-shrink: 0;
 }
 
@@ -314,45 +333,29 @@ img {
 .list {
   margin: 0 0.625rem;
   position: absolute;
-  bottom: 7.5rem; /* 距离底部的距离 */
-  height: 30rem; /* 高度 */
-  width: 30rem; /* 宽度 */
-  background-color: rgba(var(--color-primary-rgb), 0.8);
-  color: var(--text-primary);
-  backdrop-filter: blur(0.625rem);
+  bottom: 7.5rem;
+  /* 距离底部的距离 */
+  height: 30rem;
+  /* 高度 */
+  width: 30rem;
+  /* 宽度 */
   border-radius: 10px;
-  padding: 0.625rem;
+  background-color: rgba(var(--color-primary-rgb), 0.8);
   transition:
     background-color 0.5s ease,
-    height 0.5s ease;
-  z-index: 5;
+    height 0.3s ease;
+  z-index: 4;
+  overflow: auto;
+  /* 溢出时显示滚动条 */
+  padding: 0.625rem;
 }
 
 .list-fold {
-  margin: 0 0.625rem;
-  position: absolute;
-  bottom: 6rem; /* 距离底部的距离 */
-  height: 0rem; /* 高度 */
-  width: 30rem; /* 宽度 */
-  border-radius: 10px;
-  background-color: rgba(var(--color-primary-rgb), 0.8);
-  transition:
-    background-color 0.5s ease,
-    height 0.5s ease;
-  z-index: 4;
+  bottom: 5rem;
+  /* 距离底部的距离 */
+  height: 0rem;
+  /* 高度 */
   overflow: hidden;
-}
-
-body::before {
-  display: none;
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 3;
 }
 
 .list-title {
