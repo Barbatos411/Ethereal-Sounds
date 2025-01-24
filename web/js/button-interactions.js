@@ -1,6 +1,6 @@
 // 从数据库获取主题数据
 fetch(
-  "/get_data?database=data&table=settings&where=project&select=value&keyword=主题",
+  "/get_data?database=data&table=settings&where=project&select=value&keyword=主题"
 )
   .then((response) => response.json()) // 将响应转换为JSON
   .then((data) => {
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const themeLink = document.getElementById("theme-link");
     if (themeLink.href.includes("theme-bright.css")) {
       fetch(
-        "/set_data?database=data&table=settings&where_column=project&set_column=value&keyword=主题&value=黑",
+        "/set_data?database=data&table=settings&where_column=project&set_column=value&keyword=主题&value=黑"
       )
         .then(() => {
           // 添加 then 处理 fetch 请求
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch((error) => console.error("Error updating theme:", error)); // 处理 fetch 错误
     } else {
       fetch(
-        "/set_data?database=data&table=settings&where_column=project&set_column=value&keyword=主题&value=白",
+        "/set_data?database=data&table=settings&where_column=project&set_column=value&keyword=主题&value=白"
       )
         .then(() => {
           // 添加 then 处理 fetch 请求

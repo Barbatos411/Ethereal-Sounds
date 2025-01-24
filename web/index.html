@@ -1,21 +1,21 @@
 <!doctype html>
 <html lang="zh">
-<head>
-    <meta charset="UTF-8"/>
-    <meta content="never" name="referrer"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="never" name="referrer" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>浮声</title>
-    <link href="css/styles.css" rel="stylesheet"/>
-    <link href="./res/icon.png" rel="icon"/>
-</head>
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="./res/icon.png" rel="icon" />
+  </head>
 
-<body>
-<div class="app">
-    <div class="sidebar">
+  <body>
+    <div class="app">
+      <div class="sidebar">
         <div class="sidebar-container">
-            <div class="title" onclick="sidebar_fold()">
-                <div
-                        style="
+          <div class="title" onclick="sidebar_fold()">
+            <div
+              style="
                 width: 60px;
                 height: 60px;
                 padding: 5px;
@@ -23,58 +23,58 @@
                 justify-content: center;
                 align-items: center;
               "
-                >
-                    <img
-                            alt="logo"
-                            height="50px"
-                            src="./res/logo.png"
-                            style="left: 0"
-                            width="50px"
-                    />
-                </div>
-                <div>
-                    <h2 class="title-text">浮声</h2>
-                </div>
+            >
+              <img
+                alt="logo"
+                height="50px"
+                src="./res/logo.png"
+                style="left: 0"
+                width="50px"
+              />
             </div>
-            <div class="menu"></div>
+            <div>
+              <h2 class="title-text">浮声</h2>
+            </div>
+          </div>
+          <div class="menu"></div>
         </div>
-    </div>
-    <div class="main">
+      </div>
+      <div class="main">
         <div class="header">
-            <div class="platforms-container">
-                <!-- 平台将会生成在这里显示 -->
-            </div>
-            <div class="header-right-container">
-                <div class="search">
-                    <svg
-                            aria-labelledby="searchIconTitle"
-                            color="#000"
-                            fill="none"
-                            height="32px"
-                            role="img"
-                            stroke="var(--text-primary)"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="3"
-                            style="
+          <div class="platforms-container">
+            <!-- 平台将会生成在这里显示 -->
+          </div>
+          <div class="header-right-container">
+            <div class="search">
+              <svg
+                aria-labelledby="searchIconTitle"
+                color="#000"
+                fill="none"
+                height="32px"
+                role="img"
+                stroke="var(--text-primary)"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="3"
+                style="
                   margin-left: 5px;
                   display: flex;
                   width: 32px;
                   height: 32px;
                   cursor: default;
                 "
-                            viewBox="0 0 24 24"
-                            width="32px"
-                            xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <title id="searchIconTitle">Search</title>
-                        <path d="M14.4121122,14.4121122 L20,20"/>
-                        <circle cx="10" cy="10" r="6"/>
-                    </svg>
-                    <input
-                            id="searchInput"
-                            placeholder="搜索"
-                            style="
+                viewBox="0 0 24 24"
+                width="32px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title id="searchIconTitle">Search</title>
+                <path d="M14.4121122,14.4121122 L20,20" />
+                <circle cx="10" cy="10" r="6" />
+              </svg>
+              <input
+                id="searchInput"
+                placeholder="搜索"
+                style="
                   width: 174px;
                   background-color: transparent;
                   border-style: none;
@@ -84,286 +84,286 @@
                   outline: none;
                   user-select: none;
                 "
-                            type="text"
-                    />
-                </div>
-                <div class="button" id="theme">
-                    <svg
-                            aria-labelledby="brightnessIconTitle"
-                            color="#000"
-                            fill="none"
-                            height="32px"
-                            stroke="var(--text-primary)"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.7142857142857142"
-                            viewBox="0 0 24 24"
-                            width="32px"
-                            xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <title id="brightnessIconTitle">主题</title>
-                        <path
-                                d="M15 6L12 3L9.00001 6H6.00001V9L3 12L6.00001 15V18H8.99999L12 21L15 18H18V15L21 12L18 9V6H15Z"
-                        />
-                        <path
-                                d="M16 12C16 9.79086 14.2091 8 12 8V16C14.2091 16 16 14.2091 16 12Z"
-                        />
-                    </svg>
-                </div>
-                <div class="button" id="user">
-                    <svg
-                            aria-labelledby="peopleIconTitle"
-                            color="#000"
-                            fill="none"
-                            height="32px"
-                            role="img"
-                            stroke="var(--text-primary)"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.7142857142857142"
-                            viewBox="0 0 24 24"
-                            width="32px"
-                            xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <title id="peopleIconTitle">账号</title>
-                        <path
-                                d="M1 18C1 15.75 4 15.75 5.5 14.25 6.25 13.5 4 13.5 4 9.75 4 7.25025 4.99975 6 7 6 9.00025 6 10 7.25025 10 9.75 10 13.5 7.75 13.5 8.5 14.25 10 15.75 13 15.75 13 18M12.7918114 15.7266684C13.2840551 15.548266 13.6874862 15.3832994 14.0021045 15.2317685 14.552776 14.9665463 15.0840574 14.6659426 15.5 14.25 16.25 13.5 14 13.5 14 9.75 14 7.25025 14.99975 6 17 6 19.00025 6 20 7.25025 20 9.75 20 13.5 17.75 13.5 18.5 14.25 20 15.75 23 15.75 23 18"
-                        />
-                        <path
-                                d="M12,16 C12.3662741,15.8763472 12.6302112,15.7852366 12.7918114,15.7266684"
-                                stroke-linecap="round"
-                        />
-                    </svg>
-                </div>
-                <div class="button" id="setting">
-                    <svg
-                            aria-labelledby="settingsIconTitle"
-                            color="#000"
-                            fill="none"
-                            height="32px"
-                            role="img"
-                            stroke="var(--text-primary)"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.7142857142857142"
-                            viewBox="0 0 24 24"
-                            width="32px"
-                            xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <title id="settingsIconTitle">设置</title>
-                        <path
-                                d="M5.03506429,12.7050339 C5.01187484,12.4731696 5,12.2379716 5,12 C5,11.7620284 5.01187484,11.5268304 5.03506429,11.2949661 L3.20577137,9.23205081 L5.20577137,5.76794919 L7.9069713,6.32070904 C8.28729123,6.0461342 8.69629298,5.80882212 9.12862533,5.61412402 L10,3 L14,3 L14.8713747,5.61412402 C15.303707,5.80882212 15.7127088,6.0461342 16.0930287,6.32070904 L18.7942286,5.76794919 L20.7942286,9.23205081 L18.9649357,11.2949661 C18.9881252,11.5268304 19,11.7620284 19,12 C19,12.2379716 18.9881252,12.4731696 18.9649357,12.7050339 L20.7942286,14.7679492 L18.7942286,18.2320508 L16.0930287,17.679291 C15.7127088,17.9538658 15.303707,18.1911779 14.8713747,18.385876 L14,21 L10,21 L9.12862533,18.385876 C8.69629298,18.1911779 8.28729123,17.9538658 7.9069713,17.679291 L5.20577137,18.2320508 L3.20577137,14.7679492 L5.03506429,12.7050339 Z"
-                        />
-                        <circle cx="12" cy="12" r="1"/>
-                    </svg>
-                </div>
+                type="text"
+              />
             </div>
+            <div class="button" id="theme">
+              <svg
+                aria-labelledby="brightnessIconTitle"
+                color="#000"
+                fill="none"
+                height="32px"
+                stroke="var(--text-primary)"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.7142857142857142"
+                viewBox="0 0 24 24"
+                width="32px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title id="brightnessIconTitle">主题</title>
+                <path
+                  d="M15 6L12 3L9.00001 6H6.00001V9L3 12L6.00001 15V18H8.99999L12 21L15 18H18V15L21 12L18 9V6H15Z"
+                />
+                <path
+                  d="M16 12C16 9.79086 14.2091 8 12 8V16C14.2091 16 16 14.2091 16 12Z"
+                />
+              </svg>
+            </div>
+            <div class="button" id="user">
+              <svg
+                aria-labelledby="peopleIconTitle"
+                color="#000"
+                fill="none"
+                height="32px"
+                role="img"
+                stroke="var(--text-primary)"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.7142857142857142"
+                viewBox="0 0 24 24"
+                width="32px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title id="peopleIconTitle">账号</title>
+                <path
+                  d="M1 18C1 15.75 4 15.75 5.5 14.25 6.25 13.5 4 13.5 4 9.75 4 7.25025 4.99975 6 7 6 9.00025 6 10 7.25025 10 9.75 10 13.5 7.75 13.5 8.5 14.25 10 15.75 13 15.75 13 18M12.7918114 15.7266684C13.2840551 15.548266 13.6874862 15.3832994 14.0021045 15.2317685 14.552776 14.9665463 15.0840574 14.6659426 15.5 14.25 16.25 13.5 14 13.5 14 9.75 14 7.25025 14.99975 6 17 6 19.00025 6 20 7.25025 20 9.75 20 13.5 17.75 13.5 18.5 14.25 20 15.75 23 15.75 23 18"
+                />
+                <path
+                  d="M12,16 C12.3662741,15.8763472 12.6302112,15.7852366 12.7918114,15.7266684"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <div class="button" id="setting">
+              <svg
+                aria-labelledby="settingsIconTitle"
+                color="#000"
+                fill="none"
+                height="32px"
+                role="img"
+                stroke="var(--text-primary)"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.7142857142857142"
+                viewBox="0 0 24 24"
+                width="32px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title id="settingsIconTitle">设置</title>
+                <path
+                  d="M5.03506429,12.7050339 C5.01187484,12.4731696 5,12.2379716 5,12 C5,11.7620284 5.01187484,11.5268304 5.03506429,11.2949661 L3.20577137,9.23205081 L5.20577137,5.76794919 L7.9069713,6.32070904 C8.28729123,6.0461342 8.69629298,5.80882212 9.12862533,5.61412402 L10,3 L14,3 L14.8713747,5.61412402 C15.303707,5.80882212 15.7127088,6.0461342 16.0930287,6.32070904 L18.7942286,5.76794919 L20.7942286,9.23205081 L18.9649357,11.2949661 C18.9881252,11.5268304 19,11.7620284 19,12 C19,12.2379716 18.9881252,12.4731696 18.9649357,12.7050339 L20.7942286,14.7679492 L18.7942286,18.2320508 L16.0930287,17.679291 C15.7127088,17.9538658 15.303707,18.1911779 14.8713747,18.385876 L14,21 L10,21 L9.12862533,18.385876 C8.69629298,18.1911779 8.28729123,17.9538658 7.9069713,17.679291 L5.20577137,18.2320508 L3.20577137,14.7679492 L5.03506429,12.7050339 Z"
+                />
+                <circle cx="12" cy="12" r="1" />
+              </svg>
+            </div>
+          </div>
         </div>
         <div class="content">
-            <div class="music-ranking" style="display: none">
-                <!--此处是音乐排行榜-->
-            </div>
-            <div class="music-search-list">
-                <!--此处是搜索结果-->
-            </div>
+          <div class="music-ranking" style="display: none">
+            <!--此处是音乐排行榜-->
+          </div>
+          <div class="music-search-list">
+            <!--此处是搜索结果-->
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<div class="footer">
-    <div class="footer-container">
+    <div class="footer">
+      <div class="footer-container">
         <div class="footer-left">
-            <div class="list">
-                <div class="list-title"></div>
-                <div class="list-item"></div>
-            </div>
-            <div class="button" style="margin-left: 20px">
-                <svg
-                        aria-labelledby="listIconTitle"
-                        color="#000"
-                        fill="none"
-                        height="48px"
-                        role="img"
-                        stroke="var(--text-primary)"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        viewBox="0 0 24 24"
-                        width="48px"
-                        xmlns="http://www.w3.org/2000/svg"
-                >
-                    <title id="listIconTitle">列表</title>
-                    <path d="M10 7L18 7M10 12L18 12M10 17L18 17"/>
-                    <line x1="7" x2="7" y1="7" y2="7"/>
-                    <line x1="7" x2="7" y1="12" y2="12"/>
-                    <line x1="7" x2="7" y1="17" y2="17"/>
-                </svg>
-            </div>
-            <div
-                    style="
+          <div class="list">
+            <div class="list-title"></div>
+            <div class="list-item"></div>
+          </div>
+          <div class="button" style="margin-left: 20px">
+            <svg
+              aria-labelledby="listIconTitle"
+              color="#000"
+              fill="none"
+              height="48px"
+              role="img"
+              stroke="var(--text-primary)"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="48px"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title id="listIconTitle">列表</title>
+              <path d="M10 7L18 7M10 12L18 12M10 17L18 17" />
+              <line x1="7" x2="7" y1="7" y2="7" />
+              <line x1="7" x2="7" y1="12" y2="12" />
+              <line x1="7" x2="7" y1="17" y2="17" />
+            </svg>
+          </div>
+          <div
+            style="
               background-color: var(--text-secondary);
               width: 1px;
               height: 48px;
               border-radius: 50%;
               margin: 0 20px;
             "
-            ></div>
-            <div class="music-name">
-                <h3
-                        class="song-title"
-                        style="color: var(--text-primary); margin: 1px 0"
-                >
-                    ${song.title}
-                </h3>
-                <p style="margin: 1px 0; color: var(--text-secondary)">
-                    ${song.author}
-                </p>
-            </div>
+          ></div>
+          <div class="music-name">
+            <h3
+              class="song-title"
+              style="color: var(--text-primary); margin: 1px 0"
+            >
+              ${song.title}
+            </h3>
+            <p style="margin: 1px 0; color: var(--text-secondary)">
+              ${song.author}
+            </p>
+          </div>
         </div>
         <div class="footer-center"></div>
         <div class="footer-right">
-            <div class="button" style="width: 48px; height: 48px">
-                <svg
-                        aria-labelledby="rotateIconTitle"
-                        color="#000"
-                        fill="none"
-                        height="32px"
-                        role="img"
-                        stroke="var(--text-primary)"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.7142857142857142"
-                        viewBox="0 0 24 24"
-                        width="32px"
-                        xmlns="http://www.w3.org/2000/svg"
-                >
-                    <title id="rotateIconTitle">顺序</title>
-                    <path d="M22 12l-3 3-3-3"/>
-                    <path d="M2 12l3-3 3 3"/>
-                    <path d="M19.016 14v-1.95A7.05 7.05 0 0 0 8 6.22"/>
-                    <path d="M16.016 17.845A7.05 7.05 0 0 1 5 12.015V10"/>
-                    <path d="M5 10V9" stroke-linecap="round"/>
-                    <path d="M19 15v-1" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <div class="fold button" style="margin-right: 30px">
-                <svg
-                        aria-labelledby="chevronDownIconTitle"
-                        class="footer-button-fold"
-                        color="#000"
-                        fill="none"
-                        height="32px"
-                        onclick="footer_fold()"
-                        role="img"
-                        stroke="var(--text-primary)"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.7142857142857142"
-                        style="cursor: pointer; transition: transform 0.3s ease"
-                        viewBox="0 0 24 24"
-                        width="32px"
-                        xmlns="http://www.w3.org/2000/svg"
-                >
-                    <title id="chevronDownIconTitle">展开</title>
-                    <polyline points="6 10 12 16 18 10"/>
-                </svg>
-            </div>
+          <div class="button" style="width: 48px; height: 48px">
+            <svg
+              aria-labelledby="rotateIconTitle"
+              color="#000"
+              fill="none"
+              height="32px"
+              role="img"
+              stroke="var(--text-primary)"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7142857142857142"
+              viewBox="0 0 24 24"
+              width="32px"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title id="rotateIconTitle">顺序</title>
+              <path d="M22 12l-3 3-3-3" />
+              <path d="M2 12l3-3 3 3" />
+              <path d="M19.016 14v-1.95A7.05 7.05 0 0 0 8 6.22" />
+              <path d="M16.016 17.845A7.05 7.05 0 0 1 5 12.015V10" />
+              <path d="M5 10V9" stroke-linecap="round" />
+              <path d="M19 15v-1" stroke-linecap="round" />
+            </svg>
+          </div>
+          <div class="fold button" style="margin-right: 30px">
+            <svg
+              aria-labelledby="chevronDownIconTitle"
+              class="footer-button-fold"
+              color="#000"
+              fill="none"
+              height="32px"
+              onclick="footer_fold()"
+              role="img"
+              stroke="var(--text-primary)"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.7142857142857142"
+              style="cursor: pointer; transition: transform 0.3s ease"
+              viewBox="0 0 24 24"
+              width="32px"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title id="chevronDownIconTitle">展开</title>
+              <polyline points="6 10 12 16 18 10" />
+            </svg>
+          </div>
         </div>
         <div class="music-player-container">
-            <div class="music-control prev" id="prev-audio">
-                <!-- 左侧竖直椭圆，显示歌曲封面 -->
-                <img
-                        alt="Previous Song Cover"
-                        class="song-cover"
-                        src="res/last-song-cover.png"
-                />
-                <div class="music-control-icon">
-                    <svg
-                            aria-labelledby="previousIconTitle"
-                            class="overlay-icon"
-                            color="#000"
-                            fill="var(--color-primary)"
-                            height="24px"
-                            role="img"
-                            stroke="var(--color-primary)"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2.142857142857143"
-                            viewBox="0 0 24 24"
-                            width="24px"
-                            xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <title id="previousIconTitle">上一首</title>
-                        <path d="M7 11.5L18 18V5z"/>
-                        <path d="M6 18V5"/>
-                    </svg>
-                </div>
+          <div class="music-control prev" id="prev-audio">
+            <!-- 左侧竖直椭圆，显示歌曲封面 -->
+            <img
+              alt="Previous Song Cover"
+              class="song-cover"
+              src="res/last-song-cover.png"
+            />
+            <div class="music-control-icon">
+              <svg
+                aria-labelledby="previousIconTitle"
+                class="overlay-icon"
+                color="#000"
+                fill="var(--color-primary)"
+                height="24px"
+                role="img"
+                stroke="var(--color-primary)"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.142857142857143"
+                viewBox="0 0 24 24"
+                width="24px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title id="previousIconTitle">上一首</title>
+                <path d="M7 11.5L18 18V5z" />
+                <path d="M6 18V5" />
+              </svg>
             </div>
-            <div class="music-control play-pause" id="play-pause">
-                <!-- 中间圆，显示歌曲封面 -->
-                <img
-                        alt="Current Song Cover"
-                        class="song-cover"
-                        src="res/current-song-cover.png"
-                />
-                <div class="music-control-icon">
-                    <svg
-                            aria-labelledby="playIconTitle"
-                            class="play-button"
-                            color="#000"
-                            fill="var(--color-primary)"
-                            height="48px"
-                            id="playPauseButton"
-                            role="img"
-                            stroke="var(--color-primary)"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="1.7142857142857142"
-                            viewBox="0 0 24 24"
-                            width="48px"
-                            xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <title id="playIconTitle">播放</title>
-                        <path d="M20 12L5 21V3z"/>
-                    </svg>
-                </div>
+          </div>
+          <div class="music-control play-pause" id="play-pause">
+            <!-- 中间圆，显示歌曲封面 -->
+            <img
+              alt="Current Song Cover"
+              class="song-cover"
+              src="res/current-song-cover.png"
+            />
+            <div class="music-control-icon">
+              <svg
+                aria-labelledby="playIconTitle"
+                class="play-button"
+                color="#000"
+                fill="var(--color-primary)"
+                height="48px"
+                id="playPauseButton"
+                role="img"
+                stroke="var(--color-primary)"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.7142857142857142"
+                viewBox="0 0 24 24"
+                width="48px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title id="playIconTitle">播放</title>
+                <path d="M20 12L5 21V3z" />
+              </svg>
             </div>
-            <div class="music-control next" id="next_audio">
-                <!-- 右侧竖直椭圆，显示歌曲封面 -->
-                <img
-                        alt="Next Song Cover"
-                        class="song-cover"
-                        src="res/next-song-cover.png"
-                />
-                <div class="music-control-icon">
-                    <svg
-                            aria-labelledby="nextIconTitle"
-                            class="overlay-icon"
-                            color="#000"
-                            fill="var(--color-primary)"
-                            height="24px"
-                            role="img"
-                            stroke="var(--color-primary)"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2.142857142857143"
-                            viewBox="0 0 24 24"
-                            width="24px"
-                            xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <title id="nextIconTitle">下一首</title>
-                        <path d="M17 11.5L6 18V5z"/>
-                        <path d="M18 18V5"/>
-                    </svg>
-                </div>
+          </div>
+          <div class="music-control next" id="next_audio">
+            <!-- 右侧竖直椭圆，显示歌曲封面 -->
+            <img
+              alt="Next Song Cover"
+              class="song-cover"
+              src="res/next-song-cover.png"
+            />
+            <div class="music-control-icon">
+              <svg
+                aria-labelledby="nextIconTitle"
+                class="overlay-icon"
+                color="#000"
+                fill="var(--color-primary)"
+                height="24px"
+                role="img"
+                stroke="var(--color-primary)"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.142857142857143"
+                viewBox="0 0 24 24"
+                width="24px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title id="nextIconTitle">下一首</title>
+                <path d="M17 11.5L6 18V5z" />
+                <path d="M18 18V5" />
+              </svg>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-<script src="js/footer-and-sidebar.js"></script>
-<script src="js/display-platforms.js"></script>
-<script src="js/button-interactions.js"></script>
-<script src="js/audio-control.js"></script>
-<script src="js/drag-scroll.js"></script>
-</body>
+    <script src="js/footer-and-sidebar.js"></script>
+    <script src="js/display-platforms.js"></script>
+    <script src="js/button-interactions.js"></script>
+    <script src="js/audio-control.js"></script>
+    <script src="js/drag-scroll.js"></script>
+  </body>
 </html>
