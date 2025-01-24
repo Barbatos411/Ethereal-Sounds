@@ -1,5 +1,4 @@
 import hashlib
-import urllib.parse
 
 from app.platforms.base import BasePlatform
 from .get_audio import get_audio
@@ -47,7 +46,7 @@ class KGMusic(BasePlatform):
         return await home()
 
     @staticmethod
-    async def signature(base_url: str, params: dict):
+    def signature(params: dict):
         """
         定义酷狗的签名方法
         :param base_url: 基础URL
@@ -65,4 +64,4 @@ class KGMusic(BasePlatform):
         md5.update(to_sign.encode('utf-8'))
         signature = md5.hexdigest()
         # 构建完整 URL
-        return f'{base_url}?{urllib.parse.urlencode(params)}&signature={signature}'
+        return signature

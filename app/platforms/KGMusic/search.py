@@ -41,15 +41,15 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
         "srcappid": "2919",
         "token": cookies.get("t") if cookies.get("t") else "0",  # 对应 token
         "userid": cookies.get("KugooID") if cookies.get("KugooID") else "0",
-        "uuid": cookies.get("ku_mid"),  # 通常与 mid 相同
+        "uuid": cookies.get("kg_mid"),  # 通常与 mid 相同
     }
 
-    # 构建请求 URL
-    search_url = await self.signature(base_url, params)
+    # 插入签名值
+    params["signature"] = self.signature(params)
 
     # 发送 GET 请求并获取响应
     try:
-        response = await self.client.get(search_url, headers=self.headers)
+        response = await self.client.get(base_url, headers=self.headers, params=params)
         response.raise_for_status()  # 如果请求失败则抛出异常
         data = response.json()
         # 提取搜索结果
