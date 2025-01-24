@@ -3,6 +3,7 @@
   --text-secondary: #b3b3b3; /* 次要文本颜色为浅灰色 */
   --color-primary: #222222; /* 主背景颜色为深灰色 */
   --color-secondary: #1d1d1f; /* 次要背景颜色为更深的灰色 */
+  --color-tertiary: #3d3d3d; /* 第三背景颜色为更深的灰色 */
   --shadow: #444444; /* 阴影颜色为较深的灰色 */
   --search: #323232; /* 搜索框背景颜色为暗色 */
 
@@ -11,6 +12,7 @@
   --text-secondary-rgb: 179, 179, 179; /* 次要文本颜色为浅灰色 */
   --color-primary-rgb: 34, 34, 34; /* 主背景颜色为深灰色 */
   --color-secondary-rgb: 29, 29, 31; /* 次要背景颜色为更深的灰色 */
+  --color-tertiary-rgb: 61, 61, 61; /* 第三背景颜色为更深的灰色 */
   --shadow-rgb: 68, 68, 68; /* 阴影颜色为较深的灰色 */
   --search-rgb: 50, 50, 50; /* 搜索框背景颜色为暗色 */
 }

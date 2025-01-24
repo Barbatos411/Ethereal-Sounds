@@ -12,10 +12,9 @@ body,
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--color-primary);
   border-radius: 10px;
   transition: background-color 0.5s ease;
-  margin: 0 10px;
+  margin: 0 0.5rem;
 }
 
 .button:hover {
@@ -28,11 +27,11 @@ em {
 
 .search {
   background-color: var(--search);
-  width: 200px;
-  height: 32px;
+  width: 12.5rem;
+  height: 2rem;
   border-radius: 10px;
   display: flex;
-  margin-right: 16px;
+  margin-right: 1rem;
   transition:
     width 0.3s ease,
     background-color 0.5s ease;
@@ -42,8 +41,8 @@ em {
 .sidebar {
   background-color: var(--color-primary);
   display: flex;
-  width: 200px;
-  padding: 10px;
+  width: 12.5rem;
+  padding: 0.625rem;
   transition:
     width 0.3s ease,
     background-color 0.5s ease;
@@ -53,7 +52,7 @@ em {
   background-color: var(--color-secondary);
   width: 90%;
   height: 87%;
-  padding: 5px;
+  padding: 0.3125rem;
   border-radius: 10px;
   transition: background-color 0.5s ease;
 }
@@ -64,7 +63,7 @@ em {
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 10px;
+  padding: 0.625rem;
   margin: 0;
   transition:
     width 0.3s ease,
@@ -79,7 +78,7 @@ em {
   justify-content: space-between;
   padding: 0;
   height: auto;
-  margin: 8px 0;
+  margin: 0.5rem 0;
   transition: background-color 0.5s ease;
   width: 100%;
 }
@@ -98,10 +97,10 @@ em {
 }
 
 .music-platform {
-  width: 80px;
-  padding: 5px;
+  width: 5rem;
+  padding: 0.3125rem;
   color: var(--text-secondary);
-  font-size: 16px;
+  font-size: 1rem;
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
@@ -116,11 +115,11 @@ em {
 .music-platform:hover,
 .selected {
   color: var(--text-primary);
-  font-size: 30px;
+  font-size: 1.875rem;
   font-weight: bold;
   background-color: var(--color-secondary);
-  width: 150px;
-  box-shadow: 0 2px 0 var(--text-primary);
+  width: 9.375rem;
+  box-shadow: 0 0.125rem 0 var(--text-primary);
 }
 
 .header-right-container {
@@ -142,13 +141,14 @@ em {
   justify-content: space-between;
   position: relative;
   align-items: center;
-  padding: 10px;
-  border-radius: 15px;
-  height: 5vh;
+  padding: 0.625rem;
+  border-radius: 10px;
+  height: 3.125rem;
   background-color: var(--color-primary);
   color: var(--text-secondary);
   user-select: none;
   transition: background-color 0.5s ease;
+  z-index: 1;
 }
 
 .music-container:hover {
@@ -166,39 +166,39 @@ em {
 .music-container-left {
   display: flex;
   flex-direction: row;
-  height: 5vh;
+  height: 3.125rem;
 }
 
 .music-cover {
-  width: 5vh;
-  height: 5vh;
+  width: 3.125rem;
+  height: 3.125rem;
 }
 
 .music-container-right {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-right: 50px;
+  margin-right: 3.125rem;
 }
 
 .music-name {
   display: flex;
   flex-direction: column;
   height: auto;
-  margin: 0 20px;
+  margin: 0 1.25rem;
 }
 
 .tag-vip,
 .tag-mv {
   color: white;
-  border-radius: 1.25vh;
-  width: 40px;
-  height: 2vh;
+  border-radius: 10px;
+  width: 2.5rem;
+  height: 1.25rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.5vh;
-  margin: 0.2vh;
+  font-size: 0.9375rem;
+  margin: 0.125rem;
 }
 
 .tag-vip {
@@ -212,37 +212,40 @@ em {
 .pagination-container {
   display: flex;
   justify-content: center;
-  margin: 30px 0 150px 0;
+  margin: 1.875rem 0 9.375rem 0;
 }
 
 #prevPage,
 #nextPage {
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   width: auto;
   height: auto;
-  min-width: 40px;
-  font-size: 18px;
-  line-height: 18px;
+  min-width: 2.5rem;
+  font-size: 1.125rem;
+  line-height: 1.125rem;
   font-weight: 600;
   transition: 0.2s all;
   color: var(--text-primary);
   background-color: var(--color-secondary);
   border-radius: 10px;
   user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #prevPage:hover,
 #nextPage:hover {
-  background-color: rgb(169, 169, 173);
+  background-color: var(--color-tertiary);
 }
 
 .title {
   background-color: var(--color-primary);
-  height: 60px;
+  height: 3.75rem;
   border-radius: 10px;
   display: flex;
   width: 100%;
-  padding: 5%;
+  padding: 0.3125rem;
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
@@ -255,40 +258,41 @@ em {
 
 .title-text {
   color: var(--text-primary);
-  font-size: 23px;
+  font-size: 1.4375rem;
   transition: font-size 0.3s ease;
 }
 
 .title-text-fold {
-  font-size: 0.1px;
+  font-size: 0.0625rem;
 }
 
 .title:hover {
-  box-shadow: 0 0 10px var(--shadow);
+  box-shadow: 0 0 0.625rem var(--shadow);
 }
 
 img {
-  border-radius: 5px;
+  border-radius: 10px;
 }
 
 .footer {
-  margin: 0 10px;
-  height: 100px;
+  margin: 0 0.625rem;
+  height: 6.25rem;
   border-radius: 10px;
-  width: calc(100% - 20px);
+  width: calc(100% - 1.25rem);
   position: fixed;
-  bottom: 10px;
+  bottom: 0.625rem;
   background-color: rgba(var(--color-primary-rgb), 0.8);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(0.625rem);
   display: flex;
   justify-content: space-between;
   text-align: center;
-  box-shadow: 0 0 10px var(--shadow);
+  box-shadow: 0 0 0.625rem var(--shadow);
   transition: all 0.5s ease;
+  z-index: 5;
 }
 
 .footer-full-height {
-  height: 98%;
+  height: 98vh;
 }
 
 .footer-button-fold {
@@ -296,15 +300,80 @@ img {
 }
 
 .footer-container {
-  margin: 0 10px;
-  height: 100px;
+  margin: 0 0.625rem;
+  height: 6.25rem;
   border-radius: 10px;
-  width: calc(100% - 20px);
+  width: calc(100% - 1.25rem);
   position: fixed;
   bottom: 0;
   display: flex;
   justify-content: space-between;
   text-align: center;
+}
+
+.list {
+  margin: 0 0.625rem;
+  position: absolute;
+  bottom: 7.5rem; /* 距离底部的距离 */
+  height: 30rem; /* 高度 */
+  width: 30rem; /* 宽度 */
+  background-color: rgba(var(--color-primary-rgb), 0.8);
+  color: var(--text-primary);
+  backdrop-filter: blur(0.625rem);
+  border-radius: 10px;
+  padding: 0.625rem;
+  transition:
+    background-color 0.5s ease,
+    height 0.5s ease;
+  z-index: 5;
+}
+
+.list-fold {
+  margin: 0 0.625rem;
+  position: absolute;
+  bottom: 6rem; /* 距离底部的距离 */
+  height: 0rem; /* 高度 */
+  width: 30rem; /* 宽度 */
+  border-radius: 10px;
+  background-color: rgba(var(--color-primary-rgb), 0.8);
+  transition:
+    background-color 0.5s ease,
+    height 0.5s ease;
+  z-index: 4;
+  overflow: hidden;
+}
+
+body::before {
+  display: none;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3;
+}
+
+.list-title {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem;
+  align-items: center;
+}
+
+.list-container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  align-items: center;
+  padding: 0.625rem;
+  border-radius: 10px;
+  height: 2rem;
+  background-color: var(--color-secondary);
+  color: #017afe;
+  user-select: none;
+  transition: background-color 0.5s ease;
 }
 
 .footer-left,
@@ -330,23 +399,23 @@ img {
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
-  bottom: 40px;
+  bottom: 2.5rem;
   user-select: none;
   transition: all 1s ease;
 }
 
 .music-control {
-  margin: 0 10px;
+  margin: 0 0.625rem;
   cursor: pointer;
 }
 
 .music-control.prev,
 .music-control.next {
   position: relative;
-  width: 30px;
-  height: 50px;
+  width: 1.875rem;
+  height: 3.125rem;
   background-color: var(--text-primary);
-  border-radius: 15px;
+  border-radius: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -354,8 +423,8 @@ img {
 }
 
 .music-control.play-pause {
-  width: 100px;
-  height: 100px;
+  width: 6.25rem;
+  height: 6.25rem;
   background-color: var(--text-primary);
   border-radius: 50%;
   display: flex;

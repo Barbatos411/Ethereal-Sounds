@@ -3,6 +3,7 @@
   --text-secondary: #7a7a7b;
   --color-primary: #ffffff;
   --color-secondary: #f2f2f7;
+  --color-tertiary: #e5e5e5;
   --shadow: #888888;
   --search: #f2f2f3;
 
@@ -11,6 +12,7 @@
   --text-secondary-rgb: 122, 122, 123;
   --color-primary-rgb: 255, 255, 255;
   --color-secondary-rgb: 242, 242, 247;
+  --color-tertiary-rgb: 229, 229, 229;
   --shadow-rgb: 136, 136, 136;
   --search-rgb: 242, 242, 243;
 }
