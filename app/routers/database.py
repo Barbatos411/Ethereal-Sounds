@@ -32,6 +32,39 @@ async def get_data(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/get_all_data")
+async def get_data(
+        database: str = Query("data", description="数据库"),
+        table: str = Query(..., description="搜索表"),
+):
+    """
+    获取数据表内所有数据
+    """
+    try:
+        with sqlite3.connect(f'app/data/{database}.db') as conn:
+            cursor = conn.cursor()
+
+            # 查询表数据并防止 SQL 注入
+            query = f"SELECT * FROM {table}"
+            cursor.execute(query)
+
+            # 获取所有数据
+            rows = cursor.fetchall()
+
+            # 获取表字段名
+            column_names = [desc[0] for desc in cursor.description]
+
+            # 组合字段名和数据生成 JSON
+            result = [dict(zip(column_names, row)) for row in rows]
+
+        if result:
+            return {"data": result}
+        else:
+            return {"error": "未找到匹配的记录"}
+    except sqlite3.Error as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/set_data")
 async def set_data(
         database: str = Query(..., description="数据库"),
