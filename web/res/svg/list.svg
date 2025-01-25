@@ -1,0 +1,20 @@
+<svg
+    aria-labelledby="listIconTitle"
+    color="#000"
+    fill="none"
+    height="48px"
+    role="img"
+    stroke="var(--text-primary)"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    width="48px"
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <title id="listIconTitle">列表</title>
+    <path d="M10 7L18 7M10 12L18 12M10 17L18 17" />
+    <line x1="7" x2="7" y1="7" y2="7" />
+    <line x1="7" x2="7" y1="12" y2="12" />
+    <line x1="7" x2="7" y1="17" y2="17" />
+</svg>

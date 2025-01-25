@@ -331,6 +331,9 @@ img {
 }
 
 .list {
+  display: flex;
+  flex-direction: column;
+  /* 改为竖向布局 */
   margin: 0 0.625rem;
   position: absolute;
   bottom: 7.5rem;
@@ -363,20 +366,38 @@ img {
   justify-content: space-between;
   padding: 1.5rem;
   align-items: center;
+  color: var(--text-primary);
 }
 
 .list-container {
   display: flex;
+  width: 90%;
+  margin: 0 0.625rem;
   justify-content: space-between;
   position: relative;
   align-items: center;
   padding: 0.625rem;
   border-radius: 10px;
   height: 2rem;
-  background-color: var(--color-secondary);
-  color: #017afe;
+  background-color: rgba(var(--color-secondary-rgb), 0);
+  color: var(--text-primary);
   user-select: none;
   transition: background-color 0.5s ease;
+}
+
+.list-container:hover {
+  background-color: var(--color-secondary);
+}
+
+.list-container-playing {
+  background-color: var(--color-secondary);
+  color: #017afe;
+}
+
+.list-container-title {
+  display: flex;
+  justify-content: space-between;
+  width: 23%;
 }
 
 .footer-left,
