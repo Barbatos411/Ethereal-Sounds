@@ -33,7 +33,7 @@ async def get_data(
 
 
 @router.get("/get_all_data")
-async def get_data(
+async def get_all_data(
         database: str = Query("data", description="数据库"),
         table: str = Query(..., description="搜索表"),
 ):
