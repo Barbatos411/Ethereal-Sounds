@@ -116,10 +116,7 @@ async function add_song_to_playlist(element, action = "play") {
 
     const result = await response.json();
     console.log("操作成功:", result);
-
-    alert(action === "play" ? "歌曲正在播放！" : "歌曲已添加到播放列表！");
   } catch (error) {
     console.error("操作失败:", error);
-    alert("操作失败，请重试！");
   }
 }

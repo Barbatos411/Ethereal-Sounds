@@ -367,10 +367,9 @@ img {
     display: flex;
     width: 90%;
     margin: 0 0.625rem;
-    justify-content: space-between;
     position: relative;
     align-items: center;
-    padding: 0.625rem;
+    padding: 0.625rem 0 0.625rem 1.5rem;
     border-radius: 10px;
     height: 2rem;
     background-color: rgba(var(--color-secondary-rgb), 0);
@@ -390,8 +389,36 @@ img {
 
 .list-container-title {
     display: flex;
-    justify-content: space-between;
-    width: 23%;
+    width: 50%;
+    margin-right: 5%;
+    text-align: left;
+    white-space: nowrap;
+    /* 强制文本不换行 */
+    overflow: hidden;
+    /* 隐藏超出部分 */
+    text-overflow: ellipsis;
+    /* 超出部分用省略号显示 */
+}
+
+.list-container-title-number {
+    width: 20%;
+    text-align: left;
+}
+
+.list-container-title-text {
+    width: 80%;
+    text-align: left;
+}
+
+.list-container-singer {
+    width: 30%;
+    text-align: left;
+    white-space: nowrap;
+    /* 强制文本不换行 */
+    overflow: hidden;
+    /* 隐藏超出部分 */
+    text-overflow: ellipsis;
+    /* 超出部分用省略号显示 */
 }
 
 .footer-left,
