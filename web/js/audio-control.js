@@ -8,9 +8,14 @@ const AudioContext = window.AudioContext;
 // 创建一个新的 AudioContext 实例，用于处理音频
 const audioCtx = new AudioContext();
 
+// 异步函数，用于添加音乐播放
 async function add_play_music(element) {
+  // 获取元素的数据属性，歌曲ID和平台
   const audio_id = element.dataset.id;
   const platform = element.dataset.platform;
+
+  await add_song_to_playlist(element); // 添加歌曲到播放列表
+
   const url = `/get_audio?platform=${platform}&audio_id=${audio_id}`;
   console.log(url);
 
@@ -73,5 +78,48 @@ async function loadAudio(url) {
     };
   } catch (error) {
     console.error("加载音频失败:", error);
+  }
+}
+
+// 添加歌曲到播放列表的函数
+async function add_song_to_playlist(element, action = "play") {
+  try {
+    // 获取歌曲信息
+    const audio_id = element.dataset.id;
+    const platform = element.dataset.platform;
+    const title = element.textContent || element.innerText;
+    const singer = element.dataset.singer;
+    const status = action === "play" ? "playing" : "";
+
+    // 构造请求体数据
+    const requestData = {
+      action, // 播放模式: "play" 或 "add"
+      columns: ["id", "name", "singer", "platform", "status"], // 必要字段
+      values: [
+        [audio_id, title, singer, platform, status], // 单行插入数据
+      ],
+    };
+
+    // 发起 POST 请求
+    const response = await fetch("/update_playlist", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData), // 转换为 JSON 字符串
+    });
+
+    // 处理响应
+    if (!response.ok) {
+      throw new Error(`请求失败，状态码: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log("操作成功:", result);
+
+    alert(action === "play" ? "歌曲正在播放！" : "歌曲已添加到播放列表！");
+  } catch (error) {
+    console.error("操作失败:", error);
+    alert("操作失败，请重试！");
   }
 }
