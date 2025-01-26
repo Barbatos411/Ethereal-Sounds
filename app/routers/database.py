@@ -1,6 +1,8 @@
 import sqlite3
+from typing import List, Literal
 
 from fastapi import APIRouter, Query, HTTPException
+from pydantic import BaseModel
 
 router = APIRouter()
 
@@ -89,46 +91,43 @@ async def set_data(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/set_batch_data")
-async def set_batch_data(
-        database: str = Query(..., description="数据库"),
-        table: str = Query(..., description="数据表"),
-        columns: list = Query(..., description="列名列表（逗号分隔）"),
-        values: list = Query(..., description="值列表（每项与列一一对应）")
-):
-    """
-    插入或更新多列记录。
+# 定义请求体模型
+class PlaylistRequest(BaseModel):
+    columns: List[str]  # 列名列表
+    values: List[List]  # 值列表，每行数据对应一组列
+    action: Literal["play", "add"]  # 操作类型：play 或 add
 
-    columns 和 values 示例：
-    - columns = ["id", "name", "singer", "platform", "status"]
-    - values = [
-        (1, "Song1", "Singer1", "Platform1", "active"),
-        (2, "Song2", "Singer2", "Platform2", "inactive")
-    ]
+
+@router.post("/update_playlist")
+async def update_playlist(data: PlaylistRequest):
     """
-    if not columns or not values:
-        raise HTTPException(
-            status_code=400,
-            detail="`columns` 和 `values` 必须提供")
+    更新播放列表（专用）。
+    - `action` 为 `play` 时：
+        - 清除 `status` 列所有内容
+        - 然后插入或更新数据
+    - `action` 为 `add` 时：
+        - 仅插入或更新数据
+    """
 
     try:
-        with sqlite3.connect(f'app/data/{database}.db') as conn:
+        with sqlite3.connect(f'app/data/data.db') as conn:
             cursor = conn.cursor()
 
-            # 构建列名和占位符部分
-            # 转换为 "id, name, singer, platform, status"
-            columns_str = ", ".join(columns)
-            placeholders = ", ".join(
-                ["?" for _ in columns])  # 转换为 "?, ?, ?, ?, ?"
+            if data.action == "play":
+                # 清除 status 列内容
+                cursor.execute(f"UPDATE song_list SET status = NULL")
 
-            # 生成 SQL 插入或替换命令
-            query = f"INSERT OR REPLACE INTO {table} ({columns_str}) VALUES ({placeholders})"
+            # 构建 SQL 插入或替换命令
+            columns_str = ", ".join(data.columns)
+            placeholders = ", ".join(["?" for _ in data.columns])
+            query = f"INSERT OR REPLACE INTO song_list ({columns_str}) VALUES ({placeholders})"
 
             # 批量插入/更新
-            cursor.executemany(query, values)
-
+            cursor.executemany(query, data.values)
             conn.commit()
-        return {"message": "批量插入或更新成功"}
+
+        action_result = "播放" if data.action == "play" else "添加"
+        return {"message": f"{action_result}列表更新成功"}
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))
 
