@@ -70,39 +70,65 @@ async def set_data(
         database: str = Query(..., description="数据库"),
         table: str = Query(..., description="数据表"),
         where_column: str = Query(..., description="查找列"),
-        keyword: str = Query(None, description="关键词"),
+        keyword: str = Query(..., description="关键词"),
         set_column: str = Query(..., description="更新列"),
-        value: str = Query(None, description="更新值"),
-        value_list: list = Query(None, description="批量值")
+        value: str = Query(..., description="更新值")
 ):
     """
-    根据指定数据库和表进行数据更新或插入
-    value_list规范:
-    value_list = [
-        ("key1", "value1"),
-        ("key2", "value2"),
-    ]
+    更新数据表中单个记录的指定列
     """
-    # 参数验证
-    if value and value_list:
-        raise HTTPException(status_code=400,
-                            detail="`value` 和 `value_list` 不能同时提供")
-    if not value and not value_list:
-        raise HTTPException(status_code=400, detail="缺少参数")
     try:
         with sqlite3.connect(f'app/data/{database}.db') as conn:
             cursor = conn.cursor()
             # 使用参数化查询防止SQL注入
             query = f"INSERT OR REPLACE INTO {table} ({where_column}, {set_column}) VALUES (?, ?);"
-            if keyword and value:
-                # 单条更新
-                cursor.execute(query, (keyword, value))
-                return {"message": "数据更新成功"}
-            elif value_list:
-                # 批量更新
-                cursor.executemany(query, value_list)
-                return {"message": "数据更新成功"}
+            cursor.execute(query, (keyword, value))
             conn.commit()
+        return {"message": "单个记录更新成功"}
+    except sqlite3.Error as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/set_batch_data")
+async def set_batch_data(
+        database: str = Query(..., description="数据库"),
+        table: str = Query(..., description="数据表"),
+        columns: list = Query(..., description="列名列表（逗号分隔）"),
+        values: list = Query(..., description="值列表（每项与列一一对应）")
+):
+    """
+    插入或更新多列记录。
+
+    columns 和 values 示例：
+    - columns = ["id", "name", "singer", "platform", "status"]
+    - values = [
+        (1, "Song1", "Singer1", "Platform1", "active"),
+        (2, "Song2", "Singer2", "Platform2", "inactive")
+    ]
+    """
+    if not columns or not values:
+        raise HTTPException(
+            status_code=400,
+            detail="`columns` 和 `values` 必须提供")
+
+    try:
+        with sqlite3.connect(f'app/data/{database}.db') as conn:
+            cursor = conn.cursor()
+
+            # 构建列名和占位符部分
+            # 转换为 "id, name, singer, platform, status"
+            columns_str = ", ".join(columns)
+            placeholders = ", ".join(
+                ["?" for _ in columns])  # 转换为 "?, ?, ?, ?, ?"
+
+            # 生成 SQL 插入或替换命令
+            query = f"INSERT OR REPLACE INTO {table} ({columns_str}) VALUES ({placeholders})"
+
+            # 批量插入/更新
+            cursor.executemany(query, values)
+
+            conn.commit()
+        return {"message": "批量插入或更新成功"}
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))
 
