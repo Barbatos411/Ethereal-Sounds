@@ -89,14 +89,14 @@ async function add_song_to_playlist(element, action = "play") {
     const platform = element.dataset.platform;
     const title = element.textContent || element.innerText;
     const singer = element.dataset.singer;
+    const cover = element.dataset.cover;
     const status = action === "play" ? "playing" : "";
 
     // 构造请求体数据
     const requestData = {
       action, // 播放模式: "play" 或 "add"
-      columns: ["id", "name", "singer", "platform", "status"], // 必要字段
       values: [
-        [audio_id, title, singer, platform, status], // 单行插入数据
+        [audio_id, title, singer, platform, status, cover], // 单行插入数据
       ],
     };
 

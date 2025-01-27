@@ -93,8 +93,7 @@ async def set_data(
 
 # 定义请求体模型
 class PlaylistRequest(BaseModel):
-    columns: List[str]  # 列名列表
-    values: List[List]  # 值列表，每行数据对应一组列
+    values: List[List]  # 每行数据对应的值
     action: Literal["play", "add"]  # 操作类型：play 或 add
 
 
@@ -108,18 +107,18 @@ async def update_playlist(data: PlaylistRequest):
     - `action` 为 `add` 时：
         - 仅插入或更新数据
     """
-
+    columns = ["id", "name", "singer", "platform", "status", "cover"]
     try:
         with sqlite3.connect(f'app/data/data.db') as conn:
             cursor = conn.cursor()
 
             if data.action == "play":
                 # 清除 status 列内容
-                cursor.execute(f"UPDATE song_list SET status = NULL")
+                cursor.execute("UPDATE song_list SET status = NULL")
 
             # 构建 SQL 插入或替换命令
-            columns_str = ", ".join(data.columns)
-            placeholders = ", ".join(["?" for _ in data.columns])
+            columns_str = ", ".join(columns)
+            placeholders = ", ".join(["?" for _ in columns])
             query = f"INSERT OR REPLACE INTO song_list ({columns_str}) VALUES ({placeholders})"
 
             # 批量插入/更新
