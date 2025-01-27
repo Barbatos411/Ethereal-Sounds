@@ -90,6 +90,9 @@ async function loadAudio(url) {
     currentSource.onended = () => {
       console.log("音频播放结束");
       currentSource = null; // 清空当前音频源
+      isPlaying = false; // 标记为未播放状态
+      play_icon.style.display = "block"; // 显示播放图标
+      pause_icon.style.display = "none"; // 隐藏暂停图标
     };
   } catch (error) {
     console.error("加载音频失败:", error);
