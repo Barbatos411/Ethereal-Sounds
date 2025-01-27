@@ -22,7 +22,8 @@ body,
     /* 超出部分用省略号显示 */
 }
 
-.song-title:hover {
+.song-title:hover,
+.list-container-title-text:hover {
     text-decoration: underline;
     cursor: pointer;
 }

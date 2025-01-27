@@ -131,6 +131,22 @@ async def update_playlist(data: PlaylistRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/update_play_status")
+async def update_play_status(
+        audio_number: str = Query(..., description="音频序号")
+):
+    try:
+        with sqlite3.connect(f'app/data/data.db') as conn:
+            cursor = conn.cursor()
+            # 清除 status 列内容
+            cursor.execute("UPDATE song_list SET status = NULL")
+            cursor.execute(f"UPDATE song_list SET status = 'playing' WHERE number = {audio_number}")
+            conn.commit()
+        return {"message": "播放状态更新成功"}
+    except sqlite3.Error as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/del_data")
 async def delete_data(
         database: str = Query(..., description="数据库"),
