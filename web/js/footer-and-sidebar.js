@@ -39,15 +39,15 @@ function sidebar_fold() {
 
   if (isSidebarFolded) {
     // 恢复原始状态
-    sidebar.style.width = "200px";
-    main.style.width = "calc(100% - 200px)";
-    main.style.left = "200px";
+    sidebar.style.width = "10vw";
+    main.style.width = "90vw";
+    main.style.left = "10vw";
     h2.classList.toggle("title-text-fold");
   } else {
     // 折叠状态
-    sidebar.style.width = "60px";
-    main.style.width = "calc(100% - 80px)";
-    main.style.left = "80px";
+    sidebar.style.width = "4vw";
+    main.style.width = "96vw";
+    main.style.left = "4vw";
     h2.classList.toggle("title-text-fold");
   }
 

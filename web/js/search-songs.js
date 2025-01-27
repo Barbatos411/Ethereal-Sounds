@@ -28,7 +28,7 @@ export async function searchSongs(platform, keyword, page) {
 
         const song_title = document.createElement("h3");
         song_title.innerHTML = `
-                    <h3 style="color: var(--text-primary); margin: 0; user-select: none">搜索 ${keyword} 结果共 ${data.results.song_count} 首</h3>
+                    <h3 style="color: var(--text-primary); margin: 0; user-select: none";width:auto>搜索 ${keyword} 结果共 ${data.results.song_count} 首</h3>
                 `;
         list.appendChild(song_title);
         // 遍历搜索结果并创建歌曲项
@@ -40,7 +40,7 @@ export async function searchSongs(platform, keyword, page) {
                             <img class="music-cover" src="${song.cover}" alt="cover">
                             <div class="music-name">
                                 <h3 class="song-title" onclick=add_play_music(this) style="color: var(--text-primary); margin: 0" data-id=${song.id} data-platform=${encodeURIComponent(platform)} data-singer=${song.author}>${song.title}</h3>
-                                <p style="margin: 0">${song.author}</p>
+                                <p class="music-singer">${song.author}</p>
                             </div>
                             <div class="song-tags">
                                 ${song.fee === 1 ? '<div class="tag-vip">VIP</div>' : ""}

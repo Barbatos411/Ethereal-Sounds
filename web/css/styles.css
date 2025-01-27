@@ -7,6 +7,26 @@ body,
     margin: 0;
 }
 
+.music-container-left,
+.music-name,
+.song-title,
+.music-singer,
+.music-container-center,
+.list-container-title,
+.list-container-singer {
+    white-space: nowrap;
+    /* 强制文本不换行 */
+    overflow: hidden;
+    /* 隐藏超出部分 */
+    text-overflow: ellipsis;
+    /* 超出部分用省略号显示 */
+}
+
+.song-title:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .dark-before::before {
     background-color: rgba(0, 0, 0, 0);
     display: block;
@@ -44,22 +64,11 @@ em {
     color: #f2c55c;
 }
 
-.search {
-    background-color: var(--search);
-    width: 12.5rem;
-    height: 2rem;
-    border-radius: 10px;
-    display: flex;
-    margin-right: 1rem;
-    transition: width 0.3s ease,
-    background-color 0.5s ease;
-}
-
 /* 侧边栏样式 */
 .sidebar {
     background-color: var(--color-primary);
     display: flex;
-    width: 12.5rem;
+    width: 10vw;
     padding: 0.625rem;
     transition: width 0.3s ease,
     background-color 0.5s ease;
@@ -74,6 +83,20 @@ em {
     transition: background-color 0.5s ease;
 }
 
+.title-text {
+    color: var(--text-primary);
+    font-size: 1.4375rem;
+    transition: font-size 0.3s ease;
+}
+
+.title-text-fold {
+    font-size: 0.0625rem;
+}
+
+.title:hover {
+    box-shadow: 0 0 0.625rem var(--shadow);
+}
+
 /* 主要内容样式 */
 .main {
     background-color: var(--color-primary);
@@ -85,13 +108,12 @@ em {
     transition: width 0.3s ease,
     left 0.3s ease,
     background-color 0.5s ease;
-    width: 100%;
+    width: 90vw;
 }
 
 .header {
     background-color: var(--color-primary);
     display: flex;
-    justify-content: space-between;
     padding: 0;
     height: auto;
     margin: 0.5rem 0;
@@ -102,10 +124,11 @@ em {
 .platforms-container {
     display: flex;
     align-items: center;
-    width: auto;
+    width: 60%;
     overflow-x: hidden;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+    margin-right: auto;
 }
 
 .platforms-container > * {
@@ -141,6 +164,22 @@ em {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 25%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    margin: 0;
+}
+
+.search {
+    background-color: var(--search);
+    width: 12.5rem;
+    height: 2rem;
+    border-radius: 10px;
+    display: flex;
+    margin-right: 1rem;
+    transition: width 0.3s ease,
+    background-color 0.5s ease;
 }
 
 .content,
@@ -148,6 +187,7 @@ em {
     display: flex;
     flex-direction: column;
     flex: 1;
+    width: 100%;
     overflow-y: auto;
 }
 
@@ -164,6 +204,7 @@ em {
     user-select: none;
     transition: background-color 0.5s ease;
     z-index: 1;
+    width: 85vw;
 }
 
 .music-container:hover {
@@ -171,9 +212,7 @@ em {
 }
 
 .music-container-center {
-    position: absolute;
-    left: 60%;
-    transform: translateX(-50%);
+    width: 20%;
     display: flex;
     text-align: left;
 }
@@ -182,6 +221,7 @@ em {
     display: flex;
     flex-direction: row;
     height: 3.125rem;
+    width: 40%;
 }
 
 .music-cover {
@@ -194,13 +234,20 @@ em {
     flex-direction: row;
     justify-content: space-between;
     margin-right: 3.125rem;
+    width: 20%;
 }
 
 .music-name {
+    width: auto;
     display: flex;
     flex-direction: column;
     height: auto;
     margin: 0 1.25rem;
+}
+
+.music-singer {
+    color: var(--text-secondary);
+    margin: 0
 }
 
 .tag-vip,
@@ -268,20 +315,6 @@ em {
     user-select: none;
     transition: box-shadow 0.3s ease,
     background-color 0.5s ease;
-}
-
-.title-text {
-    color: var(--text-primary);
-    font-size: 1.4375rem;
-    transition: font-size 0.3s ease;
-}
-
-.title-text-fold {
-    font-size: 0.0625rem;
-}
-
-.title:hover {
-    box-shadow: 0 0 0.625rem var(--shadow);
 }
 
 img {
@@ -392,12 +425,6 @@ img {
     width: 50%;
     margin-right: 5%;
     text-align: left;
-    white-space: nowrap;
-    /* 强制文本不换行 */
-    overflow: hidden;
-    /* 隐藏超出部分 */
-    text-overflow: ellipsis;
-    /* 超出部分用省略号显示 */
 }
 
 .list-container-title-number {
@@ -413,12 +440,6 @@ img {
 .list-container-singer {
     width: 30%;
     text-align: left;
-    white-space: nowrap;
-    /* 强制文本不换行 */
-    overflow: hidden;
-    /* 隐藏超出部分 */
-    text-overflow: ellipsis;
-    /* 超出部分用省略号显示 */
 }
 
 .footer-left,
