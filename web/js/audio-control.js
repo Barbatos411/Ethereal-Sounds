@@ -1,7 +1,3 @@
-const prev_audio = document.getElementById("prev-audio");
-const next_audio = document.getElementById("next-audio");
-const play_pause = document.getElementById("play-pause");
-
 // 使用 AudioContext 接口
 const AudioContext = window.AudioContext;
 
@@ -51,6 +47,17 @@ async function play_music(element, action = "play") {
 }
 
 let currentSource = null; // 用于存储当前播放的音频源
+let isPlaying = false; // 标记当前是否在播放状态
+// 上一首
+const prev_audio = document.getElementById("prev-audio");
+// 下一首
+const next_audio = document.getElementById("next-audio");
+// 暂停/播放
+const play_pause = document.getElementById("play-pause");
+// 播放图标
+const play_icon = document.getElementById("play-icon");
+// 暂停图标
+const pause_icon = document.getElementById("pause-icon");
 
 async function loadAudio(url) {
   try {
@@ -60,7 +67,9 @@ async function loadAudio(url) {
       currentSource.disconnect();
       currentSource = null;
     }
-
+    isPlaying = true; // 标记为正在播放
+    play_icon.style.display = "none"; // 隐藏播放图标
+    pause_icon.style.display = "block"; // 显示暂停图标
     const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP 错误！状态: ${response.status}`);
 
@@ -86,6 +95,38 @@ async function loadAudio(url) {
     console.error("加载音频失败:", error);
   }
 }
+
+// 绑定事件监听器
+play_pause.addEventListener("click", async () => {
+  try {
+    if (currentSource) {
+      if (isPlaying) {
+        // 暂停音频上下文
+        await audioCtx.suspend();
+        play_icon.style.display = "block"; // 显示播放图标
+        pause_icon.style.display = "none"; // 隐藏暂停图标
+      } else {
+        // 恢复音频上下文
+        await audioCtx.resume();
+        play_icon.style.display = "none"; // 隐藏播放图标
+        pause_icon.style.display = "block"; // 显示暂停图标
+      }
+      isPlaying = !isPlaying; // 切换播放状态
+    } else {
+      await fetchAndRenderPlaylist();
+      // 获取播放列表并生成到页面
+      const playing_song = document.querySelector(".list-container-playing");
+      const title_text = playing_song.querySelector(
+        ".list-container-title-text"
+      );
+      // 获取正在播放的歌曲标题元素
+      await play_music(title_text, "play");
+      // 播放列表中有正在播放的歌曲
+    }
+  } catch (error) {
+    console.error("切换播放/暂停时出错:", error);
+  }
+});
 
 // 添加歌曲到播放列表的函数
 async function add_song_to_playlist(element, action = "play") {
@@ -155,7 +196,7 @@ async function fetchAndRenderPlaylist() {
       songElement.innerHTML = `
         <div class="list-container-title">
           <h4 class="list-container-title-number">${index + 1}</h4>
-          <h4 class="list-container-title-text" data-id=${song.id} data-platform=${song.platform} data-number=${song.number} onclick=play_music(this,"play")>${song.name}</h4>
+          <h4 class="list-container-title-text" data-id=${song.id} data-platform=${song.platform} data-number=${song.number} data-cover=${song.cover} onclick=play_music(this,"play")>${song.name}</h4>
         </div>
         <p class="list-container-singer">${song.singer}</p>
 
@@ -193,7 +234,7 @@ async function deleteSong(songOrder) {
   try {
     // 调用后端接口删除对应 order 的歌曲
     const response = await fetch(
-      `/del_data?database=data&table=song_list&keyword=${songOrder}&where=number`,
+      `/del_data?database=data&table=song_list&keyword=${songOrder}&where=number`
     );
     if (!response.ok) {
       throw new Error(`删除失败，状态码: ${response.status}`);
