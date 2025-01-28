@@ -41,6 +41,33 @@
 
 - [ ] 更多的配色、主题
 
+## 安装
+
+### 拉取仓库源码
+
+```bash
+git clone https://github.com/Barbatos411/Ethereal-Sounds
+```
+
+### 进入项目目录
+
+```bash
+cd Ethereal-Sounds
+```
+
+### 安装依赖
+
+```bash
+pip install -r requirements.txt
+```
+
+### 启动
+
+```
+python -m uvicorn app.main:app --reload
+```
+访问 http://127.0.0.1:8000 查看应用运行状态
+
 ## 致谢
 
 本项目借鉴了开源项目 **[Listen1](https://github.com/listen1/listen1)** 的设计理念和功能思路。在此对 Listen1
