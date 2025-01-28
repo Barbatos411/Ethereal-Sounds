@@ -64,7 +64,7 @@ pip install -r requirements.txt
 ### 启动
 
 ```
-python -m uvicorn app.main:app --reload
+python -m uvicorn app.main:app
 ```
 访问 http://127.0.0.1:8000 查看应用运行状态
 
