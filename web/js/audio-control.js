@@ -48,7 +48,7 @@ async function play_music(element, action = "play") {
 
 let currentSource = null; // 当前音频源
 let currentBuffer = null; // 当前音频缓冲
-let loopMode = "shuffle"; // 默认循环模式：list（列表循环） | single（单曲循环） | shuffle（随机播放）
+let loopMode = "list"; // 默认循环模式：list（列表循环） | single（单曲循环） | shuffle（随机播放）
 // 上一首
 const prev_audio = document.getElementById("prev-audio");
 // 监听“上一首” 按钮
@@ -359,6 +359,7 @@ async function fetchAndRenderPlaylist() {
 
       // 将生成的歌曲元素插入容器中
       listContainer.appendChild(songElement);
+      updateCovers(); // 更新封面
     });
   } catch (error) {
     console.error("播放列表加载失败:", error);
@@ -383,14 +384,33 @@ async function deleteSong(songOrder) {
   }
 }
 
-function update_cover() {
-  const last_song_cover = document.getElementById("last-song-cover");
-  const current_song_cover = document.getElementById("current-song-cover");
-  const next_song_cover = document.getElementById("next-song-cover");
-  last_cover;
-  current_cover;
-  next_cover;
-  last_song_cover.src = last_cover;
-  current_song_cover.src = current_cover;
-  next_song_cover.src = next_cover;
+// 更新封面
+function updateCovers() {
+  // 获取上一首、当前、下一首歌曲的封面
+  const lastSong = document.querySelector(
+    ".list-container-playing"
+  )?.previousElementSibling;
+  const nextSong = document.querySelector(
+    ".list-container-playing"
+  )?.nextElementSibling;
+
+  // 更新封面的函数
+  const lastCover = lastSong
+    ? lastSong.querySelector(".list-container-title-text").dataset.cover
+    : "";
+  const currentCover = document.querySelector(".list-container-playing")
+    ? document
+        .querySelector(".list-container-playing")
+        .querySelector(".list-container-title-text").dataset.cover
+    : "";
+  const nextCover = nextSong
+    ? nextSong.querySelector(".list-container-title-text").dataset.cover
+    : "";
+
+  // 更新 DOM 中的封面
+  document.getElementById("last-song-cover").src = lastCover || "";
+  document.getElementById("current-song-cover").src = currentCover || "";
+  document.getElementById("next-song-cover").src = nextCover || "";
 }
+
+fetchAndRenderPlaylist(); // 获取并渲染播放列表
