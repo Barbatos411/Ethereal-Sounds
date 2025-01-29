@@ -455,22 +455,23 @@ img {
 .footer-right {
   height: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
 .footer-left {
   width: 30%;
-  text-align: left; 
+  text-align: left;
 }
 
 .footer-center {
   display: flex;
+  position: absolute;
   justify-content: center;
   margin: 0;
   left: 50%;
   transform: translate(-50%, 0);
   align-items: flex-start;
+  height: 100%;
 }
 
 .music-player-container {
@@ -500,6 +501,7 @@ img {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  transition: background-color 0.5s ease;
 }
 
 .music-control.play-pause {

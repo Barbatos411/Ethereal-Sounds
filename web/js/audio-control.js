@@ -48,7 +48,7 @@ async function play_music(element, action = "play") {
 
 let currentSource = null; // 当前音频源
 let currentBuffer = null; // 当前音频缓冲
-let loopMode = "list"; // 默认循环模式：list（列表循环） | single（单曲循环） | shuffle（随机播放）
+let loopMode = "list"; // 默认循环模式：list（列表循环） | single（单曲循环） | random（随机播放）
 // 上一首
 const prev_audio = document.getElementById("prev-audio");
 // 监听“上一首” 按钮
@@ -172,7 +172,7 @@ function handlePlaybackEnd() {
     // 播放音频
     playAudio(); // 单曲循环
     // 如果循环模式为随机播放
-  } else if (loopMode === "shuffle") {
+  } else if (loopMode === "random") {
     // 随机播放歌曲
     playRandomSong(); // 随机播放
     // 如果循环模式为列表循环
@@ -186,7 +186,7 @@ function handlePlaybackEnd() {
 // 定义一个函数toggleLoopMode，用于切换循环模式
 function toggleLoopMode() {
   // 定义一个数组modes，包含三种循环模式
-  const modes = ["list", "single", "shuffle"];
+  const modes = ["list", "single", "random"];
   // 获取当前循环模式在数组中的索引
   const index = modes.indexOf(loopMode);
   // 将当前循环模式切换到下一个模式
@@ -462,6 +462,16 @@ function updateCovers() {
   document.getElementById("last-song-cover").src = lastCover || "";
   document.getElementById("current-song-cover").src = currentCover || "";
   document.getElementById("next-song-cover").src = nextCover || "";
+
+  if (loopMode === "random") {
+    // 设置上一曲和下一曲封面为透明
+    document.getElementById("last-song-cover").style.opacity = 0;
+    document.getElementById("next-song-cover").style.opacity = 0;
+  } else {
+    // 恢复上一曲和下一曲封面显示（不透明）
+    document.getElementById("last-song-cover").style.opacity = 1;
+    document.getElementById("next-song-cover").style.opacity = 1;
+  }
 }
 
 function updateSongTitle() {
