@@ -61,6 +61,8 @@ next_audio.addEventListener("click", playNextSong);
 
 // 暂停/播放
 const play_pause = document.getElementById("play-pause");
+play_pause.addEventListener("click", togglePlayPause);
+
 // 播放图标
 const play_icon = document.getElementById("play-icon");
 // 暂停图标
@@ -68,6 +70,9 @@ const pause_icon = document.getElementById("pause-icon");
 // 重新加载并播放音频
 // 异步加载音频函数
 async function loadAudio(url) {
+  // 停止封面旋转
+  const currentSongCover = document.getElementById("current-song-cover");
+  currentSongCover.classList.remove("playing");
   try {
     // 停止所有音频
     stopAllAudio();
@@ -119,31 +124,44 @@ function stopAllAudio() {
 }
 
 // 重新定义播放音频
+// 播放音频函数
 function playAudio() {
-  // 如果当前没有音频缓冲区，则返回
+  // 如果当前缓冲区为空，则返回
   if (!currentBuffer) return;
 
-  // 确保 `AudioContext` 处于 running 状态
+  // 如果音频上下文状态为暂停，则恢复播放
   if (audioCtx.state === "suspended") {
     audioCtx.resume();
   }
 
+  // 创建一个新的音频源
   currentSource = audioCtx.createBufferSource();
+  // 将当前缓冲区赋值给音频源
   currentSource.buffer = currentBuffer;
+  // 将音频源连接到音频上下文的输出
   currentSource.connect(audioCtx.destination);
+  // 开始播放音频
   currentSource.start();
 
-  play_icon.style.display = "none";
-  pause_icon.style.display = "block";
+  // 启动封面旋转动画
+  const currentSongCover = document.getElementById("current-song-cover");
+  currentSongCover.classList.add("playing"); // 添加动画
 
-  // 监听播放完成
+  // 隐藏播放按钮，显示暂停按钮
+  togglePlayPauseIcon(true);
+
+  // 当音频播放结束时，执行以下操作
   currentSource.onended = () => {
     console.log("音频播放结束");
+    // 将当前音频源置为空
     currentSource = null;
+    // 处理播放结束事件
     handlePlaybackEnd();
+
+    // 移除封面旋转动画
+    currentSongCover.classList.remove("playing");
   };
 }
-
 // 处理播放结束
 function handlePlaybackEnd() {
   // 将当前播放源置为空
@@ -194,6 +212,9 @@ function playPrevSong() {
   // 如果存在歌曲元素
   if (prevSong) {
     const title = prevSong.querySelector(".list-container-title-text");
+    // 停止封面旋转
+    const currentSongCover = document.getElementById("current-song-cover");
+    currentSongCover.classList.remove("playing");
     play_music(title, "play"); // 播放上一首歌曲
   }
 }
@@ -215,6 +236,9 @@ function playNextSong() {
   // 如果存在歌曲元素
   if (nextSong) {
     const title = nextSong.querySelector(".list-container-title-text");
+    // 停止封面旋转
+    const currentSongCover = document.getElementById("current-song-cover");
+    currentSongCover.classList.remove("playing");
     play_music(title, "play"); // 播放下一首歌曲
   }
 }
@@ -233,20 +257,26 @@ function playRandomSong() {
   }
 }
 
-// 绑定事件监听器
-play_pause.addEventListener("click", async () => {
+// 播放/暂停音乐及封面旋转控制
+async function togglePlayPause() {
   try {
+    const currentSongCover = document.getElementById("current-song-cover");
+
     if (currentSource) {
       if (audioCtx.state === "running") {
         // 暂停音频
         await audioCtx.suspend();
-        play_icon.style.display = "block"; // 显示播放图标
-        pause_icon.style.display = "none"; // 隐藏暂停图标
+        // 切换图标
+        togglePlayPauseIcon(false);
+        // 停止封面旋转
+        currentSongCover.classList.remove("playing");
       } else {
-        // 继续播放音频
+        // 恢复播放音频
         await audioCtx.resume();
-        play_icon.style.display = "none"; // 隐藏播放图标
-        pause_icon.style.display = "block"; // 显示暂停图标
+        // 切换图标
+        togglePlayPauseIcon(true);
+        // 启动封面旋转
+        currentSongCover.classList.add("playing");
       }
     } else {
       // 播放列表中是否有正在播放的歌曲
@@ -262,7 +292,7 @@ play_pause.addEventListener("click", async () => {
   } catch (error) {
     console.error("切换播放/暂停时出错:", error);
   }
-});
+}
 
 // 添加歌曲到播放列表的函数
 async function add_song_to_playlist(element, action = "play") {
@@ -386,17 +416,37 @@ async function deleteSong(songOrder) {
 
 // 更新封面
 function updateCovers() {
-  // 获取上一首、当前、下一首歌曲的封面
-  const lastSong = document.querySelector(
+  // 获取当前播放的歌曲和周围的歌曲
+  const playingSong = document.querySelector(".list-container-playing");
+  if (!playingSong) return; // 确保有正在播放的歌曲
+
+  // 获取当前播放的歌曲的前一个兄弟元素
+  let prevSong = document.querySelector(
     ".list-container-playing"
   )?.previousElementSibling;
-  const nextSong = document.querySelector(
+
+  // 如果没有前一个兄弟元素，则说明当前是列表的第一首
+  if (!prevSong) {
+    // 获取最后一首歌并播放
+    const lastSong = document.querySelector(".list-container:last-child");
+    prevSong = lastSong; // 强制切换为最后一首
+  }
+
+  // 获取当前播放的歌曲的下一个兄弟元素
+  let nextSong = document.querySelector(
     ".list-container-playing"
   )?.nextElementSibling;
 
+  // 如果没有下一个兄弟元素，则说明当前是列表的最后一首
+  if (!nextSong) {
+    // 获取第一首歌并播放
+    const firstSong = document.querySelector(".list-container:first-child");
+    nextSong = firstSong; // 强制切换为第一首
+  }
+
   // 更新封面的函数
-  const lastCover = lastSong
-    ? lastSong.querySelector(".list-container-title-text").dataset.cover
+  const lastCover = prevSong
+    ? prevSong.querySelector(".list-container-title-text").dataset.cover
     : "";
   const currentCover = document.querySelector(".list-container-playing")
     ? document
@@ -414,3 +464,17 @@ function updateCovers() {
 }
 
 fetchAndRenderPlaylist(); // 获取并渲染播放列表
+
+// 切换播放/暂停图标显示
+function togglePlayPauseIcon(isPlaying) {
+  const play_icon = document.getElementById("play-icon");
+  const pause_icon = document.getElementById("pause-icon");
+
+  if (isPlaying) {
+    play_icon.style.display = "none";
+    pause_icon.style.display = "block";
+  } else {
+    play_icon.style.display = "block";
+    pause_icon.style.display = "none";
+  }
+}
