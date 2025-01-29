@@ -390,6 +390,7 @@ async function fetchAndRenderPlaylist() {
       // 将生成的歌曲元素插入容器中
       listContainer.appendChild(songElement);
       updateCovers(); // 更新封面
+      updateSongTitle(); // 更新歌曲标题
     });
   } catch (error) {
     console.error("播放列表加载失败:", error);
@@ -461,6 +462,26 @@ function updateCovers() {
   document.getElementById("last-song-cover").src = lastCover || "";
   document.getElementById("current-song-cover").src = currentCover || "";
   document.getElementById("next-song-cover").src = nextCover || "";
+}
+
+function updateSongTitle() {
+  // 获取当前播放的歌曲
+  const playingSong = document.querySelector(".list-container-playing");
+  if (!playingSong) return; // 确保有正在播放的歌曲
+
+  // 获取歌曲名称和歌手
+  const Title = playingSong.querySelector(
+    ".list-container-title-text"
+  ).innerText;
+  const Singer = playingSong.querySelector(".list-container-singer").innerText;
+
+  // 获取 song-title 和 song-singer 元素
+  const songTitle = document.getElementById("song-title");
+  const songSinger = document.getElementById("song-singer");
+
+  // 更新 DOM 元素中的内容
+  songTitle.innerText = Title || "未知歌曲"; // 如果标题为空，默认显示“未知歌曲”
+  songSinger.innerText = Singer || "未知歌手"; // 如果歌手为空，默认显示“未知歌手”
 }
 
 fetchAndRenderPlaylist(); // 获取并渲染播放列表
