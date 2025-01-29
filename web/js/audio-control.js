@@ -17,7 +17,7 @@ async function play_music(element, action = "play") {
     await fetch(`/update_play_status?audio_number=${audio_number}`);
     await fetchAndRenderPlaylist();
   }
-
+  fetchAndRenderPlaylist(); // 重新渲染播放列表
   const url = `/get_audio?platform=${platform}&audio_id=${audio_id}`;
   console.log(url);
 
