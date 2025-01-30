@@ -467,6 +467,8 @@ function updateCovers() {
   last_song_cover.src = lastCover || "";
   current_song_cover.src = currentCover || "";
   next_song_cover.src = nextCover || "";
+  // 更新详情页背景
+  changeFooterBackground(currentCover);
 
   if (loopMode === "random") {
     // 设置上一曲和下一曲封面为透明
@@ -523,4 +525,19 @@ function togglePlayPauseIcon(isPlaying) {
     // 隐藏暂停图标
     pause_icon.style.display = "none";
   }
+}
+
+function changeFooterBackground(newBgUrl) {
+  const footer = document.querySelector(".footer");
+
+  // 更新 CSS 变量
+  document.documentElement.style.setProperty("--footer-bg", `url(${newBgUrl})`);
+
+  // 触发渐变动画
+  footer.classList.add("fade-in");
+
+  // 等动画结束后，移除 fade-in，避免下次切换时重复动画
+  setTimeout(() => {
+    footer.classList.remove("fade-in");
+  }, 1000);
 }

@@ -181,7 +181,123 @@
         <!-- 此处是播放列表 -->
       </div>
     </div>
+
+    <div class="music-player-container">
+      <div class="music-control prev" id="prev-audio">
+        <!-- 左侧竖直椭圆，显示歌曲封面 -->
+        <img
+          alt="Previous Song Cover"
+          id="last-song-cover"
+          class="song-cover"
+          src="res/last-song-cover.png"
+        />
+        <div class="music-control-icon">
+          <svg
+            aria-labelledby="previousIconTitle"
+            class="overlay-icon"
+            color="#000"
+            fill="var(--color-primary)"
+            height="24px"
+            role="img"
+            stroke="var(--color-primary)"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.142857142857143"
+            viewBox="0 0 24 24"
+            width="24px"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title id="previousIconTitle">上一首</title>
+            <path d="M7 11.5L18 18V5z" />
+            <path d="M6 18V5" />
+          </svg>
+        </div>
+      </div>
+      <div class="music-control play-pause" id="play-pause">
+        <!-- 中间圆，显示歌曲封面 -->
+        <img
+          alt="Current Song Cover"
+          id="current-song-cover"
+          class="song-cover"
+          src="res/current-song-cover.png"
+        />
+        <div class="music-control-icon">
+          <svg
+            id="play-icon"
+            style="display: block"
+            aria-labelledby="playIconTitle"
+            class="play-button"
+            color="#000"
+            fill="var(--color-primary)"
+            height="48px"
+            id="playPauseButton"
+            role="img"
+            stroke="var(--color-primary)"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.7142857142857142"
+            viewBox="0 0 24 24"
+            width="48px"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title id="playIconTitle">播放</title>
+            <path d="M20 12L5 21V3z" />
+          </svg>
+          <svg
+            id="pause-icon"
+            style="display: none"
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            width="48px"
+            height="48px"
+            viewBox="0 0 24 24"
+            aria-labelledby="pauseIconTitle"
+            stroke="var(--color-primary)"
+            stroke-width="1.7142857142857142"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            fill="var(--color-primary)"
+            color="#000"
+          >
+            <title id="pauseIconTitle">Pause</title>
+            <rect width="4" height="16" x="5" y="4" />
+            <rect width="4" height="16" x="15" y="4" />
+          </svg>
+        </div>
+      </div>
+      <div class="music-control next" id="next-audio">
+        <!-- 右侧竖直椭圆，显示歌曲封面 -->
+        <img
+          alt="Next Song Cover"
+          id="next-song-cover"
+          class="song-cover"
+          src="res/next-song-cover.png"
+        />
+        <div class="music-control-icon">
+          <svg
+            aria-labelledby="nextIconTitle"
+            class="overlay-icon"
+            color="#000"
+            fill="var(--color-primary)"
+            height="24px"
+            role="img"
+            stroke="var(--color-primary)"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.142857142857143"
+            viewBox="0 0 24 24"
+            width="24px"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title id="nextIconTitle">下一首</title>
+            <path d="M17 11.5L6 18V5z" />
+            <path d="M18 18V5" />
+          </svg>
+        </div>
+      </div>
+    </div>
     <div class="footer">
+      <div class="footer-info"></div>
       <div class="footer-container">
         <div class="footer-left">
           <div
@@ -279,120 +395,6 @@
               <title id="chevronDownIconTitle">展开</title>
               <polyline points="6 10 12 16 18 10" />
             </svg>
-          </div>
-        </div>
-        <div class="music-player-container">
-          <div class="music-control prev" id="prev-audio">
-            <!-- 左侧竖直椭圆，显示歌曲封面 -->
-            <img
-              alt="Previous Song Cover"
-              id="last-song-cover"
-              class="song-cover"
-              src="res/last-song-cover.png"
-            />
-            <div class="music-control-icon">
-              <svg
-                aria-labelledby="previousIconTitle"
-                class="overlay-icon"
-                color="#000"
-                fill="var(--color-primary)"
-                height="24px"
-                role="img"
-                stroke="var(--color-primary)"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2.142857142857143"
-                viewBox="0 0 24 24"
-                width="24px"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title id="previousIconTitle">上一首</title>
-                <path d="M7 11.5L18 18V5z" />
-                <path d="M6 18V5" />
-              </svg>
-            </div>
-          </div>
-          <div class="music-control play-pause" id="play-pause">
-            <!-- 中间圆，显示歌曲封面 -->
-            <img
-              alt="Current Song Cover"
-              id="current-song-cover"
-              class="song-cover"
-              src="res/current-song-cover.png"
-            />
-            <div class="music-control-icon">
-              <svg
-                id="play-icon"
-                style="display: block"
-                aria-labelledby="playIconTitle"
-                class="play-button"
-                color="#000"
-                fill="var(--color-primary)"
-                height="48px"
-                id="playPauseButton"
-                role="img"
-                stroke="var(--color-primary)"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="1.7142857142857142"
-                viewBox="0 0 24 24"
-                width="48px"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title id="playIconTitle">播放</title>
-                <path d="M20 12L5 21V3z" />
-              </svg>
-              <svg
-                id="pause-icon"
-                style="display: none"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                width="48px"
-                height="48px"
-                viewBox="0 0 24 24"
-                aria-labelledby="pauseIconTitle"
-                stroke="var(--color-primary)"
-                stroke-width="1.7142857142857142"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                fill="var(--color-primary)"
-                color="#000"
-              >
-                <title id="pauseIconTitle">Pause</title>
-                <rect width="4" height="16" x="5" y="4" />
-                <rect width="4" height="16" x="15" y="4" />
-              </svg>
-            </div>
-          </div>
-          <div class="music-control next" id="next-audio">
-            <!-- 右侧竖直椭圆，显示歌曲封面 -->
-            <img
-              alt="Next Song Cover"
-              id="next-song-cover"
-              class="song-cover"
-              src="res/next-song-cover.png"
-            />
-            <div class="music-control-icon">
-              <svg
-                aria-labelledby="nextIconTitle"
-                class="overlay-icon"
-                color="#000"
-                fill="var(--color-primary)"
-                height="24px"
-                role="img"
-                stroke="var(--color-primary)"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2.142857142857143"
-                viewBox="0 0 24 24"
-                width="24px"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title id="nextIconTitle">下一首</title>
-                <path d="M17 11.5L6 18V5z" />
-                <path d="M18 18V5" />
-              </svg>
-            </div>
           </div>
         </div>
       </div>
