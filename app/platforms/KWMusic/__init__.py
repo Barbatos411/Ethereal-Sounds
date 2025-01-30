@@ -47,70 +47,78 @@ class KWMusic(BasePlatform):
         return await home()
 
     @staticmethod
-    def reqid(e=None, t=None, n=None):
-        i = (t and n) or 0
-        h, d = 0, 0
-        b = t or [0] * 16
-        f = None
-        v = None
+    def reqid():
+        m = {
+            "0": 43,
+            "1": 64,
+            "2": 160,
+            "3": 14,
+            "4": 221,
+            "5": 55,
+            "6": 249,
+            "7": 97,
+            "8": 86,
+            "9": 170,
+            "10": 120,
+            "11": 218,
+            "12": 66,
+            "13": 188,
+            "14": 238,
+            "15": 102
+        }
 
-        if f is None or v is None:
-            m = {
-                0: 43, 1: 64, 2: 160, 3: 14, 4: 221, 5: 55,
-                6: 249, 7: 97, 8: 86, 9: 170, 10: 120, 11: 218,
-                12: 66, 13: 188, 14: 238, 15: 102
-            }
-            if f is None:
-                f = [1 | m[0], m[1], m[2], m[3], m[4], m[5]]
-            if v is None:
-                v = 16383 & ((m[6] << 8) | m[7])
+        f = [1 | m["0"], m["1"], m["2"], m["3"], m["4"], m["5"]]
+        v = 16383 & (m["6"] << 8 | m["7"])
 
-        y = int(time.time() * 1000)  # 获取当前时间戳（毫秒）
-        w = h + 1
+        y = int(time.time() * 1000)
+        w = 1
+        d = 0
+        h = 0
+
         dt = y - d + (w - h) / 1e4
 
-        if dt < 0 and v is not None:
+        if dt < 0:
             v = (v + 1) & 16383
-        if (dt < 0 or y > d) and v is not None:
+
+        if dt < 0 or y > d:
             w = 0
 
         if w >= 1e4:
-            raise ValueError("uuid.v1(): Can't create more than 10M uuids/sec")
+            raise Exception("uuid.v1(): Can't create more than 10M uuids/sec")
 
         d = y
         h = w
         o = v
 
-        y += int(12219292800000)  # 转换时间戳
-        A = (int(1e4 * (268435455 & y)) + w) % 4294967296
-        b[i] = (A >> 24) & 255
-        b[i + 1] = (A >> 16) & 255
-        b[i + 2] = (A >> 8) & 255
-        b[i + 3] = A & 255
+        A = (int(1e4 * (268435455 & (y + int(122192928e5)))) + w) % 4294967296
+        b = [
+            (A >> 24) & 255,
+            (A >> 16) & 255,
+            (A >> 8) & 255,
+            A & 255
+        ]
 
-        x = ((y // 4294967296) * 1e4) & 268435455
-        b[i + 4] = (x >> 8) & 255
-        b[i + 5] = x & 255
-        b[i + 6] = ((x >> 24) & 15) | 16
-        b[i + 7] = (x >> 16) & 255
-        b[i + 8] = (v >> 8) | 128
-        b[i + 9] = v & 255
+        # 计算 x
+        x = int((y / 4294967296 * 1e4)) & 268435455
+        b.extend([
+            (x >> 8) & 255,
+            x & 255,
+            ((x >> 24) & 15) | 16,
+            (x >> 16) & 255,
+            (v >> 8) | 128,
+            v & 255
+        ])
 
-        for T in range(6):
-            b[i + 10 + T] = f[T]
+        for t in range(6):
+            b.append(f[t])
 
-        def format_uuid(e, t=0):
-            n = [(i + 256).to_bytes(1, byteorder="big").hex() for i in range(256)]
-            r = []
-            r.extend(n[e[t:t + 4]])
-            r.append("-")
-            r.extend(n[e[t + 4:t + 6]])
-            r.append("-")
-            r.extend(n[e[t + 6:t + 8]])
-            r.append("-")
-            r.extend(n[e[t + 8:t + 10]])
-            r.append("-")
-            r.extend(n[e[t + 10:t + 16]])
-            return "".join(r)
+        n = [format(i + 256, 'x')[1:] for i in range(256)]
+        uuid_str = ''.join([
+            n[b[0]], n[b[1]], n[b[2]], n[b[3]], '-',
+            n[b[4]], n[b[5]], '-',
+            n[b[6]], n[b[7]], '-',
+            n[b[8]], n[b[9]], '-',
+            n[b[10]], n[b[11]], n[b[12]], n[b[13]], n[b[14]], n[b[15]]
+        ])
 
-        return t or format_uuid(b)
+        return uuid_str
