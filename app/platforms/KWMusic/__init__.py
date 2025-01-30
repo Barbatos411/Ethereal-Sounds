@@ -1,4 +1,6 @@
 import time
+import math
+import random
 
 from app.platforms.base import BasePlatform
 from .get_audio import get_audio
@@ -123,64 +125,45 @@ class KWMusic(BasePlatform):
 
         return uuid_str
 
-    """
     @staticmethod
-    def getSecret(res):
-        def h(t, e):
-            if e is None or len(e) <= 0:
-                print("Please enter a password with which to encrypt the message.")
-                return None
-            n = ""
-            for i in range(len(e)):
-                n += str(ord(e[i]))
-            r = len(n) // 5
-            o = int(n[r] + n[2 * r] + n[3 * r] + n[4 * r] + n[5 * r] if len(n) < 5 * r else n[-1])
-            l = math.ceil(len(e) / 2)
-            c = 2 ** 31 - 1
-            if o < 2:
-                print(
-                    "Algorithm cannot find a suitable hash. Please choose a different password. \nPossible considerations are to choose a more complex or longer password."),
-                return None
-            d = random.randint(0, 99999999)
-            n += str(d)
-            while len(n) > 10:
-                part1 = int(n[:10])
-                part2 = int(n[10:]) if len(n) > 10 else 0
-                n = str(part1 + part2)
-            n = (int(n) * o + r) % c
-            h, f = "", ""
-            for i in range(len(t)):
-                h = ord(t[i]) ^ (n // c * 255)  # 计算异或值
-                f += f"{h:02x}"  # 转换成两位16进制字符串
-                n = (o * n + l) % c  # 更新 n 值
-            d = hex(d)[2:]  # 转换为16进制字符串
-            d = d.zfill(8)  # 补齐到8位
-            f += d  # 拼接到 f
-            return f  # 返回拼接后的字符串
-
-        def v(res, t):
-            # 预设的 cookie 字符串
-            e = f"_ga=GA1.2.1617862873.1703732461; _gid=GA1.2.1291582354.1703732461; " \
-                f"Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1703725476; " \
-                f"Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1703734897; " \
-                f"_ga_ETPBRPM9ML=GS1.2.1703732461.1.1.1703734896.33.0.0; " \
-                f"Hm_Iuvt_cdb524f42f23cer9b268564v7y735ewrq2324={res}"
-
-            # 查找 t=
-            n = e.find(f"{t}=")
-            if n != -1:
-                # 跳过 t= 本身
-                n += len(t) + 1
-                # 查找结束符 ";"
-                r = e.find(";", n)
-                if r == -1:
-                    r = len(e)
-                # 返回解码后的值
-                return unquote(e[n:r])
-
-            return None  # 未找到返回 None
-
-        e = v(res, "Hm_Iuvt_cdb524f42f23cer9b268564v7y735ewrq2324")
-        Secret = h(e, "Hm_Iuvt_cdb524f42f23cer9b268564v7y735ewrq2324")
-        return Secret
-    """
+    def getSecret(b):
+        c = "Hm_Iuvt_cdb524f42f23cer9b268564v7y735ewrq2324"
+        d = f"_ga=GA1.2.1617862873.1703732461; _gid=GA1.2.1291582354.1703732461; Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1703725476; Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1703734897; _ga_ETPBRPM9ML=GS1.2.1703732461.1.1.1703734896.33.0.0; Hm_Iuvt_cdb524f42f23cer9b268564v7y735ewrq2324={b}"
+        e = d.find(c + "=")
+        e += len(c) + 1
+        f = d.find(";", e)
+        if f == -1:
+            f = len(d)
+        g = d[e:f]
+        h = ""
+        for i in c:
+            h += str(ord(i))
+        i = math.floor(len(h) / 5)
+        j = [i, 2 * i, 3 * i, 4 * i]
+        k = ''
+        for l in j:
+            k += h[l]
+        m = int(k)
+        n = round(1e9 * random.random()) % int(1e8)
+        o = math.ceil(len(c) / 2)
+        p = pow(2, 31) - 1
+        h += str(n)
+        while len(h) > 10:
+            q = int(h[:10])
+            r = h[10:]
+            if len(r) > 15:
+                h = "59910100"
+                break
+            s = int(r)
+            h = str(q + s)
+        h = (m * int(h) + o) % p
+        t = ""
+        u = h
+        for v in g:
+            w = math.floor((u / p) * 255)
+            x = ord(v) ^ w
+            t += format(x, '02x')
+            u = (m * u + o) % p
+        y = format(n, '08x')
+        t += y
+        return t
