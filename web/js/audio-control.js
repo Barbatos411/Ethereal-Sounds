@@ -17,7 +17,6 @@ async function play_music(element, action = "play") {
     await fetch(`/update_play_status?audio_number=${audio_number}`);
     await fetchAndRenderPlaylist();
   }
-  fetchAndRenderPlaylist(); // 重新渲染播放列表
   const url = `/get_audio?platform=${platform}&audio_id=${audio_id}`;
   console.log(url);
 
@@ -32,14 +31,14 @@ async function play_music(element, action = "play") {
     if (contentType && contentType.startsWith("audio/")) {
       console.log("音频文件");
       // 直接加载音频流
-      await loadAudio(url);
+      await loadAudio(response, true);
     } else {
       console.log("非音频文件");
       // 解析 JSON 数据并获取 audio_url
       const data = await response.json();
       const audio_url = data.audio_url; // 修正：正确访问 JSON 字段
       // 加载音频
-      await loadAudio(audio_url);
+      await loadAudio(audio_url, false);
     }
   } catch (error) {
     console.error("请求失败:", error);
@@ -69,17 +68,20 @@ const play_icon = document.getElementById("play-icon");
 const pause_icon = document.getElementById("pause-icon");
 // 重新加载并播放音频
 // 异步加载音频函数
-async function loadAudio(url) {
+async function loadAudio(url, stream) {
   // 停止封面旋转
   const currentSongCover = document.getElementById("current-song-cover");
   currentSongCover.classList.remove("playing");
+  let response = url; // 如果是流式音频，则直接使用 response
   try {
     // 停止所有音频
     stopAllAudio();
-
-    // 发送请求获取音频数据
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`HTTP 错误！状态: ${response.status}`);
+    // 如果不是流式音频
+    if (!stream) {
+      // 发送请求获取音频数据
+      response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP 错误！状态: ${response.status}`);
+    }
 
     // 将音频数据转换为 ArrayBuffer
     const arrayBuffer = await response.arrayBuffer();
@@ -458,19 +460,26 @@ function updateCovers() {
     ? nextSong.querySelector(".list-container-title-text").dataset.cover
     : "";
 
+  const last_song_cover = document.getElementById("last-song-cover");
+  const current_song_cover = document.getElementById("current-song-cover");
+  const next_song_cover = document.getElementById("next-song-cover");
   // 更新 DOM 中的封面
-  document.getElementById("last-song-cover").src = lastCover || "";
-  document.getElementById("current-song-cover").src = currentCover || "";
-  document.getElementById("next-song-cover").src = nextCover || "";
+  last_song_cover.src = lastCover || "";
+  current_song_cover.src = currentCover || "";
+  next_song_cover.src = nextCover || "";
 
   if (loopMode === "random") {
     // 设置上一曲和下一曲封面为透明
-    document.getElementById("last-song-cover").style.opacity = 0;
-    document.getElementById("next-song-cover").style.opacity = 0;
+    last_song_cover.style.opacity = 0;
+    next_song_cover.style.opacity = 0;
   } else {
-    // 恢复上一曲和下一曲封面显示（不透明）
-    document.getElementById("last-song-cover").style.opacity = 1;
-    document.getElementById("next-song-cover").style.opacity = 1;
+    // 恢复默认样式
+    if (last_song_cover.style.opacity !== "") {
+      last_song_cover.style.removeProperty("opacity");
+    }
+    if (next_song_cover.style.opacity !== "") {
+      next_song_cover.style.removeProperty("opacity");
+    }
   }
 }
 
@@ -496,16 +505,22 @@ function updateSongTitle() {
 
 fetchAndRenderPlaylist(); // 获取并渲染播放列表
 
-// 切换播放/暂停图标显示
+// 切换播放/暂停图标显示]
 function togglePlayPauseIcon(isPlaying) {
+  // 获取播放图标和暂停图标
   const play_icon = document.getElementById("play-icon");
   const pause_icon = document.getElementById("pause-icon");
 
+  // 如果正在播放
   if (isPlaying) {
+    // 隐藏播放图标
     play_icon.style.display = "none";
+    // 显示暂停图标
     pause_icon.style.display = "block";
   } else {
+    // 显示播放图标
     play_icon.style.display = "block";
+    // 隐藏暂停图标
     pause_icon.style.display = "none";
   }
 }
