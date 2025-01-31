@@ -107,7 +107,8 @@ async def update_playlist(data: PlaylistRequest):
     - `action` 为 `add` 时：
         - 仅插入或更新数据
     """
-    columns = ["id", "name", "singer", "platform", "status", "cover"]
+    columns = ["id", "name", "singer", "singer_id", "album",
+               "album_id", "platform", "status", "cover"]
     try:
         with sqlite3.connect(f'app/data/data.db') as conn:
             cursor = conn.cursor()
