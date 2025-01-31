@@ -15,8 +15,8 @@ async function play_music(element, action = "play") {
     await add_song_to_playlist(element); // 添加歌曲到播放列表
   } else {
     await fetch(`/update_play_status?audio_number=${audio_number}`);
-    await fetchAndRenderPlaylist();
   }
+  await fetchAndRenderPlaylist(); // 重新获取并渲染播放列表
   const url = `/get_audio?platform=${platform}&audio_id=${audio_id}`;
   console.log(url);
 
@@ -399,6 +399,8 @@ async function fetchAndRenderPlaylist() {
   }
 }
 
+fetchAndRenderPlaylist(); // 页面加载时获取并渲染播放列表
+
 // 删除歌曲函数
 async function deleteSong(songOrder) {
   try {
@@ -423,38 +425,22 @@ function updateCovers() {
   const playingSong = document.querySelector(".list-container-playing");
   if (!playingSong) return; // 确保有正在播放的歌曲
 
-  // 获取当前播放的歌曲的前一个兄弟元素
-  let prevSong = document.querySelector(
-    ".list-container-playing"
-  )?.previousElementSibling;
-
-  // 如果没有前一个兄弟元素，则说明当前是列表的第一首
+  let prevSong = playingSong.previousElementSibling;
   if (!prevSong) {
-    // 获取最后一首歌并播放
-    const lastSong = document.querySelector(".list-container:last-child");
-    prevSong = lastSong; // 强制切换为最后一首
+    prevSong = document.querySelector(".list-container:last-child"); // 获取最后一首歌
   }
 
-  // 获取当前播放的歌曲的下一个兄弟元素
-  let nextSong = document.querySelector(
-    ".list-container-playing"
-  )?.nextElementSibling;
-
-  // 如果没有下一个兄弟元素，则说明当前是列表的最后一首
+  let nextSong = playingSong.nextElementSibling;
   if (!nextSong) {
-    // 获取第一首歌并播放
-    const firstSong = document.querySelector(".list-container:first-child");
-    nextSong = firstSong; // 强制切换为第一首
+    nextSong = document.querySelector(".list-container:first-child"); // 获取第一首歌
   }
 
-  // 更新封面的函数
+  // 获取封面 URL
   const lastCover = prevSong
     ? prevSong.querySelector(".list-container-title-text").dataset.cover
     : "";
-  const currentCover = document.querySelector(".list-container-playing")
-    ? document
-        .querySelector(".list-container-playing")
-        .querySelector(".list-container-title-text").dataset.cover
+  const currentCover = playingSong
+    ? playingSong.querySelector(".list-container-title-text").dataset.cover
     : "";
   const nextCover = nextSong
     ? nextSong.querySelector(".list-container-title-text").dataset.cover
@@ -463,27 +449,32 @@ function updateCovers() {
   const last_song_cover = document.getElementById("last-song-cover");
   const current_song_cover = document.getElementById("current-song-cover");
   const next_song_cover = document.getElementById("next-song-cover");
-  // 更新 DOM 中的封面
-  last_song_cover.src = lastCover || "";
-  current_song_cover.src = currentCover || "";
-  next_song_cover.src = nextCover || "";
+
+  const timestamp = new Date().getTime(); // 生成唯一时间戳
+
+  // 更新封面，确保绕过缓存
+  if (last_song_cover)
+    last_song_cover.src = lastCover ? `${lastCover}?t=${timestamp}` : "";
+  if (current_song_cover)
+    current_song_cover.src = currentCover
+      ? `${currentCover}?t=${timestamp}`
+      : "";
+  if (next_song_cover)
+    next_song_cover.src = nextCover ? `${nextCover}?t=${timestamp}` : "";
+
   // 更新详情页背景
   changeFooterBackground(currentCover);
 
+  // 处理随机模式的透明度
   if (loopMode === "random") {
-    // 设置上一曲和下一曲封面为透明
     last_song_cover.style.opacity = 0;
     next_song_cover.style.opacity = 0;
   } else {
-    // 恢复默认样式
-    if (last_song_cover.style.opacity !== "") {
-      last_song_cover.style.removeProperty("opacity");
-    }
-    if (next_song_cover.style.opacity !== "") {
-      next_song_cover.style.removeProperty("opacity");
-    }
+    last_song_cover.style.removeProperty("opacity");
+    next_song_cover.style.removeProperty("opacity");
   }
 }
+
 
 function updateSongTitle() {
   // 获取当前播放的歌曲
@@ -504,8 +495,6 @@ function updateSongTitle() {
   songTitle.innerText = Title || "未知歌曲"; // 如果标题为空，默认显示“未知歌曲”
   songSinger.innerText = Singer || "未知歌手"; // 如果歌手为空，默认显示“未知歌手”
 }
-
-fetchAndRenderPlaylist(); // 获取并渲染播放列表
 
 // 切换播放/暂停图标显示]
 function togglePlayPauseIcon(isPlaying) {
