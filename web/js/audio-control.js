@@ -319,14 +319,26 @@ async function add_song_to_playlist(element, action = "play") {
     const platform = element.dataset.platform;
     const title = element.textContent || element.innerText;
     const singer = element.dataset.singer;
+    const singer_id = element.dataset.singer_id || "null";
+    const album = element.dataset.album;
+    const album_id = element.dataset.album_id || "null";
     const cover = element.dataset.cover;
     const status = action === "play" ? "playing" : "";
-
     // 构造请求体数据
     const requestData = {
       action, // 播放模式: "play" 或 "add"
       values: [
-        [audio_id, title, singer, platform, status, cover], // 单行插入数据
+        [
+          audio_id,
+          title,
+          singer,
+          singer_id,
+          album,
+          album_id,
+          platform,
+          status,
+          cover,
+        ], // 单行插入数据
       ],
     };
 
@@ -363,7 +375,10 @@ async function fetchAndRenderPlaylist() {
     // 解析 JSON 数据
     const data = await response.json();
     const playlist = data.data;
-
+    if (playlist === undefined) {
+      // 如果播放列表为空，则不进行任何操作
+      return;
+    }
     // 获取播放列表容器
     const listContainer = document.querySelector(".list-content");
     listContainer.innerHTML = ""; // 清空原有内容
@@ -464,7 +479,7 @@ function updateCovers() {
   const last_song_cover = document.getElementById("last-song-cover");
   const current_song_cover = document.getElementById("current-song-cover");
   const next_song_cover = document.getElementById("next-song-cover");
-
+  const footer_info_cover = document.getElementById("footer-info-cover");
   const timestamp = new Date().getTime(); // 生成唯一时间戳
 
   // 更新封面，确保绕过缓存
@@ -479,9 +494,15 @@ function updateCovers() {
 
   // 确保封面加载完成后再更新背景
   if (current_song_cover && current_song_cover.complete) {
+    // 如果封面已加载完毕，立即更新背景
     changeFooterBackground();
-  } else {
-    current_song_cover.onload = () => changeFooterBackground();
+    footer_info_cover.src = currentCover; // 更新封面
+  } else if (current_song_cover) {
+    // 如果封面未加载，设置加载完成后的回调
+    current_song_cover.onload = () => {
+      changeFooterBackground();
+      footer_info_cover.src = currentCover; // 更新封面
+    };
   }
 
   // 处理随机模式的透明度
@@ -505,13 +526,18 @@ function updateSongTitle() {
   ).innerText;
   const Singer = playingSong.querySelector(".list-container-singer").innerText;
 
-  // 获取 song-title 和 song-singer 元素
-  const songTitle = document.getElementById("song-title");
-  const songSinger = document.getElementById("song-singer");
+  // 获取所有的 song-title 和 song-singer 元素
+  const allSongTitles = document.querySelectorAll("#song-title");
+  const allSongSingers = document.querySelectorAll("#song-singer");
 
-  // 更新 DOM 元素中的内容
-  songTitle.innerText = Title || "未知歌曲"; // 如果标题为空，默认显示“未知歌曲”
-  songSinger.innerText = Singer || "未知歌手"; // 如果歌手为空，默认显示“未知歌手”
+  // 更新所有 DOM 元素中的内容
+  allSongTitles.forEach((titleElement) => {
+    titleElement.innerText = Title || "未知歌曲"; // 如果标题为空，默认显示“未知歌曲”
+  });
+
+  allSongSingers.forEach((singerElement) => {
+    singerElement.innerText = Singer || "未知歌手"; // 如果歌手为空，默认显示“未知歌手”
+  });
 }
 
 // 切换播放/暂停图标显示]
