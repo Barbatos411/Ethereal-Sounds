@@ -350,8 +350,15 @@
         </div>
         <div class="footer-center"></div>
         <div class="footer-right">
-          <div class="button" style="width: 48px; height: 48px">
+          <div
+            class="button"
+            id="loop-button"
+            onclick="toggleLoopMode()"
+            style="width: 48px; height: 48px"
+          >
             <svg
+              id="loop-list"
+              style="display: block"
               aria-labelledby="rotateIconTitle"
               color="#000"
               fill="none"
@@ -372,6 +379,66 @@
               <path d="M16.016 17.845A7.05 7.05 0 0 1 5 12.015V10" />
               <path d="M5 10V9" stroke-linecap="round" />
               <path d="M19 15v-1" stroke-linecap="round" />
+            </svg>
+            <svg
+              id="loop-single"
+              style="display: none"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              width="32px"
+              height="32px"
+              viewBox="0 0 24 24"
+              aria-labelledby="rotateIconTitle"
+              stroke="var(--text-primary)"
+              stroke-width="1.7142857142857142"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+              color="#000"
+            >
+              <title id="rotateIconTitle">单曲</title>
+              <path d="M22 12l-3 3-3-3" />
+              <path d="M2 12l3-3 3 3" />
+              <path d="M19.016 14v-1.95A7.05 7.05 0 0 0 8 6.22" />
+              <path d="M16.016 17.845A7.05 7.05 0 0 1 5 12.015V10" />
+              <path stroke-linecap="round" d="M5 10V9" />
+              <path stroke-linecap="round" d="M19 15v-1" />
+              <text
+                x="12"
+                y="15"
+                font-size="8"
+                font-weight="90"
+                text-anchor="middle"
+                fill="black"
+              >
+                1
+              </text>
+            </svg>
+            <svg
+              id="loop-random"
+              style="display: none"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              width="32px"
+              height="32px"
+              viewBox="0 0 24 24"
+              aria-labelledby="shuffleIconTitle"
+              stroke="var(--text-primary)"
+              stroke-width="1.7142857142857142"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+              color="#000"
+            >
+              <title id="shuffleIconTitle">随机</title>
+              <path
+                d="M21 16.0399H17.7707C15.8164 16.0399 13.9845 14.9697 12.8611 13.1716L10.7973 9.86831C9.67384 8.07022 7.84196 7 5.88762 7L3 7"
+              />
+              <path
+                d="M21 7H17.7707C15.8164 7 13.9845 8.18388 12.8611 10.1729L10.7973 13.8271C9.67384 15.8161 7.84196 17 5.88762 17L3 17"
+              />
+              <path d="M19 4L22 7L19 10" />
+              <path d="M19 13L22 16L19 19" />
             </svg>
           </div>
           <div class="fold button" style="margin-right: 30px">

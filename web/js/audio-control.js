@@ -184,7 +184,6 @@ function handlePlaybackEnd() {
   }
 }
 
-// 切换循环模式
 // 定义一个函数toggleLoopMode，用于切换循环模式
 function toggleLoopMode() {
   // 定义一个数组modes，包含三种循环模式
@@ -195,6 +194,22 @@ function toggleLoopMode() {
   loopMode = modes[(index + 1) % modes.length];
   // 在控制台输出当前循环模式
   console.log("当前循环模式:", loopMode);
+  const loop_list = document.getElementById("loop-list");
+  const loop_single = document.getElementById("loop-single");
+  const loop_random = document.getElementById("loop-random");
+  // 先隐藏所有图标
+  loop_list.style.display = "none";
+  loop_single.style.display = "none";
+  loop_random.style.display = "none";
+
+  // 根据当前模式显示对应的图标
+  if (loopMode === "list") {
+    loop_list.style.display = "block";
+  } else if (loopMode === "single") {
+    loop_single.style.display = "block";
+  } else if (loopMode === "random") {
+    loop_random.style.display = "block";
+  }
 }
 
 // 播放上一首
@@ -474,7 +489,6 @@ function updateCovers() {
     next_song_cover.style.removeProperty("opacity");
   }
 }
-
 
 function updateSongTitle() {
   // 获取当前播放的歌曲
