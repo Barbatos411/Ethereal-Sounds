@@ -14,14 +14,12 @@
 
 </div>
 
-![Star History Chart](https://api.star-history.com/svg?repos=Barbatos411/Ethereal-Sounds&type=Date)
-
 一高中牲闹着玩写的
 
 目标是像listen1一样的多平台音乐播放器
 
 [Listen1](https://github.com/listen1/listen1):
-让你用一个网页就能听到多个网站的在线音乐（现已包括网易云音乐，QQ音乐，虾米音乐，豆瓣音乐）。你可以非常的简单的访问和收听在线音乐，而不用受到单个音乐网站资源不全地限制了。
+让你用一个网页就能听到多个网站的在线音乐（现已包括网易云音乐，QQ音乐，酷我音乐，酷狗音乐,BiliBili）。你可以非常的简单的访问和收听在线音乐，而不用受到单个音乐网站资源不全地限制了。
 
 ## 功能
 
@@ -34,6 +32,8 @@
 - [x] 获取歌词 - 网易云音乐、QQ音乐、酷狗音乐
 
 ### TODO
+
+- [ ] 更多的平台
 
 - [ ] 收藏、创建歌单
 
@@ -68,6 +68,12 @@ python -m uvicorn app.main:app
 ```
 访问 http://127.0.0.1:8000 查看应用运行状态
 
+### 更新
+
+```bash
+git pull
+```
+
 ## 致谢
 
 本项目借鉴了开源项目 **[Listen1](https://github.com/listen1/listen1)** 的设计理念和功能思路。在此对 Listen1
@@ -97,6 +103,9 @@ python -m uvicorn app.main:app
 </a>
 
 ![Alt](https://repobeats.axiom.co/api/embed/002c2203d71e30e71dde64f255706628de6a498c.svg "Repobeats analytics image")
+
+
+![Star History Chart](https://api.star-history.com/svg?repos=Barbatos411/Ethereal-Sounds&type=Date)
 
 ## 其他
 
