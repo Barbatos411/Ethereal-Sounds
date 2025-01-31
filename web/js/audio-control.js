@@ -477,8 +477,12 @@ function updateCovers() {
   if (next_song_cover)
     next_song_cover.src = nextCover ? `${nextCover}?t=${timestamp}` : "";
 
-  // 更新详情页背景
-  changeFooterBackground(currentCover);
+  // 确保封面加载完成后再更新背景
+  if (current_song_cover && current_song_cover.complete) {
+    changeFooterBackground();
+  } else {
+    current_song_cover.onload = () => changeFooterBackground();
+  }
 
   // 处理随机模式的透明度
   if (loopMode === "random") {
@@ -530,16 +534,24 @@ function togglePlayPauseIcon(isPlaying) {
   }
 }
 
-function changeFooterBackground(newBgUrl) {
+function changeFooterBackground() {
   const footer = document.querySelector(".footer");
+  const current_song_cover = document.getElementById("current-song-cover");
 
-  // 更新 CSS 变量
-  document.documentElement.style.setProperty("--footer-bg", `url(${newBgUrl})`);
+  if (!current_song_cover || !current_song_cover.src) {
+    console.warn("当前封面不存在，跳过背景更新");
+    return;
+  }
+
+  // 直接使用当前歌曲封面作为背景
+  document.documentElement.style.setProperty(
+    "--footer-bg",
+    `url(${current_song_cover.src})`
+  );
 
   // 触发渐变动画
   footer.classList.add("fade-in");
 
-  // 等动画结束后，移除 fade-in，避免下次切换时重复动画
   setTimeout(() => {
     footer.classList.remove("fade-in");
   }, 1000);
