@@ -464,13 +464,57 @@ img {
   overflow: hidden;
 }
 
-.footer-info-right,
 .footer-info-left {
   display: flex;
   flex: 1;
+  overflow-y: auto;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100%;
+  padding: 0.625rem 0;
+}
+
+#lyric-container {
+  display: flex;
+  flex: 1;
+  overflow-y: hidden;
+  flex-direction: column;
+  padding: 0.625rem 0;
+  padding: 5% 0;
+  overflow: hidden;
+}
+
+/* 列表样式 */
+#lyric-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 让第一个空行占据足够空间，使第一句歌词自动居中 */
+.empty-placeholder {
+  height: 50%; /* 让它占据歌词容器的50%高度 */
+  visibility: hidden; /* 不显示文本 */
+}
+
+/* 每一行歌词样式 */
+#lyric-list li {
+  margin: 5% 0;
+  font-size: 24px;
+  line-height: 1.8;
+  text-align: center;
+  color: var(--text-secondary);
+  transition:
+    font-size 0.3s,
+    color 0.3s;
+}
+
+/* 当前行高亮：字体放大、颜色加深 */
+#lyric-list li.active {
+  font-size: 32px;
+  color: var(--text-primary);
+  font-weight: bold;
 }
 
 .footer-button-fold {
