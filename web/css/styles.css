@@ -1,10 +1,10 @@
 /* 页面基本样式 */
 body,
 .app {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
 }
 
 .footer-left,
@@ -15,138 +15,141 @@ body,
 .music-container-center,
 .list-container-title,
 .list-container-singer {
-    white-space: nowrap;
-    /* 强制文本不换行 */
-    overflow: hidden;
-    /* 隐藏超出部分 */
-    text-overflow: ellipsis;
-    /* 超出部分用省略号显示 */
+  white-space: nowrap;
+  /* 强制文本不换行 */
+  overflow: hidden;
+  /* 隐藏超出部分 */
+  text-overflow: ellipsis;
+  /* 超出部分用省略号显示 */
 }
 
 .song-title:hover,
 .list-container-title-text:hover {
-    text-decoration: underline;
-    cursor: pointer;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .dark-before::before {
-    background-color: rgba(0, 0, 0, 0);
-    display: block;
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    transition: background-color 0.5s ease;
+  background-color: rgba(0, 0, 0, 0);
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  transition: background-color 0.5s ease;
 }
 
 .dark::before {
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 4;
-    transition: background-color 0.5s ease;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 4;
+  transition: background-color 0.5s ease;
 }
 
 .button {
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    transition: background-color 0.5s ease;
-    margin: 0 0.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: background-color 0.5s ease;
+  margin: 0 0.5rem;
 }
 
 .button:hover {
-    background-color: var(--color-secondary);
+  background-color: var(--color-secondary);
 }
 
 em {
-    color: #f2c55c;
+  color: #f2c55c;
 }
 
 /* 侧边栏样式 */
 .sidebar {
-    background-color: var(--color-primary);
-    display: flex;
-    width: 10vw;
-    padding: 0.625rem;
-    transition: width 0.3s ease,
+  background-color: var(--color-primary);
+  display: flex;
+  width: 10vw;
+  padding: 0.625rem;
+  transition:
+    width 0.3s ease,
     background-color 0.5s ease;
 }
 
 .sidebar-container {
-    background-color: var(--color-secondary);
-    width: 90%;
-    height: 87%;
-    padding: 0.3125rem;
-    border-radius: 10px;
-    transition: background-color 0.5s ease;
+  background-color: var(--color-secondary);
+  width: 90%;
+  height: 87%;
+  padding: 0.3125rem;
+  border-radius: 10px;
+  transition: background-color 0.5s ease;
 }
 
 .title-text {
-    color: var(--text-primary);
-    font-size: 1.4375rem;
-    transition: font-size 0.3s ease;
+  color: var(--text-primary);
+  font-size: 1.4375rem;
+  transition: font-size 0.3s ease;
 }
 
 .title-text-fold {
-    font-size: 0.0625rem;
+  font-size: 0.0625rem;
 }
 
 .title:hover {
-    box-shadow: 0 0 0.625rem var(--shadow);
+  box-shadow: 0 0 0.625rem var(--shadow);
 }
 
 /* 主要内容样式 */
 .main {
-    background-color: var(--color-primary);
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    padding: 0.625rem;
-    margin: 0;
-    transition: width 0.3s ease,
+  background-color: var(--color-primary);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 0.625rem;
+  margin: 0;
+  transition:
+    width 0.3s ease,
     left 0.3s ease,
     background-color 0.5s ease;
-    width: 90vw;
+  width: 90vw;
 }
 
 .header {
-    background-color: var(--color-primary);
-    display: flex;
-    padding: 0;
-    height: auto;
-    margin: 0.5rem 0;
-    transition: background-color 0.5s ease;
-    width: 100%;
+  background-color: var(--color-primary);
+  display: flex;
+  padding: 0;
+  height: auto;
+  margin: 0.5rem 0;
+  transition: background-color 0.5s ease;
+  width: 100%;
 }
 
 .platforms-container {
-    display: flex;
-    align-items: center;
-    width: 60%;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    margin-right: auto;
+  display: flex;
+  align-items: center;
+  width: 60%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  margin-right: auto;
 }
 
 .platforms-container > * {
-    flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 .music-platform {
-    width: 5rem;
-    padding: 0.3125rem;
-    color: var(--text-secondary);
-    font-size: 1rem;
-    border-radius: 10px;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    transition: font-size 0.3s ease,
+  width: 5rem;
+  padding: 0.3125rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    font-size 0.3s ease,
     background-color 0.5s ease,
     width 0.3s ease,
     font-weight 0.3s ease;
@@ -154,422 +157,431 @@ em {
 
 .music-platform:hover,
 .selected {
-    color: var(--text-primary);
-    font-size: 1.875rem;
-    font-weight: bold;
-    background-color: var(--color-secondary);
-    width: 9.375rem;
-    box-shadow: 0 0.125rem 0 var(--text-primary);
+  color: var(--text-primary);
+  font-size: 1.875rem;
+  font-weight: bold;
+  background-color: var(--color-secondary);
+  width: 9.375rem;
+  box-shadow: 0 0.125rem 0 var(--text-primary);
 }
 
 .header-right-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 25%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 25%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  margin: 0;
 }
 
 .search {
-    background-color: var(--search);
-    width: 12.5rem;
-    height: 2rem;
-    border-radius: 10px;
-    display: flex;
-    margin-right: 1rem;
-    transition: width 0.3s ease,
+  background-color: var(--search);
+  width: 12.5rem;
+  height: 2rem;
+  border-radius: 10px;
+  display: flex;
+  margin-right: 1rem;
+  transition:
+    width 0.3s ease,
     background-color 0.5s ease;
 }
 
 .content,
 .music-search-list {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    width: 100%;
-    overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
 }
 
 .music-container {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    align-items: center;
-    padding: 0.625rem;
-    border-radius: 10px;
-    height: 3.125rem;
-    background-color: var(--color-primary);
-    color: var(--text-secondary);
-    user-select: none;
-    transition: background-color 0.5s ease;
-    z-index: 1;
-    width: 85vw;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  align-items: center;
+  padding: 0.625rem;
+  border-radius: 10px;
+  height: 3.125rem;
+  background-color: var(--color-primary);
+  color: var(--text-secondary);
+  user-select: none;
+  transition: background-color 0.5s ease;
+  z-index: 1;
+  width: 85vw;
 }
 
 .music-container:hover {
-    background-color: var(--color-secondary);
+  background-color: var(--color-secondary);
 }
 
 .music-container-center {
-    width: 20%;
-    display: flex;
-    text-align: left;
+  width: 20%;
+  display: flex;
+  text-align: left;
 }
 
 .music-container-left {
-    display: flex;
-    flex-direction: row;
-    height: 3.125rem;
-    width: 40%;
+  display: flex;
+  flex-direction: row;
+  height: 3.125rem;
+  width: 40%;
 }
 
 .music-cover {
-    width: 3.125rem;
-    height: 3.125rem;
+  width: 3.125rem;
+  height: 3.125rem;
 }
 
 .music-container-right {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-right: 3.125rem;
-    width: 20%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 3.125rem;
+  width: 20%;
 }
 
 .music-name {
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    margin: 0 1.25rem;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  margin: 0 1.25rem;
 }
 
 .music-singer {
-    color: var(--text-secondary);
-    margin: 0;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
 .tag-vip,
 .tag-mv {
-    color: white;
-    border-radius: 10px;
-    width: 2.5rem;
-    height: 1.25rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.9375rem;
-    margin: 0.125rem;
+  color: white;
+  border-radius: 10px;
+  width: 2.5rem;
+  height: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9375rem;
+  margin: 0.125rem;
 }
 
 .tag-vip {
-    background-color: #dd1f20;
+  background-color: #dd1f20;
 }
 
 .tag-mv {
-    background-color: #ffaf0f;
+  background-color: #ffaf0f;
 }
 
 .pagination-container {
-    display: flex;
-    justify-content: center;
-    margin: 1.875rem 0 9.375rem 0;
+  display: flex;
+  justify-content: center;
+  margin: 1.875rem 0 9.375rem 0;
 }
 
 #prevPage,
 #nextPage {
-    padding: 0.5rem 1rem;
-    width: auto;
-    height: auto;
-    min-width: 2.5rem;
-    font-size: 1.125rem;
-    line-height: 1.125rem;
-    font-weight: 600;
-    transition: 0.2s all;
-    color: var(--text-primary);
-    background-color: var(--color-secondary);
-    border-radius: 10px;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  padding: 0.5rem 1rem;
+  width: auto;
+  height: auto;
+  min-width: 2.5rem;
+  font-size: 1.125rem;
+  line-height: 1.125rem;
+  font-weight: 600;
+  transition: 0.2s all;
+  color: var(--text-primary);
+  background-color: var(--color-secondary);
+  border-radius: 10px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #prevPage:hover,
 #nextPage:hover {
-    background-color: var(--color-tertiary);
+  background-color: var(--color-tertiary);
 }
 
 .title {
-    background-color: var(--color-primary);
-    height: 3.75rem;
-    border-radius: 10px;
-    display: flex;
-    width: 100%;
-    padding: 0.3125rem;
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    user-select: none;
-    transition: box-shadow 0.3s ease,
+  background-color: var(--color-primary);
+  height: 3.75rem;
+  border-radius: 10px;
+  display: flex;
+  width: 100%;
+  padding: 0.3125rem;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    box-shadow 0.3s ease,
     background-color 0.5s ease;
 }
 
 img {
-    border-radius: 10px;
+  border-radius: 10px;
 }
 
 .list {
-    display: flex;
-    flex-direction: column;
-    /* 改为竖向布局 */
-    margin: 0 0.625rem;
-    position: absolute;
-    bottom: 7.5rem;
-    /* 距离底部的距离 */
-    height: 30rem;
-    /* 高度 */
-    width: 30rem;
-    /* 宽度 */
-    border-radius: 10px;
-    background-color: rgba(var(--color-primary-rgb), 0.8);
-    backdrop-filter: blur(0.625rem);
-    transition: background-color 0.5s ease,
+  display: flex;
+  flex-direction: column;
+  /* 改为竖向布局 */
+  margin: 0 0.625rem;
+  position: absolute;
+  bottom: 7.5rem;
+  /* 距离底部的距离 */
+  height: 30rem;
+  /* 高度 */
+  width: 30rem;
+  /* 宽度 */
+  border-radius: 10px;
+  background-color: rgba(var(--color-primary-rgb), 0.8);
+  backdrop-filter: blur(0.625rem);
+  transition:
+    background-color 0.5s ease,
     height 0.3s ease;
-    z-index: 4;
-    overflow: auto;
-    /* 溢出时显示滚动条 */
-    padding: 0.625rem;
+  z-index: 4;
+  overflow: auto;
+  /* 溢出时显示滚动条 */
+  padding: 0.625rem;
 }
 
 .list-fold {
-    bottom: 5rem;
-    /* 距离底部的距离 */
-    height: 0rem;
-    /* 高度 */
-    overflow: hidden;
+  bottom: 5rem;
+  /* 距离底部的距离 */
+  height: 0rem;
+  /* 高度 */
+  overflow: hidden;
 }
 
 .list-title {
-    display: flex;
-    justify-content: space-between;
-    padding: 1.5rem;
-    align-items: center;
-    color: var(--text-primary);
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem;
+  align-items: center;
+  color: var(--text-primary);
 }
 
 .list-container {
-    display: flex;
-    width: 90%;
-    margin: 0 0.625rem;
-    position: relative;
-    align-items: center;
-    padding: 0.625rem 0 0.625rem 1.5rem;
-    border-radius: 10px;
-    height: 2rem;
-    background-color: rgba(var(--color-secondary-rgb), 0);
-    color: var(--text-primary);
-    user-select: none;
-    transition: background-color 0.5s ease;
+  display: flex;
+  width: 90%;
+  margin: 0 0.625rem;
+  position: relative;
+  align-items: center;
+  padding: 0.625rem 0 0.625rem 1.5rem;
+  border-radius: 10px;
+  height: 2rem;
+  background-color: rgba(var(--color-secondary-rgb), 0);
+  color: var(--text-primary);
+  user-select: none;
+  transition: background-color 0.5s ease;
 }
 
 .list-container:hover {
-    background-color: var(--color-secondary);
+  background-color: var(--color-secondary);
 }
 
 .list-container-playing {
-    background-color: var(--color-secondary);
-    color: var(--text-playing);
+  background-color: var(--color-secondary);
+  color: var(--text-playing);
 }
 
 .list-container-title {
-    display: flex;
-    width: 50%;
-    margin-right: 5%;
-    text-align: left;
+  display: flex;
+  width: 50%;
+  margin-right: 5%;
+  text-align: left;
 }
 
 .list-container-title-number {
-    width: 20%;
-    text-align: left;
+  width: 20%;
+  text-align: left;
 }
 
 .list-container-title-text {
-    width: 80%;
-    text-align: left;
+  width: 80%;
+  text-align: left;
 }
 
 .list-container-singer {
-    width: 30%;
-    text-align: left;
+  width: 30%;
+  text-align: left;
 }
 
 .footer {
-    position: fixed;
-    bottom: 0.625rem;
-    margin: 0 0.625rem;
-    width: calc(100% - 1.25rem);
-    backdrop-filter: blur(0.625rem);
-    height: 6.25rem;
-    border-radius: 10px;
-    overflow: hidden; /* 避免模糊效果溢出 */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: center;
-    box-shadow: 0 0 0.625rem var(--shadow);
-    transition: all 0.5s ease;
-    z-index: 5;
+  position: fixed;
+  bottom: 0.625rem;
+  margin: 0 0.625rem;
+  width: calc(100% - 1.25rem);
+  backdrop-filter: blur(0.625rem);
+  height: 6.25rem;
+  border-radius: 10px;
+  overflow: hidden; /* 避免模糊效果溢出 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  box-shadow: 0 0 0.625rem var(--shadow);
+  transition: all 0.5s ease;
+  z-index: 5;
 }
 
 .footer-full-height {
-    height: 98vh;
+  height: 98vh;
 }
 
 .footer::before {
-    content: "";
-    position: absolute;
-    height: 100%;
-    inset: 0;
-    background-image: var(--footer-bg);
-    background-size: 100% 100%;
-    background-position: center;
-    filter: blur(50px);
-    transform: scale(1.1);
-    z-index: -1;
-    transition: background-image 0.5s ease-in-out,
+  content: "";
+  position: absolute;
+  height: 100%;
+  inset: 0;
+  background-image: var(--footer-bg);
+  background-size: 100% 100%;
+  background-position: center;
+  filter: blur(50px);
+  transform: scale(1.1);
+  z-index: -1;
+  transition:
+    background-image 0.5s ease-in-out,
     background-color 0.5s ease-in-out;
 
-    /* 添加遮罩效果 */
-    background-color: rgba(var(--color-primary-rgb), 0.4);
-    background-blend-mode: overlay; /* 将背景图像和颜色混合 */
+  /* 添加遮罩效果 */
+  background-color: rgba(var(--color-primary-rgb), 0.4);
+  background-blend-mode: overlay; /* 将背景图像和颜色混合 */
 }
 
 .footer-info {
-    display: flex;
-    flex-direction: row; /* 水平布局 */
-    height: calc(100% - 6.25rem);
-    padding: 0 18%;
-    overflow: hidden;
+  display: flex;
+  flex-direction: row; /* 水平布局 */
+  height: calc(100% - 6.25rem);
+  padding: 0 18%;
+  overflow: hidden;
 }
 
 .footer-info-right,
 .footer-info-left {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .footer-button-fold {
-    transform: rotate(-180deg);
+  transform: rotate(-180deg);
 }
 
 .footer-container {
-    position: fixed;
-    margin: 0 0.625rem;
-    height: 6.25rem;
-    border-radius: 10px;
-    width: calc(100% - 1.25rem);
-    bottom: 0.625rem;
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    z-index: 15;
+  position: fixed;
+  margin: 0 0.625rem;
+  height: 6.25rem;
+  border-radius: 10px;
+  width: calc(100% - 1.25rem);
+  bottom: 0.625rem;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  z-index: 15;
 }
 
 .footer-left,
 .footer-right {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  width: 30%;
+  transition: all 0.5s ease;
+}
+
+.footer-left-fold {
+  width: 0;
 }
 
 .footer-right {
-    justify-content: flex-end;
+  justify-content: flex-end;
 }
 
 .footer-center {
-    display: flex;
-    justify-content: center;
-    margin: 0;
-    align-items: flex-start;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  align-items: flex-start;
+  height: 100%;
 }
 
 .music-player-container {
-    display: flex;
-    align-items: flex-end;
-    margin-top: -2.5rem;
-    user-select: none;
-    transition: all 1s ease;
-    z-index: 10; /* 让它浮在 `footer` 之上 */
+  display: flex;
+  align-items: flex-end;
+  margin-top: -2.5rem;
+  user-select: none;
+  transition: all 1s ease;
+  z-index: 10; /* 让它浮在 `footer` 之上 */
 }
 
 .music-control {
-    margin: 0 0.625rem;
-    cursor: pointer;
+  margin: 0 0.625rem;
+  cursor: pointer;
 }
 
 .music-control.prev,
 .music-control.next {
-    position: relative;
-    width: 1.875rem;
-    height: 3.125rem;
-    background-color: var(--text-primary);
-    border-radius: 5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    transition: background-color 0.5s ease;
+  position: relative;
+  width: 1.875rem;
+  height: 3.125rem;
+  background-color: var(--text-primary);
+  border-radius: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background-color 0.5s ease;
 }
 
 .music-control.play-pause {
-    width: 6.25rem;
-    height: 6.25rem;
-    background-color: var(--text-primary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  width: 6.25rem;
+  height: 6.25rem;
+  background-color: var(--text-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .song-cover {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 2;
 }
 
 .song-cover:hover {
-    opacity: 0;
-    transition: opacity 0.3s ease;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .music-control-icon {
-    position: absolute;
-    z-index: 1;
+  position: absolute;
+  z-index: 1;
 }
 
 /* 定义封面旋转的动画 */
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* 默认不旋转，播放时启动旋转动画 */
 #current-song-cover.playing {
-    animation: spin 15s linear infinite;
+  animation: spin 15s linear infinite;
 }

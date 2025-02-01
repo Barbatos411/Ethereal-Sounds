@@ -5,6 +5,9 @@ function footer_fold() {
   // 切换.footer元素的类
   footer.classList.toggle("footer-full-height");
   svgElement.classList.toggle("footer-button-fold");
+
+  const footer_left = document.querySelector(".footer-left");
+  footer_left.classList.toggle("footer-left-fold");
 }
 
 // 获取列表按钮元素
