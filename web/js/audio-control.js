@@ -3,22 +3,27 @@ const AudioContext = window.AudioContext;
 
 // 创建一个新的 AudioContext 实例，用于处理音频
 let audioCtx = new AudioContext();
+let gainNode = audioCtx.createGain(); // 控制音量
 
 // 异步函数，用于添加音乐播放
 async function play_music(element, action = "play") {
-  // 获取元素的数据属性，歌曲ID和平台
+  // 每次调用播放函数时先更新播放请求标识
+  currentPlayId++;
+  const myPlayId = currentPlayId;
+
+  // 获取音频信息等
   const audio_id = element.dataset.id;
   const platform = element.dataset.platform;
   const audio_number = element.dataset.number;
 
   if (action === "add") {
-    await add_song_to_playlist(element); // 添加歌曲到播放列表
+    await add_song_to_playlist(element);
   } else {
     await fetch(`/update_play_status?audio_number=${audio_number}`);
-    await fetchAndRenderPlaylist(); // 重新获取并渲染播放列表
+    await fetchAndRenderPlaylist();
   }
+
   const url = `/get_audio?platform=${platform}&audio_id=${audio_id}`;
-  console.log(url);
 
   try {
     const response = await fetch(url);
@@ -30,15 +35,12 @@ async function play_music(element, action = "play") {
 
     if (contentType && contentType.startsWith("audio/")) {
       console.log("音频文件");
-      // 直接加载音频流
-      await loadAudio(response, true);
+      await loadAudio(response, true, myPlayId);
     } else {
       console.log("非音频文件");
-      // 解析 JSON 数据并获取 audio_url
       const data = await response.json();
-      const audio_url = data.audio_url; // 修正：正确访问 JSON 字段
-      // 加载音频
-      await loadAudio(audio_url, false);
+      const audio_url = data.audio_url;
+      await loadAudio(audio_url, false, myPlayId);
     }
   } catch (error) {
     console.error("请求失败:", error);
@@ -66,20 +68,33 @@ play_pause.addEventListener("click", togglePlayPause);
 const play_icon = document.getElementById("play-icon");
 // 暂停图标
 const pause_icon = document.getElementById("pause-icon");
+
+// 进度条和音量条
+const progressBar = document.getElementById("progressBar");
+const volumeBar = document.getElementById("volumeBar");
+
+let audioBuffer = null;
+// 记录是否正在播放
+let isPlaying = false;
+// 记录播放开始的时间
+let startTime = 0;
+
+// 用于标识最新的播放请求
+let currentPlayId = 0;
+
 // 重新加载并播放音频
 // 异步加载音频函数
-async function loadAudio(url, stream) {
+async function loadAudio(urlOrResponse, stream, myPlayId) {
+  // 停止当前音频，确保旧的音频源 onended 被清除
+  stopAllAudio();
   // 停止封面旋转
   const currentSongCover = document.getElementById("current-song-cover");
   currentSongCover.classList.remove("playing");
-  let response = url; // 如果是流式音频，则直接使用 response
+
   try {
-    // 停止所有音频
-    stopAllAudio();
-    // 如果不是流式音频
+    let response = urlOrResponse;
     if (!stream) {
-      // 发送请求获取音频数据
-      response = await fetch(url);
+      response = await fetch(urlOrResponse);
       if (!response.ok) throw new Error(`HTTP 错误！状态: ${response.status}`);
     }
 
@@ -87,7 +102,15 @@ async function loadAudio(url, stream) {
     const arrayBuffer = await response.arrayBuffer();
     currentBuffer = await audioCtx.decodeAudioData(arrayBuffer); // 缓存音频数据
 
-    playAudio(); // 播放新的音频
+    progressBar.max = currentBuffer.duration; // 设定进度条最大值
+
+    // 在异步操作结束前检查标识
+    if (myPlayId !== currentPlayId) {
+      console.log("播放请求已被更新，放弃本次播放");
+      return;
+    }
+
+    playAudio(myPlayId); // 播放新的音频
   } catch (error) {
     console.error("加载音频失败:", error);
   }
@@ -95,62 +118,68 @@ async function loadAudio(url, stream) {
 
 // 停止所有播放的音频
 function stopAllAudio() {
-  // 如果当前音频源存在
   if (currentSource) {
+    // 清除旧 onended 事件，防止触发下一首逻辑
+    currentSource.onended = null;
     try {
-      // 停止当前音频源
       currentSource.stop();
-      // 断开当前音频源
-      currentSource.disconnect();
     } catch (err) {
-      // 如果停止音频时发生错误，打印错误信息
       console.warn("停止音频时发生错误:", err);
     }
-    // 将当前音频源置为空
+    try {
+      currentSource.disconnect();
+    } catch (err) {
+      // 某些情况下可能已经断开
+    }
     currentSource = null;
   }
-
-  // 彻底关闭音频上下文
-  if (audioCtx.state !== "closed") {
-    // 关闭音频上下文
-    audioCtx.close().then(() => {
-      // 重新创建 AudioContext，确保干净的状态
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      // 打印音频上下文已重置的信息
-      console.log("音频上下文已重置");
-    });
-  }
-
-  // 清空缓冲区，确保播放新歌曲时不会重复播放旧歌曲
-  currentBuffer = null;
+  // 可根据需要决定是否清空 currentBuffer（通常不清空，方便跳转）
 }
 
 // 重新定义播放音频
 // 播放音频函数
-function playAudio() {
+async function playAudio(myPlayId) {
   // 如果当前缓冲区为空，则返回
   if (!currentBuffer) return;
 
+  // 检查标识，若不匹配则直接返回
+  if (myPlayId !== currentPlayId) {
+    console.log("播放请求已被更新，停止播放");
+    return;
+  }
+
   // 如果音频上下文状态为暂停，则恢复播放
   if (audioCtx.state === "suspended") {
-    audioCtx.resume();
+    await audioCtx.resume();
   }
+
+  if (!audioCtx || audioCtx.state === "closed") {
+    console.log("创建新的 AudioContext");
+    gainNode = audioCtx.createGain();
+  }
+
+  // 记录播放开始的时间
+  startTime = audioCtx.currentTime;
 
   // 创建一个新的音频源
   currentSource = audioCtx.createBufferSource();
   // 将当前缓冲区赋值给音频源
   currentSource.buffer = currentBuffer;
   // 将音频源连接到音频上下文的输出
-  currentSource.connect(audioCtx.destination);
+  currentSource.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
   // 开始播放音频
   currentSource.start();
+
+  // 隐藏播放按钮，显示暂停按钮
+  togglePlayPauseIcon(true);
+
+  // 更新进度条
+  updateProgress();
 
   // 启动封面旋转动画
   const currentSongCover = document.getElementById("current-song-cover");
   currentSongCover.classList.add("playing"); // 添加动画
-
-  // 隐藏播放按钮，显示暂停按钮
-  togglePlayPauseIcon(true);
 
   // 当音频播放结束时，执行以下操作
   currentSource.onended = () => {
@@ -229,6 +258,11 @@ function playPrevSong() {
   // 如果存在歌曲元素
   if (prevSong) {
     const title = prevSong.querySelector(".list-container-title-text");
+    if (currentSource) {
+      currentSource.onended = null;
+    }
+    // 清除当前音频，更新全局播放标识
+    stopAllAudio();
     // 停止封面旋转
     const currentSongCover = document.getElementById("current-song-cover");
     currentSongCover.classList.remove("playing");
@@ -253,6 +287,11 @@ function playNextSong() {
   // 如果存在歌曲元素
   if (nextSong) {
     const title = nextSong.querySelector(".list-container-title-text");
+    if (currentSource) {
+      currentSource.onended = null;
+    }
+    // 清除当前音频，更新全局播放标识
+    stopAllAudio();
     // 停止封面旋转
     const currentSongCover = document.getElementById("current-song-cover");
     currentSongCover.classList.remove("playing");
@@ -537,22 +576,24 @@ function updateSongTitle() {
 }
 
 // 切换播放/暂停图标显示]
-function togglePlayPauseIcon(isPlaying) {
+function togglePlayPauseIcon(status) {
   // 获取播放图标和暂停图标
   const play_icon = document.getElementById("play-icon");
   const pause_icon = document.getElementById("pause-icon");
 
   // 如果正在播放
-  if (isPlaying) {
+  if (status) {
     // 隐藏播放图标
     play_icon.style.display = "none";
     // 显示暂停图标
     pause_icon.style.display = "block";
+    isPlaying = true;
   } else {
     // 显示播放图标
     play_icon.style.display = "block";
     // 隐藏暂停图标
     pause_icon.style.display = "none";
+    isPlaying = false;
   }
 }
 
@@ -578,3 +619,67 @@ function changeFooterBackground() {
     footer.classList.remove("fade-in");
   }, 1000);
 }
+
+// 更新进度条
+function updateProgress() {
+  if (!isPlaying || !currentSource) return;
+
+  // 计算当前播放时间（elapsedTime）
+  const elapsedTime = audioCtx.currentTime - startTime;
+  progressBar.value = elapsedTime;
+
+  requestAnimationFrame(updateProgress);
+}
+
+// 跳转到指定时间
+progressBar.addEventListener("input", () => {
+  if (!currentBuffer) return;
+
+  const newTime = parseFloat(progressBar.value);
+  // 更新播放标识，防止旧 onended 的触发
+  currentPlayId++;
+  const myPlayId = currentPlayId;
+
+  // 停止当前音频并清除 onended
+  if (currentSource) {
+    currentSource.onended = null;
+    try {
+      currentSource.stop();
+    } catch (e) {
+      console.warn("停止当前音频出错：", e);
+    }
+    currentSource.disconnect();
+    currentSource = null;
+  }
+
+  // 创建新的 AudioBufferSourceNode
+  currentSource = audioCtx.createBufferSource();
+  currentSource.buffer = currentBuffer;
+  currentSource.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  // 调整 startTime 使进度条正确
+  startTime = audioCtx.currentTime - newTime;
+
+  currentSource.start(0, newTime);
+
+  isPlaying = true;
+  togglePlayPauseIcon(true);
+
+  // 新的 onended 事件
+  currentSource.onended = () => {
+    console.log("音频播放结束");
+    currentSource = null;
+    if (myPlayId === currentPlayId) {
+      handlePlaybackEnd();
+    }
+  };
+
+  updateProgress();
+});
+
+// 调整音量
+volumeBar.addEventListener("input", () => {
+  console.log("音量调整");
+  gainNode.gain.value = parseFloat(volumeBar.value);
+});

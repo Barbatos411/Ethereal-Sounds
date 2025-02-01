@@ -509,10 +509,18 @@ img {
 
 .footer-center {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   margin: 0;
-  align-items: flex-start;
+  align-items: center;
   height: 100%;
+  width: 30%;
+}
+
+.music-progress-container {
+  display: flex;
+  margin: 1rem 0 0 0;
+  width: 80%;
 }
 
 .music-player-container {
@@ -584,4 +592,35 @@ img {
 /* 默认不旋转，播放时启动旋转动画 */
 #current-song-cover.playing {
   animation: spin 15s linear infinite;
+}
+
+.custom-range {
+  -webkit-appearance: none; /* 去除默认样式 */
+  width: 50%; /* 设置宽度 */
+  height: 0.2rem; /* 设置高度 */
+  background: var(--text-secondary); /* 设置背景颜色 */
+  outline: none; /* 去除焦点时的外边框 */
+  opacity: 0.5; /* 设置透明度 */
+  -webkit-transition: 0.2s; /* 设置过渡效果 */
+  transition: opacity 0.2s;
+}
+
+.custom-range:hover {
+  opacity: 1; /* 鼠标悬停时增加透明度 */
+}
+
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none; /* 去除默认样式 */
+  appearance: none;
+  width: 0.2rem; /* 设置滑块宽度 */
+  height: 0.5rem; /* 设置滑块高度 */
+  background: var(--text-primary); /* 设置滑块背景颜色 */
+  cursor: pointer; /* 设置鼠标样式 */
+}
+
+.custom-range::-moz-range-thumb {
+  width: 0.2rem; /* 设置滑块宽度 */
+  height: 0.5rem; /* 设置滑块高度 */
+  background: var(--text-primary); /* 设置滑块背景颜色 */
+  cursor: pointer; /* 设置鼠标样式 */
 }
