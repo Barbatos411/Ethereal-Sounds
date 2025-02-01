@@ -15,8 +15,8 @@ async function play_music(element, action = "play") {
     await add_song_to_playlist(element); // 添加歌曲到播放列表
   } else {
     await fetch(`/update_play_status?audio_number=${audio_number}`);
+    await fetchAndRenderPlaylist(); // 重新获取并渲染播放列表
   }
-  await fetchAndRenderPlaylist(); // 重新获取并渲染播放列表
   const url = `/get_audio?platform=${platform}&audio_id=${audio_id}`;
   console.log(url);
 
@@ -351,6 +351,7 @@ async function add_song_to_playlist(element, action = "play") {
       body: JSON.stringify(requestData), // 转换为 JSON 字符串
     });
 
+    await fetchAndRenderPlaylist(); // 重新获取并渲染播放列表
     // 处理响应
     if (!response.ok) {
       throw new Error(`请求失败，状态码: ${response.status}`);
@@ -483,14 +484,9 @@ function updateCovers() {
   const timestamp = new Date().getTime(); // 生成唯一时间戳
 
   // 更新封面，确保绕过缓存
-  if (last_song_cover)
-    last_song_cover.src = lastCover ? `${lastCover}?t=${timestamp}` : "";
-  if (current_song_cover)
-    current_song_cover.src = currentCover
-      ? `${currentCover}?t=${timestamp}`
-      : "";
-  if (next_song_cover)
-    next_song_cover.src = nextCover ? `${nextCover}?t=${timestamp}` : "";
+  if (last_song_cover) last_song_cover.src = lastCover;
+  if (current_song_cover) current_song_cover.src = currentCover;
+  if (next_song_cover) next_song_cover.src = nextCover;
 
   // 确保封面加载完成后再更新背景
   if (current_song_cover && current_song_cover.complete) {

@@ -238,7 +238,7 @@ em {
 .music-container-right {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: end;
   margin-right: 3.125rem;
   width: 20%;
 }
@@ -416,9 +416,9 @@ img {
 
 .footer {
   position: fixed;
-  bottom: 0.625rem;
-  margin: 0 0.625rem;
-  width: calc(100% - 1.25rem);
+  bottom: 0.3rem;
+  margin: 0 0.3rem;
+  width: calc(100% - 0.6rem);
   backdrop-filter: blur(0.625rem);
   height: 6.25rem;
   border-radius: 10px;
@@ -433,7 +433,7 @@ img {
 }
 
 .footer-full-height {
-  height: 98vh;
+  height: calc(100vh - 0.6rem);
 }
 
 .footer::before {
@@ -479,11 +479,11 @@ img {
 
 .footer-container {
   position: fixed;
-  margin: 0 0.625rem;
+  margin: 0 0.3rem;
   height: 6.25rem;
   border-radius: 10px;
-  width: calc(100% - 1.25rem);
-  bottom: 0.625rem;
+  width: calc(100% - 0.6rem);
+  bottom: 0.3rem;
   display: flex;
   justify-content: space-between;
   text-align: center;
@@ -568,7 +568,7 @@ img {
 
 .music-control-icon {
   position: absolute;
-  z-index: 1;
+  display: flex;
 }
 
 /* 定义封面旋转的动画 */

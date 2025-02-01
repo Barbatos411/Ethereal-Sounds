@@ -39,7 +39,7 @@ export async function searchSongs(platform, keyword, page) {
                         <div class="music-container-left">
                             <img class="music-cover" src="${song.cover}" alt="cover">
                             <div class="music-name">
-                                <h3 class="song-title" onclick=play_music(this,"add") style="color: var(--text-primary); margin: 0" data-id=${song.id} data-platform=${encodeURIComponent(platform)} data-singer=${song.author} data-cover=${song.cover} data-album='${song.album}'>${song.title}</h3>
+                                <h3 class="song-title" onclick=play_music(this,"add") style="color: var(--text-primary); margin: 0" data-id=${song.id} data-platform=${encodeURIComponent(platform)} data-singer='${song.author}' data-cover=${song.cover} data-album='${song.album}'>${song.title}</h3>
                                 <p class="music-singer">${song.author}</p>
                             </div>
                             <div class="song-tags">
@@ -49,12 +49,9 @@ export async function searchSongs(platform, keyword, page) {
                         </div>
                         ${song.album !== undefined ? `<div class="music-container-center">${song.album}</div>` : ""}
                         <div class="music-container-right">
-                            <div class="add-playlist" style="display: flex; align-items: center">
-                                <!-- 添加播放列表按钮或其他内容 -->
-                            </div>
-                            <div class="url" style="display: flex; align-items: center; margin: 10px">
+                            <div class="button" style="margin:0 1rem">
                               <a href=${song.url} target="_blank" rel="noopener noreferrer">
-                                  <svg role="img" xmlns="http://www.w3.org/2000/svg" width="3vh" height="3vh" viewBox="0 0 24 24" aria-labelledby="linkIconTitle" stroke="var(--text-primary)" stroke-width="1.7142857142857142" stroke-linecap="round" stroke-linejoin="round" fill="none" color="none">
+                                  <svg style="    margin-top: 0.4rem; rotate: -45deg;" role="img" xmlns="http://www.w3.org/2000/svg" width="3vh" height="3vh" viewBox="0 0 24 24" aria-labelledby="linkIconTitle" stroke="var(--text-primary)" stroke-width="1.7142857142857142" stroke-linecap="round" stroke-linejoin="round" fill="none" color="none">
                                       <title id="linkIconTitle">链接</title>
                                       <path d="M10.5,15.5 C10.5,14.1666667 10.5,13.5 10.5,13.5 C10.5,10.7385763 8.26142375,8.5 5.5,8.5 C2.73857625,8.5 0.5,10.7385763 0.5,13.5 C0.5,13.5 0.5,14.1666667 0.5,15.5" transform="rotate(-90 5.5 12)"/>
                                       <path d="M8,12 L16,12"/>
@@ -62,7 +59,10 @@ export async function searchSongs(platform, keyword, page) {
                                   </svg>
                               </a>
                             </div>
-                            <div style="display: flex; align-items: center; margin: 10px">${song.duration}</div>
+                            <div class="button" style="margin:0 1rem" onclick='add_song_to_playlist(this,"add")' data-id=${song.id} data-platform=${encodeURIComponent(platform)} data-singer='${song.author}' data-cover=${song.cover} data-album='${song.album}'>
+                                <svg role="img" xmlns="http://www.w3.org/2000/svg" width="3vh" height="3vh" viewBox="0 0 24 24" aria-labelledby="plusIconTitle" stroke="var(--text-primary)" stroke-width="1.7142857142857142" stroke-linecap="round" stroke-linejoin="round" fill="none" color="#000"> <title id="plusIconTitle">${song.title}</title> <path d="M20 12L4 12M12 4L12 20"/></svg>
+                            </div>
+                            <div style="display: flex; align-items: center; margin:0 1rem">${song.duration}</div>
                         </div>
                     `;
           list.appendChild(songItem);
