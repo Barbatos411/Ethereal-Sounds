@@ -201,7 +201,7 @@ function handlePlaybackEnd() {
   // 如果循环模式为单曲循环
   if (loopMode === "single") {
     // 播放音频
-    playAudio(); // 单曲循环
+    replayCurrentSong(); // 单曲循环
     // 如果循环模式为随机播放
   } else if (loopMode === "random") {
     // 随机播放歌曲
@@ -239,6 +239,7 @@ function toggleLoopMode() {
   } else if (loopMode === "random") {
     loop_random.style.display = "block";
   }
+  updateCovers();
 }
 
 // 播放上一首
@@ -298,18 +299,39 @@ function playNextSong() {
     play_music(title, "play"); // 播放下一首歌曲
   }
 }
+// 单曲循环
+function replayCurrentSong() {
+  // 直接使用当前的 currentBuffer 和 currentPlayId 重播当前歌曲
+  if (!currentBuffer) return;
+  console.log("单曲循环模式：重播当前歌曲");
+  playAudio(currentPlayId);
+}
 
 // 随机播放
-// 定义一个函数，用于播放随机歌曲
 function playRandomSong() {
-  // 获取所有歌曲的元素
-  const songs = document.querySelectorAll(".list-container-title-text");
-  // 如果有歌曲
-  if (songs.length > 0) {
-    // 生成一个随机索引
-    const randomIndex = Math.floor(Math.random() * songs.length);
-    // 播放随机歌曲
-    play_music(songs[randomIndex], "play");
+  // 获取所有歌曲的 DOM 元素，并转换为数组
+  const allSongs = Array.from(
+    document.querySelectorAll(".list-container-title-text")
+  );
+
+  // 获取当前正在播放的歌曲元素（假设父容器有 .list-container-playing 类）
+  const currentSong = document.querySelector(
+    ".list-container-playing .list-container-title-text"
+  );
+
+  // 过滤掉当前正在播放的歌曲
+  let candidateSongs = allSongs;
+  if (currentSong) {
+    candidateSongs = allSongs.filter((song) => song !== currentSong);
+  }
+
+  // 如果候选歌曲不为空，则随机选择一首播放，否则直接播放当前歌曲（或根据需求处理）
+  if (candidateSongs.length > 0) {
+    const randomIndex = Math.floor(Math.random() * candidateSongs.length);
+    play_music(candidateSongs[randomIndex], "play");
+  } else if (currentSong) {
+    // 如果列表中只有当前歌曲，则继续播放当前歌曲
+    play_music(currentSong, "play");
   }
 }
 
