@@ -504,7 +504,7 @@ img {
   font-size: 24px;
   line-height: 1.8;
   text-align: center;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   transition:
     font-size 0.3s,
     color 0.3s;
@@ -513,6 +513,7 @@ img {
 /* 当前行高亮：字体放大、颜色加深 */
 #lyric-list li.active {
   font-size: 32px;
+  line-height: 1.8;
   color: var(--text-primary);
   font-weight: bold;
 }
