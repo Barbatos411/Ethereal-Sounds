@@ -55,7 +55,27 @@ git clone https://github.com/Barbatos411/Ethereal-Sounds
 cd Ethereal-Sounds
 ```
 
-### 安装依赖
+### 创建虚拟环境
+
+```bash
+python -m venv venv
+```
+
+### 启动虚拟环境
+
+#### Linux/Unix/MacOS
+
+```bash
+source venv/bin/activate
+```
+
+#### Windows
+
+```bash
+.\venv\Scripts\activate
+```
+
+### 在虚拟环境中安装依赖
 
 ```bash
 pip install -r requirements.txt
@@ -66,7 +86,8 @@ pip install -r requirements.txt
 ```
 python -m uvicorn app.main:app
 ```
-访问 http://127.0.0.1:8000 查看应用运行状态
+
+访问 <http://127.0.0.1:8000> 查看应用运行状态
 
 ### 更新
 
@@ -103,7 +124,6 @@ git pull
 </a>
 
 ![Alt](https://repobeats.axiom.co/api/embed/002c2203d71e30e71dde64f255706628de6a498c.svg "Repobeats analytics image")
-
 
 ![Star History Chart](https://api.star-history.com/svg?repos=Barbatos411/Ethereal-Sounds&type=Date)
 
