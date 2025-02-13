@@ -10,14 +10,13 @@ async def get_audio(self, audio_id):
     """
     cookies = cookie_to_dict(self.headers["cookie"])
     secret = self.getSecret(cookies["Hm_Iuvt_cdb524f42f23cer9b268564v7y735ewrq2324"])
-    self.headers["secrt"] = secret
-    base_url = "https://kuwo.cn/api/v1/www/music/playUrl"
+    self.headers["Secret"] = secret
+    base_url = "https://www.kuwo.cn/api/v1/www/music/playUrl"
     # 生成 reqId
     reqId = self.reqid()
-    # 更新请求头
-    self.headers["referer"] = f"https://kuwo.cn/play_detail/{audio_id}"
     # 构建请求 URL
-    url = f"{base_url}?mid={audio_id}&type=music&httpsStatus=1&reqId={reqId}&plat=web_www&from"
+    url = f"{base_url}?mid={audio_id}&type=music&httpsStatus=1&reqId={reqId}&plat=web_www&from="
+
     try:
         # 发送 GET 请求
         response = await self.client.get(url, headers=self.headers)
@@ -25,9 +24,16 @@ async def get_audio(self, audio_id):
         # 解析数据
         data = response.json()
         audio_url = data.get('data', {}).get('url')
-        # 返回音频文件/链接
-        print(audio_url)
-        return False, audio_url
+
+        # 使用 stream 方法获取音频流
+        async with self.client.stream("GET", audio_url, headers=self.headers) as audio:
+            audio.raise_for_status()  # 如果请求失败则抛出异常
+
+            # 读取流式响应的内容
+            audio_content = await audio.aread()
+
+            # 返回音频内容和 MIME 类型
+            return True, audio_content
     except Exception as e:
         # 其他错误处理
         return {"error": f"发生错误: {e}"}

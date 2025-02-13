@@ -1,5 +1,6 @@
 from app.platforms.utils import cookie_to_dict
 
+
 async def get_lrc(self, audio_id: str, trans: bool):
     """
     定义抽象地获取歌词方法，每个平台都必须实现
@@ -17,11 +18,6 @@ async def get_lrc(self, audio_id: str, trans: bool):
         response = await self.client.get(url, headers=self.headers)
         response.raise_for_status()
         data = response.json()
-        def format_lyrics(lrclist):
-            return "\n".join(f"[{item['time']:.2f}]{item['lineLyric']}" for item in lrclist)
-
-        lrclist = data.get("data", {}).get('lrclist', [])
-        lrc = format_lyrics(lrclist)
-        return {"lyric": lrc.strip()}
+        return data
     except Exception as e:
         return {"error": f"发生错误: {e}"}

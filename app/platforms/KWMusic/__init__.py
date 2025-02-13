@@ -1,9 +1,10 @@
-import time
 import math
 import random
+import time
 
 from app.platforms.base import BasePlatform
 from .get_audio import get_audio
+from .get_lrc import get_lrc
 from .home import home
 from .search import search
 
@@ -39,7 +40,7 @@ class KWMusic(BasePlatform):
         :return: 歌词
         :param trans: 是否翻译
         """
-        pass
+        return await get_lrc(self, audio_id, trans)
 
     async def home(self):
         """
