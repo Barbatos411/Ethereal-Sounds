@@ -1,4 +1,4 @@
-from app.platforms.utils import cookie_to_dict
+from app.platforms.utils.cookie_to_dict import cookie_to_dict
 
 
 async def get_audio(self, audio_id):

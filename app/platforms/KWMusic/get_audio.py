@@ -1,4 +1,4 @@
-from app.platforms.utils import cookie_to_dict
+from app.platforms.utils.cookie_to_dict import cookie_to_dict
 
 
 async def get_audio(self, audio_id):
@@ -13,9 +13,9 @@ async def get_audio(self, audio_id):
     self.headers["Secret"] = secret
     base_url = "https://www.kuwo.cn/api/v1/www/music/playUrl"
     # 生成 reqId
-    reqId = self.reqid()
+    reqid = self.reqid()
     # 构建请求 URL
-    url = f"{base_url}?mid={audio_id}&type=music&httpsStatus=1&reqId={reqId}&plat=web_www&from="
+    url = f"{base_url}?mid={audio_id}&type=music&httpsStatus=1&reqId={reqid}&plat=web_www&from="
 
     try:
         # 发送 GET 请求

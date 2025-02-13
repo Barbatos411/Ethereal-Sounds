@@ -1,4 +1,4 @@
-from app.platforms.utils import s_to_mmss
+from app.platforms.utils.time import s_to_mmss
 
 
 async def search(self, keyword: str, page: int = 1, limit: int = 30):

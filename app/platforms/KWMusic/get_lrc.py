@@ -1,4 +1,4 @@
-from app.platforms.utils import cookie_to_dict
+from app.platforms.utils.cookie_to_dict import cookie_to_dict
 
 
 async def get_lrc(self, audio_id: str, trans: bool):
@@ -11,9 +11,9 @@ async def get_lrc(self, audio_id: str, trans: bool):
     cookies = cookie_to_dict(self.headers["cookie"])
     secret = self.getSecret(cookies["Hm_Iuvt_cdb524f42f23cer9b268564v7y735ewrq2324"])
     self.headers["secrt"] = secret
-    reqId = self.reqid()
+    reqid = self.reqid()
     self.headers["referer"] = f"https://kuwo.cn/play_detail/{audio_id}"
-    url = f"https://kuwo.cn/openapi/v1/www/lyric/getlyric?musicId={audio_id}&httpsStatus=1&reqId={reqId}&plat=web_www&from="
+    url = f"https://kuwo.cn/openapi/v1/www/lyric/getlyric?musicId={audio_id}&httpsStatus=1&reqId={reqid}&plat=web_www&from="
     try:
         response = await self.client.get(url, headers=self.headers)
         response.raise_for_status()
