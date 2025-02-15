@@ -716,65 +716,34 @@ async function loadLyrics(platform, audio_id) {
     console.log("歌词获取成功");
     const data = await response.json();
 
-    // **后端返回 null 或 data.results 为空时，返回 "暂无歌词"**
-    if (!data.results || !data.results.lyric) {
+    if (!data.results || data.results.length === 0) {
       console.warn("该歌曲无歌词");
       return [{ time: 0, text: "暂无歌词" }];
     }
 
-    // **解析歌词**
-    const lyricText = data.results.lyric;
-    const parsedLyrics = parseLyrics(lyricText);
-    return parsedLyrics.length > 0
-      ? parsedLyrics
-      : [{ time: 0, text: "暂无歌词" }];
+    // **直接返回后端已解析好的歌词数据**
+    return data.results;
   } catch (error) {
     console.error("获取歌词失败：", error);
     return [{ time: 0, text: "暂无歌词" }];
   }
 }
 
-// 🟢 【解析歌词】解析 LRC 格式的歌词
-function parseLyrics(lyricText) {
-  if (!lyricText) return [];
-
-  const lines = lyricText.split("\n"); // 按行拆分歌词
-  const lyricArray = [];
-  const timeRegex = /\[(\d{2}):(\d{2}\.\d{1,3})\]/; // 允许 1~3 位小数
-
-  lines.forEach((line) => {
-    const match = line.match(timeRegex); // 查找时间戳
-    if (match) {
-      const minutes = parseInt(match[1], 10);
-      const seconds = parseFloat(match[2]);
-      const time = minutes * 60 + seconds; // 计算时间（单位：秒）
-
-      const text = line.replace(timeRegex, "").trim();
-
-      lyricArray.push({ time, text });
-    }
-  });
-
-  return lyricArray;
-}
-
 // 🟢 【显示歌词】将歌词数据显示到页面上
 function displayLyrics(lyrics) {
-  const lyricList = document.getElementById("lyric-list");
-  lyricList.innerHTML = ""; // **清空旧歌词，防止残留**
+  console.log("传入的歌词数据：", lyrics);
 
-  // **顶部占位符**
+  const lyricList = document.getElementById("lyric-list");
+  lyricList.innerHTML = "";
+
   const topPlaceholder = document.createElement("li");
   topPlaceholder.classList.add("empty-placeholder");
-  topPlaceholder.textContent = "";
   lyricList.appendChild(topPlaceholder);
 
-  // **如果歌词为空，插入 "暂无歌词"**
   if (
     !lyrics.length ||
     (lyrics.length === 1 && lyrics[0].text === "暂无歌词")
   ) {
-    console.warn("显示：暂无歌词");
     const noLyricsLi = document.createElement("li");
     noLyricsLi.classList.add("no-lyrics");
     noLyricsLi.textContent = "暂无歌词";
@@ -783,19 +752,30 @@ function displayLyrics(lyrics) {
     lyrics.forEach((item, index) => {
       const li = document.createElement("li");
       li.setAttribute("data-index", index);
-      li.textContent = item.text;
+
+      // 原歌词
+      const textSpan = document.createElement("span");
+      textSpan.textContent = item.text;
+      li.appendChild(textSpan);
+
       lyricList.appendChild(li);
+
+      // 翻译歌词另起一行
+      if (item.translation) {
+        const transLi = document.createElement("li");
+        transLi.setAttribute("data-index", index); // 保持与原歌词相同的索引
+        transLi.textContent = item.translation;
+        lyricList.appendChild(transLi);
+      }
     });
   }
 
-  // **底部占位符**
   const bottomPlaceholder = document.createElement("li");
   bottomPlaceholder.classList.add("empty-placeholder");
-  bottomPlaceholder.textContent = "";
   lyricList.appendChild(bottomPlaceholder);
 }
 
-// 🟢 【更新歌词高亮】根据播放时间更新
+// 🟢 【更新歌词高亮】
 function updateActiveLyric(currentTime, lyrics) {
   let activeIndex = 0;
   for (let i = 0; i < lyrics.length; i++) {
@@ -807,21 +787,44 @@ function updateActiveLyric(currentTime, lyrics) {
   document
     .querySelectorAll("#lyric-list li")
     .forEach((li) => li.classList.remove("active"));
-  const activeLi = document.querySelector(
+  const activeLines = document.querySelectorAll(
     `#lyric-list li[data-index="${activeIndex}"]`
   );
-
-  if (activeLi) {
-    activeLi.classList.add("active");
-    activeLi.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
+  activeLines.forEach((line) => line.classList.add("active"));
+  // 只要有带 active 的元素就滚动到屏幕中间
+  const activeElements = document.querySelectorAll("#lyric-list li.active");
+  activeElements.forEach((line) => {
+    line.scrollIntoView({ behavior: "smooth", block: "center" }); // 滚动到屏幕中间
+  });
 }
 
-// 🟢 【定时同步歌词】
+// 🟢 【时间戳同步歌词】使用时间戳更新歌词
 function startLyricSync() {
-  setInterval(() => {
-    if (!isPlaying || !lyrics.length) return;
+  let lastIndex = -1; // 用来存储上次高亮歌词的索引，避免重复更新
+
+  // 使用 Web Audio API 获取当前播放的时间
+  function syncLyrics() {
     const currentTime = audioCtx.currentTime - startTime;
-    updateActiveLyric(currentTime, lyrics);
-  }, 500);
+
+    // 寻找当前播放时间对应的歌词
+    let activeIndex = -1;
+    for (let i = 0; i < lyrics.length; i++) {
+      if (currentTime >= lyrics[i].time) {
+        activeIndex = i;
+      } else {
+        break;
+      }
+    }
+
+    // 如果当前歌词有变化，更新高亮显示
+    if (activeIndex !== lastIndex && activeIndex !== -1) {
+      updateActiveLyric(currentTime, lyrics); // 更新高亮歌词
+      lastIndex = activeIndex;
+    }
+
+    // 使用 requestAnimationFrame 来平滑执行同步
+    requestAnimationFrame(syncLyrics);
+  }
+
+  syncLyrics(); // 启动同步
 }
