@@ -1,3 +1,4 @@
+import sqlite3
 import urllib.parse
 
 
@@ -24,3 +25,22 @@ def cookie_to_dict(cookie_string: str):
             cookie_dict[key] = urllib.parse.unquote(value)
 
     return cookie_dict
+
+
+def get_cookie(platform):
+    try:
+        # 使用 `with` 语句管理数据库连接
+        with sqlite3.connect('app/data/data.db') as conn:
+            cursor = conn.cursor()
+
+            # 查询指定平台的 cookie
+            cursor.execute(
+                "SELECT cookie FROM account WHERE platforms = ?", (platform,))
+            result = cursor.fetchone()
+            if result:
+                return result[0]
+            else:
+                return None
+    except sqlite3.Error as e:
+        print(f"数据库操作出现错误: {e}")
+        return None
