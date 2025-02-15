@@ -6,6 +6,7 @@ let audioCtx = new AudioContext();
 let gainNode = audioCtx.createGain(); // 控制音量
 // 存储歌词
 let lyrics = [];
+let updatesyncLyrics = false; // 控制同步歌词的开关
 
 // 异步函数，用于添加音乐播放
 async function play_music(element, action = "play") {
@@ -18,6 +19,13 @@ async function play_music(element, action = "play") {
   const platform = element.dataset.platform;
   const audio_number = element.dataset.number;
 
+  // 关闭同步歌词
+  updatesyncLyrics = false;
+  // 更新歌词
+  lyrics = await loadLyrics(platform, audio_id);
+  // 加载歌词
+  displayLyrics(lyrics); // 显示歌词
+
   if (action === "add") {
     await add_song_to_playlist(element);
   } else {
@@ -25,11 +33,6 @@ async function play_music(element, action = "play") {
   }
 
   await fetchAndRenderPlaylist();
-
-  // 加载歌词并同步
-  lyrics = await loadLyrics(platform, audio_id);
-  displayLyrics(lyrics);
-  startLyricSync();
 
   const url = `/get_audio?platform=${platform}&audio_id=${audio_id}`;
 
@@ -98,7 +101,6 @@ async function loadAudio(urlOrResponse, stream, myPlayId) {
   // 停止封面旋转
   const currentSongCover = document.getElementById("current-song-cover");
   currentSongCover.classList.remove("playing");
-
   try {
     let response = urlOrResponse;
     if (!stream) {
@@ -184,6 +186,9 @@ async function playAudio(myPlayId) {
 
   // 更新进度条
   updateProgress();
+
+  // 启动歌词同步
+  startLyricSync(); // 启动歌词同步
 
   // 启动封面旋转动画
   const currentSongCover = document.getElementById("current-song-cover");
@@ -731,11 +736,9 @@ async function loadLyrics(platform, audio_id) {
 
 // 🟢 【显示歌词】将歌词数据显示到页面上
 function displayLyrics(lyrics) {
-  console.log("传入的歌词数据：", lyrics);
-
   const lyricList = document.getElementById("lyric-list");
-  lyricList.innerHTML = "";
-
+  lyricList.innerHTML = ""; // 清空原有内容
+  lyricList.scrollTop = 0; // 滚动到顶部
   const topPlaceholder = document.createElement("li");
   topPlaceholder.classList.add("empty-placeholder");
   lyricList.appendChild(topPlaceholder);
@@ -801,9 +804,10 @@ function updateActiveLyric(currentTime, lyrics) {
 // 🟢 【时间戳同步歌词】使用时间戳更新歌词
 function startLyricSync() {
   let lastIndex = -1; // 用来存储上次高亮歌词的索引，避免重复更新
-
+  updatesyncLyrics = true; // 控制同步歌词的开关
   // 使用 Web Audio API 获取当前播放的时间
   function syncLyrics() {
+    if (!updatesyncLyrics) return; // 如果为false，直接返回，不再执行同步
     const currentTime = audioCtx.currentTime - startTime;
 
     // 寻找当前播放时间对应的歌词
