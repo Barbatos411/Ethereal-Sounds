@@ -17,6 +17,10 @@ async def get_lrc(self, audio_id: str):
         response = await self.client.get(url, headers=self.headers)
         response.raise_for_status()
         data = response.json()
-        return data
+        lrclist = data.get("data", {}).get("lrclist", [])
+        # 替换字段
+        for item in lrclist:
+            item['text'] = item.pop('lineLyric')
+        return lrclist
     except Exception as e:
         return {"error": f"发生错误: {e}"}
