@@ -37,7 +37,12 @@
 
 ## 执法
 
-滥用、骚扰或其他不可接受行为的事件可报告给负责执法的社区领导者，联系方式为shijinn520@gmail.com。
+滥用、骚扰或其他不可接受行为的事件可报告给负责执法的社区领导者，联系方式为:
+
+Barbatos : 2607263248@qq.com
+
+MapleLeaf : 1011303349@qq.com
+
 所有投诉将得到及时和公平的审查和调查。
 
 所有社区领导者有义务尊重任何事件报告者的隐私和安全。
@@ -72,7 +77,8 @@
 
 ## 归属
 
-本行为准则改编自[Contributor Covenant][homepage]，版本2.0，可在https://www.contributor-covenant.org/version/2/0/code_of_conduct.html查看。
+本行为准则改编自[Contributor Covenant][homepage]
+，版本2.0，可在https://www.contributor-covenant.org/version/2/0/code_of_conduct.html查看。
 
 社区影响指南的灵感来自[Mozilla's code of conduct enforcement ladder](https://github.com/mozilla/diversity)。
 
