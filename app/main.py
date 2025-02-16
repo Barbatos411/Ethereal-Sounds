@@ -8,12 +8,12 @@ from starlette.requests import Request
 
 from app.platform_manager import platform_manager
 from app.platforms.base import BasePlatform
-from app.routers import songs, database
+from app.routers import database, platform
 
 app = FastAPI()
 
 # 将模块化路由注册到主程序
-app.include_router(songs.router, tags=["songs"])
+app.include_router(platform.router, tags=["platform"])
 app.include_router(database.router, tags=["database"])
 
 # 设置静态文件的目录（'css', 'js', 'res' 目录需要映射）
