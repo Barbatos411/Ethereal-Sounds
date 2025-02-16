@@ -43,3 +43,16 @@ class Bilibili(BasePlatform):
         :return: 主页
         """
         return await home()
+
+    async def login(self, platform: str, method: str, username: str, password: str, code: str):
+        """
+        定义抽象的登录方法，每个平台都必须实现
+        登录方式有：账号密码登录、手机号验证码登录、cookie登录，（后续可能会增加其他登录方式：二维码）
+        :param platform: 平台ID
+        :param method: 登录方式
+        :param username: 用户名/手机号
+        :param password: 密码/验证码
+        :param code: cookie
+        :return: 登录状态
+        """
+        pass
