@@ -712,6 +712,20 @@ volumeBar.addEventListener("input", () => {
   gainNode.gain.value = parseFloat(volumeBar.value);
 });
 
+// 显示/隐藏翻译歌词
+function toggleLyrics() {
+  const translations = document.querySelectorAll(".translation"); // 获取所有带有"translation"类的元素
+  translations.forEach((item) => {
+    if (item.style.display === "none") {
+      item.style.display = "block"; // 显示翻译歌词
+      console.log("显示翻译歌词");
+    } else {
+      item.style.display = "none"; // 隐藏翻译歌词
+      console.log("隐藏翻译歌词");
+    }
+  });
+}
+
 // 🟢 【获取歌词】从后端获取歌词数据
 async function loadLyrics(platform, audio_id) {
   try {
@@ -768,6 +782,8 @@ function displayLyrics(lyrics) {
         const transLi = document.createElement("li");
         transLi.setAttribute("data-index", index); // 保持与原歌词相同的索引
         transLi.textContent = item.translation;
+        transLi.style.display = "none"; // 默认隐藏
+        transLi.classList.add("translation"); // 添加翻译类
         lyricList.appendChild(transLi);
       }
     });

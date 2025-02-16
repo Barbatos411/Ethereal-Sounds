@@ -491,7 +491,7 @@ img {
 
 /* 让第一个空行占据足够空间，使第一句歌词自动居中 */
 .empty-placeholder {
-  height: 10%; /* 让它占据歌词容器的50%高度 */
+  height: 12%; /* 让它占据歌词容器的50%高度 */
   visibility: hidden; /* 不显示文本 */
 }
 
