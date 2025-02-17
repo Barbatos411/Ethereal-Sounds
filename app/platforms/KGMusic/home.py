@@ -9,8 +9,6 @@ async def home(self, page: int = 1):
         responses.raise_for_status()
         data = responses.json()
         plist = data.get('plist', {}).get('list', {}).get('info', [])
-        tag = None
-        categories = None
         albums = [
             {
                 "id": album.get("specialid"),
@@ -20,6 +18,6 @@ async def home(self, page: int = 1):
             }
             for album in plist
         ]
-        return {"tag": tag, "categories": categories, "albums": albums}
+        return {"albums": albums}
     except Exception as e:
         return {"error": f"发生错误: {e}"}
