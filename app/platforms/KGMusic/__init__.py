@@ -38,12 +38,12 @@ class KGMusic(BasePlatform):
         """
         return await audio_lyrics(self, 'lyrics', audio_id)
 
-    async def home(self):
+    async def home(self, page: int = 1):
         """
         定义抽象地获取主页方法，每个平台都必须实现
         :return: 主页
         """
-        return await home()
+        return await home(self, page)
 
     async def login(self, platform: str, method: str, username: str, password: str, code: str):
         """
@@ -62,7 +62,6 @@ class KGMusic(BasePlatform):
     def signature(params: dict):
         """
         定义酷狗的签名方法
-        :param base_url: 基础URL
         :param params: 签名参数
         :return: 签名值
         """

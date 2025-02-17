@@ -81,9 +81,10 @@ async def get_lrc(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/login")
+@router.get("/home")
 async def home(
-        platform: str = Query(..., description="搜索平台")
+        platform: str = Query(..., description="搜索平台"),
+        page: int = Query(1, description="分页")
 ):
     """
     根据指定平台获取主页
@@ -91,7 +92,7 @@ async def home(
     # 根据平台名称找到对应的平台类
     try:
         platform_obj = platform_manager.get_platform_by_id(platform)
-        results = await platform_obj.home()
+        results = await platform_obj.home(page)
         return {"results": results}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
