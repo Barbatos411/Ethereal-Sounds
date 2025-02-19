@@ -1,4 +1,84 @@
-export async function searchSongs(platform, keyword, page) {
+async function displayPlatforms() {
+  try {
+    const response = await fetch("/platforms");
+    const data = await response.json();
+
+    const platformsContainer = document.querySelector(".platforms-container");
+
+    // 遍历排序后的平台，生成对应的 <div> 元素
+    data.platforms.forEach((platform, index) => {
+      // 创建平台的 <div> 元素
+      const platformDiv = document.createElement("div");
+      platformDiv.className = "music-platform";
+      platformDiv.textContent = platform.name;
+      platformDiv.id = platform.id;
+
+      // 如果是第一个平台，添加 selected 类
+      if (index === 0) {
+        platformDiv.classList.add("selected");
+      }
+
+      // 添加平台 <div> 元素
+      platformsContainer.appendChild(platformDiv);
+
+      // 如果不是最后一个平台，添加一个分隔符
+      if (index < data.platforms.length - 1) {
+        const separator = document.createElement("p");
+        separator.style.color = "#7a7a7b"; // 设置颜色
+        separator.textContent = "|"; // 分隔符文本
+        separator.style.userSelect = "none"; // 禁止用户选择文本
+        platformsContainer.appendChild(separator);
+      }
+    });
+    select_platform(); // 添加选择平台函数
+  } catch (error) {
+    console.error("生成平台元素时出错:", error); // 添加错误处理
+  }
+}
+
+// 页面加载时显示平台
+window.onload = displayPlatforms;
+function select_platform() {
+  // 获取搜索框元素
+  const searchInput = document.getElementById("searchInput");
+  // 为输入框添加 keydown 事件监听器
+  searchInput.addEventListener("keydown", handleEnterKeyPress);
+  // 获取所有平台元素
+  const platforms = document.querySelectorAll(".music-platform");
+
+  // 为每个平台添加点击事件监听器
+  platforms.forEach((platform) => {
+    platform.addEventListener("click", () => {
+      // 移除所有平台的 selected 类
+      platforms.forEach((p) => {
+        p.classList.remove("selected");
+      });
+
+      // 为被点击的平台添加 selected 类
+      platform.classList.add("selected");
+      console.log("已选择平台:", platform.textContent); // 添加调试日志
+
+      // 获取搜索框的值并执行搜索
+      const query = searchInput.value.trim();
+      if (query) {
+        searchSongs(platform.id, query, 1);
+      }
+    });
+  });
+}
+
+// 监听搜索框的回车事件
+function handleEnterKeyPress(event) {
+  if (event.key === "Enter") {
+    const query = searchInput.value.trim();
+    const selectedPlatform = document.querySelector(".music-platform.selected");
+    if (selectedPlatform && query) {
+      searchSongs(selectedPlatform.id, query, 1);
+    }
+  }
+}
+
+async function searchSongs(platform, keyword, page) {
   console.log("搜索平台:", platform);
   console.log("搜索歌曲:", keyword);
   console.log("搜索页码:", page);
