@@ -12,7 +12,7 @@ class BasePlatform(ABC):
     name = "BasePlatform"  # 平台名称
     id = "base"  # 平台ID
     Referer = "https://www.example.com/"  # 平台Referer
-    order = 0  # 平台排序
+    order = 0  # 平台优先级
 
     def __init__(self):
         self.client = httpx.AsyncClient()
@@ -21,7 +21,7 @@ class BasePlatform(ABC):
             "cookie": get_cookie(self.name),
             "referer": self.Referer,
         }
-        print(f"成功加载平台 {self.name}, 平台ID: {self.id}, 平台排序: {self.order}")
+        print(f"成功加载平台 {self.name}, 平台ID: {self.id}, 优先级: {self.order}")
 
     @abstractmethod
     async def search(self, keyword: str, page: int = 1, limit: int = 30):

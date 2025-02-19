@@ -30,7 +30,9 @@ async def home(self, page: int = 1, categories: str = "全部", method: str = "p
             for category in categories_list
         ]
 
-        tag = [{"title": "全部", "link": "/home?platform=NetEase&categories=全部"}, categories[1]["children"][:9]]
+        tag = [{"title": "全部", "link": "/home?platform=NetEase&categories=全部"}]
+        for i in categories[1]["children"][:9]:
+            tag.append(i)
 
         # 歌单列表
         playlist_items = soup.find_all('div', attrs={'class': 'u-cover u-cover-1'})

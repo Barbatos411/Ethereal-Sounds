@@ -1,3 +1,6 @@
+// 获取搜索框元素
+const searchInput = document.getElementById("searchInput");
+
 async function displayPlatforms() {
   try {
     const response = await fetch("/platforms");
@@ -31,6 +34,7 @@ async function displayPlatforms() {
       }
     });
     select_platform(); // 添加选择平台函数
+    home(); // 添加首页函数
   } catch (error) {
     console.error("生成平台元素时出错:", error); // 添加错误处理
   }
@@ -39,8 +43,6 @@ async function displayPlatforms() {
 // 页面加载时显示平台
 window.onload = displayPlatforms;
 function select_platform() {
-  // 获取搜索框元素
-  const searchInput = document.getElementById("searchInput");
   // 为输入框添加 keydown 事件监听器
   searchInput.addEventListener("keydown", handleEnterKeyPress);
   // 获取所有平台元素
@@ -79,6 +81,12 @@ function handleEnterKeyPress(event) {
 }
 
 async function searchSongs(platform, keyword, page) {
+  // 隐藏首页
+  const platform_home = document.querySelector(".platforms-home");
+  platform_home.style.display = "none"; // 隐藏首页
+  const list = document.querySelector(".music-search-list");
+  list.style.display = "flex"; // 显示搜索结果
+  // 打印搜索信息
   console.log("搜索平台:", platform);
   console.log("搜索歌曲:", keyword);
   console.log("搜索页码:", page);
@@ -101,7 +109,6 @@ async function searchSongs(platform, keyword, page) {
       data.results.song_list &&
       data.results.song_list.length > 0
     ) {
-      const list = document.querySelector(".music-search-list");
       if (list) {
         // 清空之前的搜索结果
         list.innerHTML = "";
@@ -185,11 +192,13 @@ function add_page_control() {
   const totalPages = document.getElementById("totalPages");
   const prevPage = document.getElementById("prevPage");
   const nextPage = document.getElementById("nextPage");
+
+  const query = searchInput.value.trim();
+  const selectedPlatform = document.querySelector(".music-platform.selected");
   // 添加翻页按钮的点击事件监听器
   prevPage.addEventListener("click", () => {
     const current = parseInt(currentPage.textContent);
-    const query = searchInput.value.trim();
-    const selectedPlatform = document.querySelector(".music-platform.selected");
+    y;
     if (current > 1) {
       searchSongs(selectedPlatform.id, query, current - 1);
     }
@@ -197,10 +206,71 @@ function add_page_control() {
 
   nextPage.addEventListener("click", () => {
     const current = parseInt(currentPage.textContent);
-    const query = searchInput.value.trim();
-    const selectedPlatform = document.querySelector(".music-platform.selected");
     if (current < totalPages.textContent) {
       searchSongs(selectedPlatform.id, query, current + 1);
     }
   });
+}
+
+async function home(url = NaN, method = "Change") {
+  diepplayhome(); // 隐藏搜索结果
+  // 生成首页歌单类型
+  const selectedPlatform = document.querySelector(".music-platform.selected");
+  const platform_home_tags = document.querySelector(".platforms-home-tags");
+  const platforms_home_list = document.querySelector(".platforms-home-list");
+  if (method !== "add") {
+    platform_home_tags.innerHTML = "";
+    platforms_home_list.innerHTML = "";
+    const tagurl = `/home?platform=${encodeURIComponent(selectedPlatform.id)}&method=${method}`;
+    try {
+      const response = await fetch(tagurl);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      data.results.tag.forEach((tag) => {
+        const tagItem = document.createElement("div");
+        tagItem.className = "playlist-tag";
+        tagItem.textContent = tag.title;
+        tagItem.dataset.link = tag.link;
+        document.querySelector(".platforms-home-tags").appendChild(tagItem);
+      });
+    } catch (error) {
+      console.error("获取首页数据失败:", error);
+    }
+  }
+
+  // 生成首页数据
+  let page; // 初始化 page 变量
+  let playlisturl; // 初始化 playlisturl 变量
+  if (isNaN(url)) {
+    playlisturl = `/home?platform=${encodeURIComponent(selectedPlatform.id)}`;
+  } else {
+    playlisturl = `${url}&page=${page}`;
+  }
+  try {
+    const response = await fetch(playlisturl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    data.results.albums.forEach((album) => {
+      const albumItem = document.createElement("li");
+      albumItem.dataset.id = album.id;
+      albumItem.innerHTML = `
+                <img src="${album.cover}" alt="${album.title}" style="width: 100%; height: autp;">
+                ${album.title}
+              `;
+      document.querySelector(".platforms-home-list").appendChild(albumItem);
+    });
+  } catch (error) {
+    console.error("获取首页数据失败:", error);
+  }
+}
+
+function diepplayhome() {
+  const platform_home = document.querySelector(".platforms-home");
+  platform_home.style.display = "flex"; // 显示首页
+  const list = document.querySelector(".music-search-list");
+  list.style.display = "none"; // 隐藏搜索结果
 }

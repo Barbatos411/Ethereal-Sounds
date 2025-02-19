@@ -141,8 +141,8 @@ em {
 }
 
 .music-platform {
-  width: 5rem;
-  padding: 0.3125rem;
+  width: auto;
+  padding: 0.3125rem 0.625rem;
   color: var(--text-secondary);
   font-size: 1rem;
   border-radius: 10px;
@@ -162,7 +162,6 @@ em {
   font-size: 1.875rem;
   font-weight: bold;
   background-color: var(--color-secondary);
-  width: 9.375rem;
   box-shadow: 0 0.125rem 0 var(--text-primary);
 }
 
@@ -192,6 +191,60 @@ em {
   flex: 1;
   width: 100%;
   overflow-y: auto;
+}
+
+.platforms-home {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+}
+
+.platforms-home-tags {
+  display: flex;
+  flex-wrap: wrap;
+  height: 2.5rem;
+  margin: 0.625rem 0;
+}
+
+.playlist-tag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  padding: 0 0.75rem;
+  height: 2.2rem;
+  border-radius: 10px;
+  background-color: var(--color-secondary);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  margin: 0.125rem 0.5rem;
+  transition: all 0.5sease;
+}
+
+.platforms-home-list {
+  padding-top: 30px;
+  display: flex;
+  flex-flow: row wrap;
+  position: relative;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem 0;
+  padding: 0.5rem;
+  margin: 0;
+}
+
+.platforms-home-list li {
+  margin: 0 0.75rem;
+  width: 15%;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease;
+  color: var(--text-primary);
+  cursor: pointer;
+  box-shadow: 0 0 0 var(--shadow);
+  transition: box-shadow 0.5s ease;
 }
 
 .music-container {
