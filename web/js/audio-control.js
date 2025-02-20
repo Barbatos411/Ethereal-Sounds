@@ -33,7 +33,6 @@ async function play_music(element, action = "play") {
   }
 
   await fetchAndRenderPlaylist();
-
   const url = `/get_audio?platform=${platform}&audio_id=${audio_id}`;
 
   try {
@@ -96,11 +95,10 @@ let currentPlayId = 0;
 // 重新加载并播放音频
 // 异步加载音频函数
 async function loadAudio(urlOrResponse, stream, myPlayId) {
-  // 停止当前音频，确保旧的音频源 onended 被清除
-  stopAllAudio();
-  // 停止封面旋转
+  stopAllAudio(); // 停止当前音频
   const currentSongCover = document.getElementById("current-song-cover");
   currentSongCover.classList.remove("playing");
+
   try {
     let response = urlOrResponse;
     if (!stream) {
@@ -108,22 +106,55 @@ async function loadAudio(urlOrResponse, stream, myPlayId) {
       if (!response.ok) throw new Error(`HTTP 错误！状态: ${response.status}`);
     }
 
-    // 将音频数据转换为 ArrayBuffer
     const arrayBuffer = await response.arrayBuffer();
-    currentBuffer = await audioCtx.decodeAudioData(arrayBuffer); // 缓存音频数据
+    currentBuffer = await audioCtx.decodeAudioData(arrayBuffer);
 
-    progressBar.max = currentBuffer.duration; // 设定进度条最大值
+    progressBar.max = currentBuffer.duration;
 
-    // 在异步操作结束前检查标识
     if (myPlayId !== currentPlayId) {
       console.log("播放请求已被更新，放弃本次播放");
       return;
     }
 
-    playAudio(myPlayId); // 播放新的音频
+    playAudio(myPlayId); // 直接调用播放
   } catch (error) {
     console.error("加载音频失败:", error);
   }
+}
+
+async function playAudio(myPlayId) {
+  if (!currentBuffer) return;
+
+  if (myPlayId !== currentPlayId) {
+    console.log("播放请求已被更新，停止播放");
+    return;
+  }
+
+  if (audioCtx.state === "suspended") {
+    await audioCtx.resume();
+  }
+
+  startTime = audioCtx.currentTime;
+
+  currentSource = audioCtx.createBufferSource();
+  currentSource.buffer = currentBuffer;
+  currentSource.connect(gainNode).connect(audioCtx.destination);
+  currentSource.start();
+
+  togglePlayPauseIcon(true);
+  updateProgress();
+  startLyricSync();
+
+  smtcWithProgressCheck();
+
+  const currentSongCover = document.getElementById("current-song-cover");
+  currentSongCover.classList.add("playing");
+
+  currentSource.onended = () => {
+    console.log("音频播放结束");
+    handlePlaybackEnd();
+    currentSongCover.classList.remove("playing");
+  };
 }
 
 // 停止所有播放的音频
@@ -146,84 +177,24 @@ function stopAllAudio() {
   // 可根据需要决定是否清空 currentBuffer（通常不清空，方便跳转）
 }
 
-// 重新定义播放音频
-// 播放音频函数
-async function playAudio(myPlayId) {
-  // 如果当前缓冲区为空，则返回
-  if (!currentBuffer) return;
-
-  // 检查标识，若不匹配则直接返回
-  if (myPlayId !== currentPlayId) {
-    console.log("播放请求已被更新，停止播放");
-    return;
-  }
-
-  // 如果音频上下文状态为暂停，则恢复播放
-  if (audioCtx.state === "suspended") {
-    await audioCtx.resume();
-  }
-
-  if (!audioCtx || audioCtx.state === "closed") {
-    console.log("创建新的 AudioContext");
-    gainNode = audioCtx.createGain();
-  }
-
-  // 记录播放开始的时间
-  startTime = audioCtx.currentTime;
-
-  // 创建一个新的音频源
-  currentSource = audioCtx.createBufferSource();
-  // 将当前缓冲区赋值给音频源
-  currentSource.buffer = currentBuffer;
-  // 将音频源连接到音频上下文的输出
-  currentSource.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
-  // 开始播放音频
-  currentSource.start();
-
-  // 隐藏播放按钮，显示暂停按钮
-  togglePlayPauseIcon(true);
-
-  // 更新进度条
-  updateProgress();
-
-  // 启动歌词同步
-  startLyricSync(); // 启动歌词同步
-
-  // 启动封面旋转动画
-  const currentSongCover = document.getElementById("current-song-cover");
-  currentSongCover.classList.add("playing"); // 添加动画
-
-  // 当音频播放结束时，执行以下操作
-  currentSource.onended = () => {
-    console.log("音频播放结束");
-    // 将当前音频源置为空
-    currentSource = null;
-    // 处理播放结束事件
-    handlePlaybackEnd();
-
-    // 移除封面旋转动画
-    currentSongCover.classList.remove("playing");
-  };
-}
-
 // 处理播放结束
 function handlePlaybackEnd() {
-  // 将当前播放源置为空
-  currentSource = null;
-
-  // 如果循环模式为单曲循环
   if (loopMode === "single") {
-    // 播放音频
-    playAudio(currentPlayId);
-    // 如果循环模式为随机播放
+    if (currentBuffer) {
+      currentSource = audioCtx.createBufferSource();
+      currentSource.buffer = currentBuffer;
+      currentSource.connect(gainNode).connect(audioCtx.destination);
+      currentSource.start();
+      startTime = audioCtx.currentTime; // 重新计时
+      currentSource.onended = handlePlaybackEnd; // 重新绑定结束事件
+
+      const currentSongCover = document.getElementById("current-song-cover");
+      currentSongCover.classList.add("playing");
+    }
   } else if (loopMode === "random") {
-    // 随机播放歌曲
-    playRandomSong(); // 随机播放
-    // 如果循环模式为列表循环
+    playRandomSong();
   } else {
-    // 播放下一首歌曲
-    playNextSong(); // 列表循环
+    playNextSong();
   }
 }
 
@@ -847,4 +818,64 @@ function startLyricSync() {
   }
 
   syncLyrics(); // 启动同步
+}
+
+function smtc() {
+  if ("mediaSession" in navigator) {
+    const smtc_song = document.querySelector(".list-container-playing");
+    const title = smtc_song.querySelector(
+      ".list-container-title-text"
+    ).textContent;
+    const artist = smtc_song.querySelector(
+      ".list-container-singer"
+    ).textContent;
+    const cover = smtc_song.querySelector(".list-container-title-text").dataset
+      .cover;
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: title,
+      artist: artist,
+      artwork: [{ src: cover }],
+    });
+
+    navigator.mediaSession.setActionHandler("play", () => {
+      togglePlayPause();
+    });
+
+    navigator.mediaSession.setActionHandler("pause", () => {
+      togglePlayPause();
+    });
+
+    navigator.mediaSession.setActionHandler("previoustrack", () => {
+      playPrevSong();
+    });
+
+    navigator.mediaSession.setActionHandler("nexttrack", () => {
+      playNextSong();
+    });
+  } else {
+    console.log("当前浏览器不支持 Media Session API");
+  }
+}
+
+function smtcWithProgressCheck() {
+  const progressBar = document.getElementById("progressBar");
+  let checkAttempts = 0; // 防止死循环
+
+  function checkProgress() {
+    checkAttempts++;
+    if (progressBar.value > 0) {
+      console.log("进度条已更新，继续执行后续逻辑");
+
+      // ✅ 播放状态已确认，更新 Media Session 状态
+      smtc();
+    } else if (checkAttempts < 100) {
+      // 最多检查 100 次，避免死循环
+      requestAnimationFrame(checkProgress); // 继续轮询
+    } else {
+      console.warn("进度条未更新，停止检查");
+    }
+  }
+
+  checkProgress();
 }
