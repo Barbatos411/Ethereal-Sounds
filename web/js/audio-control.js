@@ -180,17 +180,9 @@ function stopAllAudio() {
 // 处理播放结束
 function handlePlaybackEnd() {
   if (loopMode === "single") {
-    if (currentBuffer) {
-      currentSource = audioCtx.createBufferSource();
-      currentSource.buffer = currentBuffer;
-      currentSource.connect(gainNode).connect(audioCtx.destination);
-      currentSource.start();
-      startTime = audioCtx.currentTime; // 重新计时
-      currentSource.onended = handlePlaybackEnd; // 重新绑定结束事件
-
-      const currentSongCover = document.getElementById("current-song-cover");
-      currentSongCover.classList.add("playing");
-    }
+    jumpToSpecifiedTime(0); // 单曲循环，跳转到开始
+    const currentSongCover = document.getElementById("current-song-cover");
+    currentSongCover.classList.add("playing");
   } else if (loopMode === "random") {
     playRandomSong();
   } else {
@@ -229,6 +221,9 @@ function toggleLoopMode() {
 
 // 播放上一首
 function playPrevSong() {
+  if (loopMode === "random") {
+    return;
+  }
   // 获取当前播放的歌曲的前一个兄弟元素
   let prevSong = document.querySelector(
     ".list-container-playing"
@@ -258,6 +253,10 @@ function playPrevSong() {
 
 // 播放下一首
 function playNextSong() {
+  if (loopMode === "random") {
+    playRandomSong();
+    return;
+  }
   // 获取当前播放的歌曲的下一个兄弟元素
   let nextSong = document.querySelector(
     ".list-container-playing"
@@ -632,14 +631,22 @@ function updateProgress() {
 
 // 跳转到指定时间
 progressBar.addEventListener("input", () => {
+  jumpToSpecifiedTime(); // 保持现有进度条监听
+});
+
+// ✅ 改进后的函数：支持传入时间
+function jumpToSpecifiedTime(targetTime = null) {
   if (!currentBuffer) return;
 
-  const newTime = parseFloat(progressBar.value);
-  // 更新播放标识，防止旧 onended 的触发
+  // 如果没有传入时间，使用进度条的值
+  const newTime =
+    targetTime !== null ? targetTime : parseFloat(progressBar.value);
+
+  // 防止旧的 onended 事件触发
   currentPlayId++;
   const myPlayId = currentPlayId;
 
-  // 停止当前音频并清除 onended
+  // 停止当前播放
   if (currentSource) {
     currentSource.onended = null;
     try {
@@ -657,15 +664,17 @@ progressBar.addEventListener("input", () => {
   currentSource.connect(gainNode);
   gainNode.connect(audioCtx.destination);
 
-  // 调整 startTime 使进度条正确
+  // 重新调整 startTime
   startTime = audioCtx.currentTime - newTime;
 
+  // 从指定时间开始播放
   currentSource.start(0, newTime);
 
   isPlaying = true;
   togglePlayPauseIcon(true);
+  updateProgress();
 
-  // 新的 onended 事件
+  // 重新绑定 onended
   currentSource.onended = () => {
     console.log("音频播放结束");
     currentSource = null;
@@ -673,9 +682,7 @@ progressBar.addEventListener("input", () => {
       handlePlaybackEnd();
     }
   };
-
-  updateProgress();
-});
+}
 
 // 调整音量
 volumeBar.addEventListener("input", () => {
@@ -833,7 +840,7 @@ function smtc() {
       .cover;
 
     navigator.mediaSession.metadata = new MediaMetadata({
-      title: title,
+      title: `浮声 - ${title}`,
       artist: artist,
       artwork: [{ src: cover }],
     });
