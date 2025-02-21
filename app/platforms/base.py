@@ -53,7 +53,7 @@ class BasePlatform(ABC):
         pass
 
     @abstractmethod
-    async def home(self):
+    async def home(self, page: int, categories: str):
         """
         定义抽象的获取主页方法，每个平台都必须实现
         :return: 主页

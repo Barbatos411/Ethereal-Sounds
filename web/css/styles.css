@@ -198,6 +198,7 @@ em {
   flex-direction: column;
   flex: 1;
   overflow: auto;
+  overflow-y: scroll;
 }
 
 .platforms-home-tags {
@@ -234,7 +235,7 @@ em {
 }
 
 .platforms-home-list li {
-  margin: 0 0.75rem;
+  margin: 0 0.7rem;
   width: 15%;
   flex-wrap: wrap;
   display: flex;

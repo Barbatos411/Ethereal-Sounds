@@ -85,8 +85,7 @@ async def get_lrc(
 async def home(
         platform: str = Query(..., description="搜索平台"),
         categories: str = Query(None, description="分类"),
-        page: int = Query(1, description="分页"),
-        method: str = Query("playlist", description="模式，用于区分获取歌单还是分类")
+        page: int = Query(1, description="分页")
 ):
     """
     根据指定平台获取主页
@@ -94,7 +93,7 @@ async def home(
     # 根据平台名称找到对应的平台类
     try:
         platform_obj = platform_manager.get_platform_by_id(platform)
-        results = await platform_obj.home(page, categories, method)
+        results = await platform_obj.home(page, categories)
         return {"results": results}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -13,7 +13,6 @@ async def get_audio(self, audio_id: str):
         if response.status_code == 200:
             # 获取最终的重定向 URL
             audio_url = str(response.url)
-            # TODO : 返回网歌词
             return False, audio_url
         else:
             return {"error": f"请求失败，状态码: {response.status_code}"}

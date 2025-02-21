@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 
-async def home(self, page: int = 1, categories: str = "全部", method: str = "playlist"):
+async def home(self, page: int = 1, categories: str = "全部"):
     """
     生成主页信息
     :return: 主页
@@ -39,16 +39,13 @@ async def home(self, page: int = 1, categories: str = "全部", method: str = "p
         albums = [
             {
                 "id": album.find('a', class_='msk')['href'][13:],
-                "cover": album.find('img')['src'],
+                "cover": album.find('img')['src'].replace('?param=140y140', '?param=512y512'),
                 "title": album.find('a', class_='msk')['title'],
                 "platform": self.id
             }
             for album in playlist_items
         ]
-        if method == "playlist":
-            return {"albums": albums}
-        else:
-            return {"tag": tag, "categories": categories}
+        return {"tag": tag, "categories": categories, "albums": albums}
 
     except Exception as e:
         return {"error": f"发生错误: {e}"}

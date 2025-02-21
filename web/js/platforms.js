@@ -34,7 +34,7 @@ async function displayPlatforms() {
       }
     });
     select_platform(); // 添加选择平台函数
-    home(); // 添加首页函数
+    await home(); // 添加首页函数
   } catch (error) {
     console.error("生成平台元素时出错:", error); // 添加错误处理
   }
@@ -212,49 +212,47 @@ function add_page_control() {
   });
 }
 
+let playlistpage = 1; // 初始化 page 变量
+let playlisturl; // 初始化 playlisturl 变量
+let isLoading = false; // 初始化 isLoading 变量
+// 异步函数，用于生成首页歌单类型
 async function home(url = NaN, method = "Change") {
-  diepplayhome(); // 隐藏搜索结果
+  displayhome(); // 隐藏搜索结果
   // 生成首页歌单类型
   const selectedPlatform = document.querySelector(".music-platform.selected");
   const platform_home_tags = document.querySelector(".platforms-home-tags");
   const platforms_home_list = document.querySelector(".platforms-home-list");
-  if (method !== "add") {
-    platform_home_tags.innerHTML = "";
-    platforms_home_list.innerHTML = "";
-    const tagurl = `/home?platform=${encodeURIComponent(selectedPlatform.id)}&method=${method}`;
-    try {
-      const response = await fetch(tagurl);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
+  if (isNaN(url)) {
+    // 如果不传入url
+    playlisturl = `/home?platform=${encodeURIComponent(selectedPlatform.id)}`;
+  } else {
+    // 如果传入url
+    playlisturl = url;
+  }
+  try {
+    // 发送请求获取歌单数据
+    const response = await fetch(`${playlisturl}&page=${playlistpage}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+
+    if (method === "Change") {
+      // 如果 method 是 Change，则清空歌单类型和歌单列表
+      platform_home_tags.innerHTML = "";
+      platforms_home_list.innerHTML = "";
       data.results.tag.forEach((tag) => {
+        // 生成歌单类型
         const tagItem = document.createElement("div");
         tagItem.className = "playlist-tag";
         tagItem.textContent = tag.title;
         tagItem.dataset.link = tag.link;
         document.querySelector(".platforms-home-tags").appendChild(tagItem);
       });
-    } catch (error) {
-      console.error("获取首页数据失败:", error);
     }
-  }
 
-  // 生成首页数据
-  let page; // 初始化 page 变量
-  let playlisturl; // 初始化 playlisturl 变量
-  if (isNaN(url)) {
-    playlisturl = `/home?platform=${encodeURIComponent(selectedPlatform.id)}`;
-  } else {
-    playlisturl = `${url}&page=${page}`;
-  }
-  try {
-    const response = await fetch(playlisturl);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const data = await response.json();
     data.results.albums.forEach((album) => {
+      // 生成歌单列表
       const albumItem = document.createElement("li");
       albumItem.dataset.id = album.id;
       albumItem.innerHTML = `
@@ -266,11 +264,29 @@ async function home(url = NaN, method = "Change") {
   } catch (error) {
     console.error("获取首页数据失败:", error);
   }
+  isLoading = false; // 重置 isLoading 变量
 }
 
-function diepplayhome() {
+async function displayhome() {
   const platform_home = document.querySelector(".platforms-home");
   platform_home.style.display = "flex"; // 显示首页
   const list = document.querySelector(".music-search-list");
   list.style.display = "none"; // 隐藏搜索结果
+  const searchInput = document.getElementById("searchInput");
+  searchInput.value = ""; // 清空搜索框
 }
+
+const container = document.querySelector(".platforms-home");
+// 核心滚动监听函数
+container.addEventListener("scroll", () => {
+  const scrollTop = container.scrollTop; // 容器顶部到滚动条的距离
+  const scrollHeight = container.scrollHeight; // 容器内容的总高度
+  const clientHeight = container.clientHeight; // 容器可见区域的高度
+  // 如果滚动到了容器底部的 80%，并且没有正在加载数据
+  if (!isLoading && scrollTop + clientHeight >= scrollHeight - 100) {
+    console.log("滚动到底部了");
+    isLoading = true;
+    playlistpage = playlistpage + 1; // 页码加一
+    home(playlisturl, "Append");
+  }
+});
