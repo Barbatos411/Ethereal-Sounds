@@ -7,7 +7,7 @@ async def home(self, page: int = 1, categories: str = "全部"):
     :return: 主页
     """
     offset = (page - 1) * 35  # 计算偏移量
-    url = f"https://music.163.com/discover/playlist/?order=hot&cat=%{categories}&limit=35&offset={offset}"
+    url = f"https://music.163.com/discover/playlist/?order=hot&cat={categories}&limit=35&offset={offset}"
 
     try:
         responses = await self.client.get(url, headers=self.headers)

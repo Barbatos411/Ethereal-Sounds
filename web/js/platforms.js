@@ -64,6 +64,8 @@ function select_platform() {
       const query = searchInput.value.trim();
       if (query) {
         searchSongs(platform.id, query, 1);
+      } else {
+        home();
       }
     });
   });
@@ -213,22 +215,30 @@ function add_page_control() {
 }
 
 let playlistpage = 1; // 初始化 page 变量
-let playlisturl; // 初始化 playlisturl 变量
+let playlisturl = ""; // 初始化 playlisturl 变量
 let isLoading = false; // 初始化 isLoading 变量
+let lastSelectedPlatformId = null; // 存储上一次选中的平台
+
 // 异步函数，用于生成首页歌单类型
-async function home(url = NaN, method = "Change") {
+async function home(url = undefined) {
   displayhome(); // 隐藏搜索结果
   // 生成首页歌单类型
   const selectedPlatform = document.querySelector(".music-platform.selected");
   const platform_home_tags = document.querySelector(".platforms-home-tags");
   const platforms_home_list = document.querySelector(".platforms-home-list");
-  if (isNaN(url)) {
-    // 如果不传入url
-    playlisturl = `/home?platform=${encodeURIComponent(selectedPlatform.id)}`;
-  } else {
-    // 如果传入url
-    playlisturl = url;
+
+  if (playlisturl !== url) {
+    platforms_home_list.innerHTML = "";
+    playlistpage = 1;
   }
+  if (lastSelectedPlatformId !== selectedPlatform.id) {
+    lastSelectedPlatformId = selectedPlatform.id;
+    playlistpage = 1;
+    platform_home_tags.innerHTML = "";
+  }
+  playlisturl =
+    url || `/home?platform=${encodeURIComponent(selectedPlatform.id)}`;
+
   try {
     // 发送请求获取歌单数据
     const response = await fetch(`${playlisturl}&page=${playlistpage}`);
@@ -237,10 +247,11 @@ async function home(url = NaN, method = "Change") {
     }
     const data = await response.json();
 
-    if (method === "Change") {
-      // 如果 method 是 Change，则清空歌单类型和歌单列表
+    // 生成标题
+    if (data.results.tag !== undefined) {
+      lastSelectedPlatformId = selectedPlatform.id;
+      playlistpage = 1;
       platform_home_tags.innerHTML = "";
-      platforms_home_list.innerHTML = "";
       data.results.tag.forEach((tag) => {
         // 生成歌单类型
         const tagItem = document.createElement("div");
@@ -283,10 +294,10 @@ container.addEventListener("scroll", () => {
   const scrollHeight = container.scrollHeight; // 容器内容的总高度
   const clientHeight = container.clientHeight; // 容器可见区域的高度
   // 如果滚动到了容器底部的 80%，并且没有正在加载数据
-  if (!isLoading && scrollTop + clientHeight >= scrollHeight - 100) {
+  if (!isLoading && scrollTop + clientHeight >= scrollHeight - 250) {
     console.log("滚动到底部了");
     isLoading = true;
     playlistpage = playlistpage + 1; // 页码加一
-    home(playlisturl, "Append");
+    home(playlisturl);
   }
 });

@@ -37,7 +37,7 @@ class NetEase(BasePlatform):
         """
         return await get_lrc(self, audio_id)
 
-    async def home(self, page: int, categories: str):
+    async def home(self, page: int = 1, categories: str = "全部"):
         """
         定义抽象地获取主页方法，每个平台都必须实现
         :return: 主页

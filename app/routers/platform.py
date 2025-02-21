@@ -93,7 +93,13 @@ async def home(
     # 根据平台名称找到对应的平台类
     try:
         platform_obj = platform_manager.get_platform_by_id(platform)
-        results = await platform_obj.home(page, categories)
+        
+        # 构建 kwargs，只在 categories 被传入时才添加
+        kwargs = {"page": page}
+        if categories is not None:
+            kwargs["categories"] = categories
+
+        results = await platform_obj.home(**kwargs)
         return {"results": results}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
