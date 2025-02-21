@@ -231,11 +231,6 @@ async function home(url = undefined) {
     platforms_home_list.innerHTML = "";
     playlistpage = 1;
   }
-  if (lastSelectedPlatformId !== selectedPlatform.id) {
-    lastSelectedPlatformId = selectedPlatform.id;
-    playlistpage = 1;
-    platform_home_tags.innerHTML = "";
-  }
   playlisturl =
     url || `/home?platform=${encodeURIComponent(selectedPlatform.id)}`;
 
@@ -248,18 +243,22 @@ async function home(url = undefined) {
     const data = await response.json();
 
     // 生成标题
-    if (data.results.tag !== undefined) {
+    if (lastSelectedPlatformId !== selectedPlatform.id) {
       lastSelectedPlatformId = selectedPlatform.id;
       playlistpage = 1;
+      console.log("platform changed");
       platform_home_tags.innerHTML = "";
-      data.results.tag.forEach((tag) => {
-        // 生成歌单类型
-        const tagItem = document.createElement("div");
-        tagItem.className = "playlist-tag";
-        tagItem.textContent = tag.title;
-        tagItem.dataset.link = tag.link;
-        document.querySelector(".platforms-home-tags").appendChild(tagItem);
-      });
+      if (data.results.tag !== undefined) {
+        lastSelectedPlatformId = selectedPlatform.id;
+        data.results.tag.forEach((tag) => {
+          // 生成歌单类型
+          const tagItem = document.createElement("div");
+          tagItem.className = "playlist-tag";
+          tagItem.textContent = tag.title;
+          tagItem.dataset.link = tag.link;
+          document.querySelector(".platforms-home-tags").appendChild(tagItem);
+        });
+      }
     }
 
     data.results.albums.forEach((album) => {
