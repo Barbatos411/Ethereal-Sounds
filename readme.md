@@ -14,9 +14,7 @@
 
 </div>
 
-一高中牲闹着玩写的
-
-目标是像listen1一样的多平台音乐播放器
+一个模仿listen1的在线、可拓展的音乐播放器，平台开发见Wiki(编辑中...（其实还没写）)
 
 [Listen1](https://github.com/listen1/listen1):
 让你用一个网页就能听到多个网站的在线音乐（现已包括网易云音乐、QQ音乐、酷我音乐、酷狗音乐、BiliBili、咪咕音乐、千千音乐）。你可以非常的简单的访问和收听在线音乐，而不用受到单个音乐网站资源不全地限制了。
@@ -116,10 +114,15 @@ git pull
 
 感谢以下项目的支持：
 
-- **[FastAPI](https://fastapi.tiangolo.com/)**：一个现代、快速（高性能）的 Web 框架
-- **[SQLite](https://sqlite.org/)**：一个轻量级的嵌入式 SQL 数据库引擎
-- **[Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)**：提供强大音频处理功能的 Web
-  技术
+- **[FastAPI](https://fastapi.tiangolo.com/)** : 提供了高性能的 API 构建框架。
+- **[Starlette](https://www.starlette.io/)** : 支持异步请求和路由系统，是 FastAPI 的底层框架。
+- **[Uvicorn](https://www.uvicorn.org/)** : 作为 ASGI 服务器，为项目提供快速的运行环境。
+- **[httpx](https://www.python-httpx.org/)** 和 **[httpcore](https://www.python-httpx.org/httpcore/)** : 处理异步 HTTP 请求，提升了网络交互的效率。
+- [**Web Audio API**](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) : 浏览器内置的强大音频处理接口，用于音频播放、可视化和自定义控制。
+- [**SQLite**](https://www.sqlite.org/) : 轻量级嵌入式数据库，用于存储用户数据和歌单信息。
+- **[BeautifulSoup4](https://www.crummy.com/software/BeautifulSoup/)** 和 **[soupsieve](https://facelessuser.github.io/soupsieve/)** : 强大的 HTML 解析工具，简化了爬虫功能。
+- **[Jinja2](https://palletsprojects.com/p/jinja/)** — 便捷的模板引擎，用于前端页面渲染。
+- **[Pydantic](https://docs.pydantic.dev/)** : 数据验证和结构化的基石，使数据处理更为安全可靠。
 
 感谢 [MapleLeaf](https://gitee.com/maple-leaf-sweeping) 大佬提供的技术指导和宝贵建议
 
@@ -143,4 +146,4 @@ git pull
 
 ## 其他
 
-如果觉得此插件对你有帮助的话,可以点一个 star,你的支持就是不断更新的动力~
+如果觉得此项目对你有帮助的话,可以点一个 star,你的支持就是不断更新的动力~
