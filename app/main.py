@@ -27,6 +27,7 @@ templates = Jinja2Templates(directory="web")  # web 目录包含 html 模板文�
 
 if not os.path.exists('app/data/data.db'):
     print('数据库不存在，正在创建数据库...')
+    os.makedirs('app/data', exist_ok=True)
     create_sqlite_db()
 
 
