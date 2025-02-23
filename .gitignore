@@ -13,3 +13,4 @@ venv
 /package.json
 /pnpm-lock.yaml
 /node_modules/
+app/data/data.db

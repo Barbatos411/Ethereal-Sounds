@@ -1,8 +1,10 @@
 import sqlite3
+from typing import List, Literal
 
 from fastapi import APIRouter, Query, HTTPException
+from pydantic import BaseModel
 
-from app.utils.db import get_data, get_all_data, set_data, update_playlist, delete_data, update_play_status
+from app.utils.db import get_data, get_all_data, set_data, delete_data, update_play_status
 
 router = APIRouter()
 
@@ -19,7 +21,7 @@ async def db_get_data(
     根据指定数据库和表进行数据查询
     """
     try:
-        results = await get_data(database, table, where, keyword, select)
+        results = get_data(database, table, where, keyword, select)
         return results
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -34,7 +36,7 @@ async def db_get_all_data(
     获取数据表内所有数据
     """
     try:
-        results = await get_all_data(database, table)
+        results = get_all_data(database, table)
         return results
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -53,14 +55,20 @@ async def db_set_data(
     更新数据表中单个记录的指定列
     """
     try:
-        results = await set_data(database, table, where_column, keyword, set_column, value)
+        results = set_data(database, table, where_column, keyword, set_column, value)
         return results
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# 定义请求体模型
+class PlaylistRequest(BaseModel):
+    values: List[List]  # 每行数据对应的值
+    action: Literal["play", "add"]  # 操作类型：play 或 add
+
+
 @router.post("/update_playlist")
-async def db_update_playlist(data):
+async def update_playlist(data: PlaylistRequest):
     """
     更新播放列表（专用）。
     - `action` 为 `play` 时：
@@ -69,9 +77,28 @@ async def db_update_playlist(data):
     - `action` 为 `add` 时：
         - 仅插入或更新数据
     """
+    columns = ["audio_id", "title", "singer", "singer_id", "album",
+               "album_id", "platform", "status", "cover", "hd_cover", "MV", "VIP"]
+
     try:
-        results = await update_playlist(data)
-        return results
+        with sqlite3.connect(f'app/data/data.db') as conn:
+            cursor = conn.cursor()
+
+            if data.action == "play":
+                # 清除 status 列内容
+                cursor.execute("UPDATE song_list SET status = NULL")
+
+            # 构建 SQL 插入或替换命令
+            columns_str = ", ".join(columns)
+            placeholders = ", ".join(["?" for _ in columns])
+            query = f"INSERT OR REPLACE INTO song_list ({columns_str}) VALUES ({placeholders})"
+
+            # 批量插入/更新
+            cursor.executemany(query, data.values)
+            conn.commit()
+
+        action_result = "播放" if data.action == "play" else "添加"
+        return {"message": f"{action_result}列表更新成功"}
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -81,7 +108,7 @@ async def db_update_play_status(
         audio_number: str = Query(..., description="音频序号")
 ):
     try:
-        results = await update_play_status(audio_number)
+        results = update_play_status(audio_number)
         return results
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -98,7 +125,7 @@ async def db_delete_data(
     删除指定数据库和表中的数据
     """
     try:
-        results = await delete_data(database, table, keyword, where)
+        results = delete_data(database, table, keyword, where)
         return results
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))
