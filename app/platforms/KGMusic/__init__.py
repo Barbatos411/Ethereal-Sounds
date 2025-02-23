@@ -11,6 +11,7 @@ class KGMusic(BasePlatform):
     id = "KGMusic"
     Referer = "https://www.kugou.com/"
     order = 3  # 顺序
+    cookie = "kg_dfid_collect=d41d8cd98f00b204e9800998ecf8427e;ACK_SERVER_10017=%7B%22list%22%3A%5B%5B%22bjverifycode.service.kugou.com%22%5D%5D%7D;ACK_SERVER_10015=%7B%22list%22%3A%5B%5B%22bjlogin-user.kugou.com%22%5D%5D%7D;ACK_SERVER_10016=%7B%22list%22%3A%5B%5B%22bjreg-user.kugou.com%22%5D%5D%7D;Hm_lpvt_aedee6983d4cfc62f509129360d6bb3d=1740338699;Hm_lvt_aedee6983d4cfc62f509129360d6bb3d=1740338691;kg_dfid=4XRjc3111RYo2SvRcV2b0pTv;kg_mid=7fca03a811a8dc8909d7625845118434"
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """

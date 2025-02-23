@@ -10,6 +10,7 @@ class NetEase(BasePlatform):
     id = "NetEase"
     Referer = "https://music.163.com/"
     order = 1  # 顺序
+    cookie = "ntes_utid=tid._.iM3K0zynKEVAUhBVBEeSNw4lJFsjCioz._.0;WNMCID=qmhaqn.1740338635092.01.0;WEVNSM=1.0.0;_iuqxldmzr_=32;_ntes_nnid=d4af74f6e9fd9e29a406d1697cf957a6,1740338635000;_ntes_nuid=d4af74f6e9fd9e29a406d1697cf957a6;JSESSIONID-WYYY=AWH2lOnPbQ16ryK1XS7NXH9UFziKXndPpQXNv3kYyQWuWnjw9ZOs6%2Fa9n%5Cc8UruV9wzP%2FoCPex1hHoWqsGKtMNRQwXI7cYTffE%2Fg%2F2HNeDkXJWpxI4ct6%5CEZVCCYNPgkeGYAh%5C3rjQJ%2FZw9CYgDimtGq03POXvSelUivWHoz%2Fh64Q%5C79%3A1740340434986;NMTID=00O0DuNC3AgWDz-PkUwj4W-c2ZMtYQAAAGVNEQf1Q;sDeviceId=YD-MSmKL%2BNCVCZFVhABEBeXYh5wNA82Wjos"
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """

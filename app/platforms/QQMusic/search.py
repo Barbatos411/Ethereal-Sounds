@@ -60,6 +60,9 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
                 "cover": f"https://y.gtimg.cn/music/photo_new/T002R300x300M000{song.get('album').get('mid')}.jpg?param=224y224" if song.get(
                     'album').get(
                     'mid') else f"https://y.qq.com/music/photo_new/T062R300x300M000{next((vs for vs in song.get('vs', []) if vs), '')}.jpg?param=224y224",
+                "hd_cover": f"https://y.gtimg.cn/music/photo_new/T002R300x300M000{song.get('album').get('mid')}.jpg" if song.get(
+                    'album').get(
+                    'mid') else f"https://y.qq.com/music/photo_new/T062R300x300M000{next((vs for vs in song.get('vs', []) if vs), '')}.jpg",
                 # 歌曲ID 详情页https://y.qq.com/n/ryqq/songDetail/mid
                 "id": song.get("mid"),
                 # 歌曲链接

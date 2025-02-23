@@ -128,7 +128,7 @@ async function searchSongs(platform, keyword, page) {
                         <div class="music-container-left">
                             <img class="music-cover" src="${song.cover}" alt="cover">
                             <div class="music-name">
-                                <h3 class="song-title" onclick=play_music(this,"add") style="color: var(--text-primary); margin: 0" data-id=${song.id} data-platform=${encodeURIComponent(platform)} data-singer='${song.author}' data-cover=${song.cover} data-album='${song.album}'>${song.title}</h3>
+                                <h3 class="song-title" onclick=play_music(this,"add") style="color: var(--text-primary); margin: 0" data-audio_id=${song.id} data-platform=${encodeURIComponent(platform)} data-singer='${song.author}' data-cover=${song.cover} data-album='${song.album}'>${song.title}</h3>
                                 <p class="music-singer">${song.author}</p>
                             </div>
                             <div class="song-tags">

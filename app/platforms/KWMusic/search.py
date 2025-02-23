@@ -34,6 +34,8 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
                 # 歌曲封面图片
                 "cover": f"https://img2.kuwo.cn/star/albumcover/{song.get('web_albumpic_short')}" if song.get(
                     'web_albumpic_short') else f"https://img1.kuwo.cn/star/starheads/{song['web_artistpic_short']}",
+                "hd_cover": f"https://img2.kuwo.cn/star/albumcover/{song.get('web_albumpic_short')}" if song.get(
+                    'web_albumpic_short') else f"https://img1.kuwo.cn/star/starheads/{song['web_artistpic_short']}",
                 # 歌曲链接
                 "url": f"https://www.kuwo.cn/play_detail/{song['DC_TARGETID']}",
                 # 专辑名称

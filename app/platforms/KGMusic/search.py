@@ -61,6 +61,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
                 "author": song.get("SingerName"),
                 # 歌曲封面图片
                 "cover": song.get("Image").replace("{size}", "100"),
+                "hd_cover": song.get("Image").replace("{size}/", ""),
                 # 歌曲链接
                 "url": f"https://www.kugou.com/song/#hash={song.get('FileHash')}&album_id={song.get('AlbumID')}",
                 # 专辑名称

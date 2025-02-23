@@ -14,6 +14,7 @@ class KWMusic(BasePlatform):
     id = "KWMusic"
     Referer = "https://kuwo.cn/"
     order = 4  # 顺序
+    cookie = "_gat=1;_ga=GA1.2.1659396144.1740338714;HMACCOUNT=009C11578EA49F5E;_gid=GA1.2.288920283.1740338714;_ga_ETPBRPM9ML=GS1.2.1740338714.1.0.1740338714.60.0.0;Hm_Iuvt_cdb524f42f23cer9b268564v7y735ewrq2324=w3zFjyH4dN4DDNP24BFtcNGDdiFj44JM;Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1740338714;Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1740338714"
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """

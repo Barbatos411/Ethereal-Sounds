@@ -23,20 +23,21 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
         results = data.get("data", {}).get("result", [])
         results_list = [
             {
-                "title": song["title"],
                 # 标题
-                "author": song["author"],
+                "title": song["title"],
                 # 作者
-                "cover": f"https:{song['pic']}?param=224y224",
+                "author": song["author"],
                 # 封面
-                "play": song["play"],
+                "cover": f"https:{song['pic']}",
+                "hd_cover": f"https:{song['pic']}",
                 # 播放量
-                "duration": format_duration(song["duration"]),
+                "play": song["play"],
                 # 时长
-                "url": song["arcurl"],
+                "duration": format_duration(song["duration"]),
                 # 链接
-                "id": song["bvid"]
+                "url": song["arcurl"],
                 # id
+                "id": song["bvid"]
             }
             for song in results
         ]

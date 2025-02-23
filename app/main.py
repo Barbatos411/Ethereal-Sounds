@@ -9,6 +9,7 @@ from starlette.requests import Request
 from app.platform_manager import platform_manager
 from app.platforms.base import BasePlatform
 from app.routers import database, platform
+from app.utils.db import create_sqlite_db
 
 app = FastAPI()
 
@@ -23,6 +24,10 @@ app.mount("/res", StaticFiles(directory="web/res"), name="res")
 
 # 初始化模板引擎
 templates = Jinja2Templates(directory="web")  # web 目录包含 html 模板文件
+
+if not os.path.exists('app/data/data.db'):
+    print('数据库不存在，正在创建数据库...')
+    create_sqlite_db()
 
 
 def load_platforms():

@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 import httpx
 
 from app.utils.cookie import get_cookie
+from app.utils.db import set_data
 
 
 class BasePlatform(ABC):
@@ -13,15 +14,24 @@ class BasePlatform(ABC):
     id = "base"  # 平台ID
     Referer = "https://www.example.com/"  # 平台Referer
     order = 0  # 平台优先级
+    cookie = ""  # 平台cookie
 
     def __init__(self):
+        # 先尝试获取 cookie
+        cookie = get_cookie(self.id)
+
+        if not cookie:
+            # 如果数据库中没有 cookie，使用 self.cookie 并写入数据库
+            cookie = self.cookie
+            set_data("data", "account", "platforms", self.id, "cookie", cookie)  # 将 self.cookie 写入数据库
+
         self.client = httpx.AsyncClient()
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.0",
-            "cookie": get_cookie(self.name),
+            "cookie": get_cookie(self.id) or self.cookie,
             "referer": self.Referer,
         }
-        print(f"成功加载平台 {self.name}, 平台ID: {self.id}, 优先级: {self.order}")
+        print(f"成功加载平台 {self.name}, 平台ID: {self.id}, 优先级: {self.order}", self.headers)
 
     @abstractmethod
     async def search(self, keyword: str, page: int = 1, limit: int = 30):

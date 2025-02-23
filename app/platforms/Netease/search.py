@@ -35,6 +35,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
                 "author": ", ".join(artist["name"] for artist in song.get("artists", [])),
                 # 歌曲封面图片
                 "cover": song["album"].get("picUrl", "") + "?param=300y300",
+                "hd_cover": song["album"].get("picUrl", ""),
                 # 歌曲链接
                 "url": f"https://music.163.com/song?id={song['id']}",
                 # 专辑名称

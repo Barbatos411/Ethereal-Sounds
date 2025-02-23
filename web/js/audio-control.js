@@ -15,7 +15,7 @@ async function play_music(element, action = "play") {
   const myPlayId = currentPlayId;
 
   // 获取音频信息等
-  const audio_id = element.dataset.id;
+  const audio_id = element.dataset.audio_id;
   const platform = element.dataset.platform;
   const audio_number = element.dataset.number;
 
@@ -354,7 +354,7 @@ async function togglePlayPause() {
 async function add_song_to_playlist(element, action = "play") {
   try {
     // 获取歌曲信息
-    const audio_id = element.dataset.id;
+    const audio_id = element.dataset.audio_id;
     const platform = element.dataset.platform;
     const title = element.textContent || element.innerText;
     const singer = element.dataset.singer;
@@ -363,6 +363,9 @@ async function add_song_to_playlist(element, action = "play") {
     const album_id = element.dataset.album_id || "null";
     const cover = element.dataset.cover;
     const status = action === "play" ? "playing" : "";
+    const hd_cover = element.dataset.hd_cover || "null";
+    const MV = element.dataset.mv || "null";
+    const VIP = element.dataset.vip || "null";
     // 构造请求体数据
     const requestData = {
       action, // 播放模式: "play" 或 "add"
@@ -377,6 +380,9 @@ async function add_song_to_playlist(element, action = "play") {
           platform,
           status,
           cover,
+          hd_cover,
+          MV,
+          VIP,
         ], // 单行插入数据
       ],
     };
@@ -413,14 +419,12 @@ async function fetchAndRenderPlaylist() {
 
     // 解析 JSON 数据
     const data = await response.json();
-    const playlist = data.data;
-    if (playlist === undefined) {
-      // 如果播放列表为空，则不进行任何操作
-      return;
-    }
     // 获取播放列表容器
     const listContainer = document.querySelector(".list-content");
     listContainer.innerHTML = ""; // 清空原有内容
+    const playlist = data.data;
+    // 如果播放列表为空，则不进行任何操作
+    if (playlist === undefined) return;
 
     // 动态生成 HTML 并重新编号序号
     playlist.forEach((song, index) => {
@@ -433,7 +437,7 @@ async function fetchAndRenderPlaylist() {
       songElement.innerHTML = `
         <div class="list-container-title">
           <h4 class="list-container-title-number">${index + 1}</h4>
-          <h4 class="list-container-title-text" data-id=${song.id} data-platform=${song.platform} data-number=${song.number} data-cover=${song.cover} onclick=play_music(this,"play")>${song.name}</h4>
+          <h4 class="list-container-title-text" data-audio_id=${song.audio_id} data-platform=${song.platform} data-cover=${song.cover} onclick=play_music(this,"play")>${song.title}</h4>
         </div>
         <p class="list-container-singer">${song.singer}</p>
 
@@ -451,7 +455,7 @@ async function fetchAndRenderPlaylist() {
           stroke-linejoin="round"
           fill="none"
           color="#000"
-          onclick="deleteSong(${song.number})" <!-- 删除按钮调用删除函数 -->
+          onclick="deleteSong(${song.id})" <!-- 删除按钮调用删除函数 -->
         >
           <title id="binIconTitle">删除</title>
           <path d="M19 6L5 6M14 5L10 5M6 10L6 20C6 20.6666667 6.33333333 21 7 21 7.66666667 21 11 21 17 21 17.6666667 21 18 20.6666667 18 20 18 19.3333333 18 16 18 10"/>
@@ -475,7 +479,7 @@ async function deleteSong(songOrder) {
   try {
     // 调用后端接口删除对应 order 的歌曲
     const response = await fetch(
-      `/del_data?database=data&table=song_list&keyword=${songOrder}&where=number`
+      `/del_data?database=data&table=song_list&keyword=${songOrder}&where=id`
     );
     if (!response.ok) {
       throw new Error(`删除失败，状态码: ${response.status}`);
