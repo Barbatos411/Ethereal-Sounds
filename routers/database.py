@@ -4,7 +4,7 @@ from typing import List, Literal
 from fastapi import APIRouter, Query, HTTPException
 from pydantic import BaseModel
 
-from app.utils.db import get_data, get_all_data, set_data, delete_data, update_play_status
+from utils.db import get_data, get_all_data, set_data, delete_data, update_play_status
 
 router = APIRouter()
 
@@ -81,7 +81,7 @@ async def update_playlist(data: PlaylistRequest):
                "album_id", "platform", "status", "cover", "hd_cover", "MV", "VIP"]
 
     try:
-        with sqlite3.connect(f'app/data/data.db') as conn:
+        with sqlite3.connect(f'data/data.db') as conn:
             cursor = conn.cursor()
 
             if data.action == "play":

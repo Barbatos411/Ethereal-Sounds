@@ -30,7 +30,7 @@ def cookie_to_dict(cookie_string: str):
 def get_cookie(platform):
     try:
         # 使用 `with` 语句管理数据库连接
-        with sqlite3.connect('app/data/data.db') as conn:
+        with sqlite3.connect('data/data.db') as conn:
             cursor = conn.cursor()
 
             # 查询指定平台的 cookie

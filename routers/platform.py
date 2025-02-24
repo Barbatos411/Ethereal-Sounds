@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query, HTTPException, Response
 
-from app.platform_manager import platform_manager
+from platforms.platform_manager import platform_manager
 
 router = APIRouter()
 
@@ -93,7 +93,7 @@ async def home(
     # 根据平台名称找到对应的平台类
     try:
         platform_obj = platform_manager.get_platform_by_id(platform)
-        
+
         # 构建 kwargs，只在 categories 被传入时才添加
         kwargs = {"page": page}
         if categories is not None:

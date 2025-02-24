@@ -1,16 +1,16 @@
-from app.platforms.base import BasePlatform
+from platforms.base import BasePlatform
 from .get_audio import get_audio
 from .get_lrc import get_lrc
 from .home import home
 from .search import search
 
 
-class NetEase(BasePlatform):
-    name = "网易云音乐"  # 平台名称
-    id = "NetEase"
-    Referer = "https://music.163.com/"
-    order = 1  # 顺序
-    cookie = "ntes_utid=tid._.iM3K0zynKEVAUhBVBEeSNw4lJFsjCioz._.0;WNMCID=qmhaqn.1740338635092.01.0;WEVNSM=1.0.0;_iuqxldmzr_=32;_ntes_nnid=d4af74f6e9fd9e29a406d1697cf957a6,1740338635000;_ntes_nuid=d4af74f6e9fd9e29a406d1697cf957a6;JSESSIONID-WYYY=AWH2lOnPbQ16ryK1XS7NXH9UFziKXndPpQXNv3kYyQWuWnjw9ZOs6%2Fa9n%5Cc8UruV9wzP%2FoCPex1hHoWqsGKtMNRQwXI7cYTffE%2Fg%2F2HNeDkXJWpxI4ct6%5CEZVCCYNPgkeGYAh%5C3rjQJ%2FZw9CYgDimtGq03POXvSelUivWHoz%2Fh64Q%5C79%3A1740340434986;NMTID=00O0DuNC3AgWDz-PkUwj4W-c2ZMtYQAAAGVNEQf1Q;sDeviceId=YD-MSmKL%2BNCVCZFVhABEBeXYh5wNA82Wjos"
+class QQMusic(BasePlatform):
+    name = "QQ音乐"  # 平台名称
+    id = "QQMusic"  # 平台ID
+    Referer = "https://y.qq.com/"  # 平台Referer
+    order = 2  # 顺序
+    cookie = "pgv_pvid=3720502878;pgv_info=ssid=s5519043906;fqm_sessionid=14f3d2ef-7356-4946-a098-bae97e2437e6;fqm_pvqid=7c94a00a-804b-4d86-bfcf-84283ef932a0;ts_last=y.qq.com/;ts_refer=music.qq.com/;ts_uid=6209002575"
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """
@@ -24,7 +24,7 @@ class NetEase(BasePlatform):
 
     async def get_audio(self, audio_id: str):
         """
-        定义抽象的获取音频方法，每个平台都必须实现
+        定义抽象地获取音频方法，每个平台都必须实现
         :param audio_id: 音频链接
         :return: 音频文件/链接，歌词
         """
@@ -38,12 +38,12 @@ class NetEase(BasePlatform):
         """
         return await get_lrc(self, audio_id)
 
-    async def home(self, page: int = 1, categories: str = "全部"):
+    async def home(self):
         """
         定义抽象地获取主页方法，每个平台都必须实现
         :return: 主页
         """
-        return await home(self, page, categories)
+        return await home()
 
     async def login(self, platform: str, method: str, username: str, password: str, code: str):
         """

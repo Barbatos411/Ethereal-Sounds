@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 
 import httpx
 
-from app.utils.cookie import get_cookie
-from app.utils.db import set_data
+from utils.cookie import get_cookie
+from utils.db import set_data
 
 
 class BasePlatform(ABC):

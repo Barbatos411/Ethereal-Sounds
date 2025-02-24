@@ -7,7 +7,7 @@ def create_sqlite_db():
     """
 
     # 创建数据库文件
-    with sqlite3.connect('app/data/data.db') as conn:
+    with sqlite3.connect('data/data.db') as conn:
         cursor = conn.cursor()
         cursor.executescript("""
             -- 播放列表
@@ -57,7 +57,7 @@ def get_data(database, table, where, keyword, select):
     :param keyword: 条件值
     :param select: 返回值
     """
-    with sqlite3.connect(f'app/data/{database}.db') as conn:
+    with sqlite3.connect(f'data/{database}.db') as conn:
         cursor = conn.cursor()
         # 使用参数化查询防止SQL注入
         query = f"SELECT {select} FROM {table} WHERE {where} = ?"
@@ -77,7 +77,7 @@ def get_all_data(database: str, table: str):
     return: 所有数据
     获取数据表内所有数据
     """
-    with sqlite3.connect(f'app/data/{database}.db') as conn:
+    with sqlite3.connect(f'data/{database}.db') as conn:
         cursor = conn.cursor()
 
         # 查询表数据并防止 SQL 注入
@@ -104,7 +104,7 @@ def set_data(database: str, table: str, where_column: str, keyword: str,
     """
     更新数据表中单个记录的指定列
     """
-    with sqlite3.connect(f'app/data/{database}.db') as conn:
+    with sqlite3.connect(f'data/{database}.db') as conn:
         cursor = conn.cursor()
         # 使用参数化查询防止SQL注入
         query = f"INSERT OR REPLACE INTO {table} ({where_column}, {set_column}) VALUES (?, ?);"
@@ -121,7 +121,7 @@ def delete_data(database: str, table: str, keyword: str, where: str):
     param where: 查找列
     删除指定数据库和表中的数据
     """
-    with sqlite3.connect(f'app/data/{database}.db') as conn:
+    with sqlite3.connect(f'data/{database}.db') as conn:
         cursor = conn.cursor()
         # 使用参数化查询防止SQL注入
         query = f"DELETE FROM {table} WHERE {where} = ?"
@@ -132,7 +132,7 @@ def delete_data(database: str, table: str, keyword: str, where: str):
 
 
 def update_play_status(index: str):
-    with sqlite3.connect(f'app/data/data.db') as conn:
+    with sqlite3.connect(f'data/data.db') as conn:
         cursor = conn.cursor()
         # 清除 status 列内容
         cursor.execute("UPDATE song_list SET status = NULL")

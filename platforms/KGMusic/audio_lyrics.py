@@ -1,7 +1,7 @@
 import time
 
-from app.utils.cookie import cookie_to_dict
-from app.utils.lyrics import parse_lrc
+from utils.cookie import cookie_to_dict
+from utils.lyrics import parse_lrc
 
 
 async def audio_lyrics(self, method: str, audio_id: str):

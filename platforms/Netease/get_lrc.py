@@ -1,4 +1,4 @@
-from app.utils.lyrics import parse_lrc
+from utils.lyrics import parse_lrc
 
 
 async def get_lrc(self, audio_id: str):

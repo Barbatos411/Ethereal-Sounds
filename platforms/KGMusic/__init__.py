@@ -1,6 +1,6 @@
 import hashlib
 
-from app.platforms.base import BasePlatform
+from platforms.base import BasePlatform
 from .audio_lyrics import audio_lyrics
 from .home import home
 from .search import search

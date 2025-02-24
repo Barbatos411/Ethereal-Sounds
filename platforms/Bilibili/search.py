@@ -1,4 +1,4 @@
-from app.utils.time import format_duration
+from utils.time import format_duration
 
 
 async def search(self, keyword: str, page: int = 1, limit: int = 30):

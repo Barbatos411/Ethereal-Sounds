@@ -1,15 +1,16 @@
-from app.platforms.base import BasePlatform
+from platforms.base import BasePlatform
 from .get_audio import get_audio
+from .get_lrc import get_lrc
 from .home import home
 from .search import search
 
 
-class Bilibili(BasePlatform):
-    name = "哔哩哔哩"  # 平台名称
-    id = "Bilibili"  # 平台ID
-    Referer = "https://www.bilibili.com/"  # 平台Referer
-    order = 5  # 顺序
-    cookie = "b_lsid=63F3DAEF_19534459AFB;enable_feed_channel=DISABLE;home_feed_column=5;buvid4=FE59B631-6C91-0AB3-2147-A2097180842828035-025022319-ki5IoBaQVaZfWd9T0hnbL9d2AfRE2c42VEpZrzI1uYM8xkDTbSovZErrWl6j6Dut;buvid3=83146565-A947-90D8-0F50-2DC6ED10322431485infoc;b_nut=1740338731;_uuid=1061783E4-1299-5B78-D101F-F971F1765DD831773infoc;bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDA1OTc5MzEsImlhdCI6MTc0MDMzODY3MSwicGx0IjotMX0.5KDiNxv9lNVErYUPI247RVCpocx0Bg2s0MvYj6c19fU;bili_ticket_expires=1740597871;bmg_af_switch=1;bmg_src_def_domain=i1.hdslb.com;browser_resolution=1652-915;buvid_fp=d294dae0d3ec02cee32e4866af87cfbe;enable_web_push=DISABLE"
+class NetEase(BasePlatform):
+    name = "网易云音乐"  # 平台名称
+    id = "NetEase"
+    Referer = "https://music.163.com/"
+    order = 1  # 顺序
+    cookie = "ntes_utid=tid._.iM3K0zynKEVAUhBVBEeSNw4lJFsjCioz._.0;WNMCID=qmhaqn.1740338635092.01.0;WEVNSM=1.0.0;_iuqxldmzr_=32;_ntes_nnid=d4af74f6e9fd9e29a406d1697cf957a6,1740338635000;_ntes_nuid=d4af74f6e9fd9e29a406d1697cf957a6;JSESSIONID-WYYY=AWH2lOnPbQ16ryK1XS7NXH9UFziKXndPpQXNv3kYyQWuWnjw9ZOs6%2Fa9n%5Cc8UruV9wzP%2FoCPex1hHoWqsGKtMNRQwXI7cYTffE%2Fg%2F2HNeDkXJWpxI4ct6%5CEZVCCYNPgkeGYAh%5C3rjQJ%2FZw9CYgDimtGq03POXvSelUivWHoz%2Fh64Q%5C79%3A1740340434986;NMTID=00O0DuNC3AgWDz-PkUwj4W-c2ZMtYQAAAGVNEQf1Q;sDeviceId=YD-MSmKL%2BNCVCZFVhABEBeXYh5wNA82Wjos"
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """
@@ -23,7 +24,7 @@ class Bilibili(BasePlatform):
 
     async def get_audio(self, audio_id: str):
         """
-        定义抽象地获取音频方法，每个平台都必须实现
+        定义抽象的获取音频方法，每个平台都必须实现
         :param audio_id: 音频链接
         :return: 音频文件/链接，歌词
         """
@@ -33,17 +34,16 @@ class Bilibili(BasePlatform):
         """
         定义抽象地获取歌词方法，每个平台都必须实现
         :param audio_id: 音频链接
-        :param trans: 是否翻译
         :return: 歌词
         """
-        pass
+        return await get_lrc(self, audio_id)
 
-    async def home(self):
+    async def home(self, page: int = 1, categories: str = "全部"):
         """
         定义抽象地获取主页方法，每个平台都必须实现
         :return: 主页
         """
-        return await home()
+        return await home(self, page, categories)
 
     async def login(self, platform: str, method: str, username: str, password: str, code: str):
         """

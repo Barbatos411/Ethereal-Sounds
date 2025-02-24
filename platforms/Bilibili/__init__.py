@@ -1,16 +1,15 @@
-from app.platforms.base import BasePlatform
+from platforms.base import BasePlatform
 from .get_audio import get_audio
-from .get_lrc import get_lrc
 from .home import home
 from .search import search
 
 
-class QQMusic(BasePlatform):
-    name = "QQ音乐"  # 平台名称
-    id = "QQMusic"  # 平台ID
-    Referer = "https://y.qq.com/"  # 平台Referer
-    order = 2  # 顺序
-    cookie = "pgv_pvid=3720502878;pgv_info=ssid=s5519043906;fqm_sessionid=14f3d2ef-7356-4946-a098-bae97e2437e6;fqm_pvqid=7c94a00a-804b-4d86-bfcf-84283ef932a0;ts_last=y.qq.com/;ts_refer=music.qq.com/;ts_uid=6209002575"
+class Bilibili(BasePlatform):
+    name = "哔哩哔哩"  # 平台名称
+    id = "Bilibili"  # 平台ID
+    Referer = "https://www.bilibili.com/"  # 平台Referer
+    order = 5  # 顺序
+    cookie = "b_lsid=63F3DAEF_19534459AFB;enable_feed_channel=DISABLE;home_feed_column=5;buvid4=FE59B631-6C91-0AB3-2147-A2097180842828035-025022319-ki5IoBaQVaZfWd9T0hnbL9d2AfRE2c42VEpZrzI1uYM8xkDTbSovZErrWl6j6Dut;buvid3=83146565-A947-90D8-0F50-2DC6ED10322431485infoc;b_nut=1740338731;_uuid=1061783E4-1299-5B78-D101F-F971F1765DD831773infoc;bili_ticket=eyJhbGciOiJIUzI1NiIsImtpZCI6InMwMyIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDA1OTc5MzEsImlhdCI6MTc0MDMzODY3MSwicGx0IjotMX0.5KDiNxv9lNVErYUPI247RVCpocx0Bg2s0MvYj6c19fU;bili_ticket_expires=1740597871;bmg_af_switch=1;bmg_src_def_domain=i1.hdslb.com;browser_resolution=1652-915;buvid_fp=d294dae0d3ec02cee32e4866af87cfbe;enable_web_push=DISABLE"
 
     async def search(self, keyword: str, page: int = 1, limit: int = 30):
         """
@@ -34,9 +33,10 @@ class QQMusic(BasePlatform):
         """
         定义抽象地获取歌词方法，每个平台都必须实现
         :param audio_id: 音频链接
+        :param trans: 是否翻译
         :return: 歌词
         """
-        return await get_lrc(self, audio_id)
+        pass
 
     async def home(self):
         """

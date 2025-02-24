@@ -1,7 +1,7 @@
 import time
 
-from app.utils.cookie import cookie_to_dict
-from app.utils.time import s_to_mmss
+from utils.cookie import cookie_to_dict
+from utils.time import s_to_mmss
 
 
 async def search(self, keyword: str, page: int = 1, limit: int = 30):

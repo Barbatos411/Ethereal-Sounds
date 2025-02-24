@@ -1,6 +1,6 @@
 from typing import List
 
-from app.platforms.base import BasePlatform
+from platforms.base import BasePlatform
 
 
 class PlatformManager:

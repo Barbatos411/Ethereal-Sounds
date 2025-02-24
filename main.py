@@ -6,10 +6,10 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 
-from app.platform_manager import platform_manager
-from app.platforms.base import BasePlatform
-from app.routers import database, platform
-from app.utils.db import create_sqlite_db
+from platforms.base import BasePlatform
+from platforms.platform_manager import platform_manager
+from routers import database, platform
+from utils.db import create_sqlite_db
 
 app = FastAPI()
 
@@ -25,9 +25,9 @@ app.mount("/res", StaticFiles(directory="web/res"), name="res")
 # 初始化模板引擎
 templates = Jinja2Templates(directory="web")  # web 目录包含 html 模板文件
 
-if not os.path.exists('app/data/data.db'):
+if not os.path.exists('data/data.db'):
     print('数据库不存在，正在创建数据库...')
-    os.makedirs('app/data', exist_ok=True)
+    os.makedirs('data', exist_ok=True)
     create_sqlite_db()
 
 
@@ -37,7 +37,7 @@ def load_platforms():
     for root, dirs, files in os.walk(search_dir):
         if '__init__.py' in files:
             platform_folder = os.path.basename(root)
-            module_name = f"app.platforms.{platform_folder}"
+            module_name = f"platforms.{platform_folder}"
 
             try:
                 module = importlib.import_module(module_name)
@@ -59,3 +59,8 @@ async def read_item(request: Request):
     example_data = {"message": "Welcome to the music player"}
     return templates.TemplateResponse(
         "index.html", {"request": request, "data": example_data})
+
+
+@app.get("/status")
+async def status():
+    return {"status": "ok"}

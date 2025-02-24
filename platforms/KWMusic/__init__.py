@@ -2,7 +2,7 @@ import math
 import random
 import time
 
-from app.platforms.base import BasePlatform
+from platforms.base import BasePlatform
 from .get_audio import get_audio
 from .get_lrc import get_lrc
 from .home import home

@@ -1,4 +1,4 @@
-from app.utils.cookie import cookie_to_dict
+from utils.cookie import cookie_to_dict
 
 
 async def get_lrc(self, audio_id: str):
