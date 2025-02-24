@@ -131,11 +131,11 @@ def delete_data(database: str, table: str, keyword: str, where: str):
     return {"message": "记录已删除"}
 
 
-def update_play_status(audio_number: str):
+def update_play_status(index: str):
     with sqlite3.connect(f'app/data/data.db') as conn:
         cursor = conn.cursor()
         # 清除 status 列内容
         cursor.execute("UPDATE song_list SET status = NULL")
-        cursor.execute(f"UPDATE song_list SET status = 'playing' WHERE number = {audio_number}")
+        cursor.execute(f"UPDATE song_list SET status = 'playing' WHERE id = {index}")
         conn.commit()
     return {"message": "播放状态更新成功"}

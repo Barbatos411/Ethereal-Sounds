@@ -17,7 +17,7 @@ async function play_music(element, action = "play") {
   // 获取音频信息等
   const audio_id = element.dataset.audio_id;
   const platform = element.dataset.platform;
-  const audio_number = element.dataset.number;
+  const audio_number = element.dataset.id;
 
   // 关闭同步歌词
   updatesyncLyrics = false;
@@ -437,7 +437,7 @@ async function fetchAndRenderPlaylist() {
       songElement.innerHTML = `
         <div class="list-container-title">
           <h4 class="list-container-title-number">${index + 1}</h4>
-          <h4 class="list-container-title-text" data-audio_id=${song.audio_id} data-platform=${song.platform} data-cover=${song.cover} onclick=play_music(this,"play")>${song.title}</h4>
+          <h4 class="list-container-title-text" data-audio_id=${song.audio_id} data-platform=${song.platform} data-cover=${song.cover} data-id=${song.id} onclick=play_music(this,"play")>${song.title}</h4>
         </div>
         <p class="list-container-singer">${song.singer}</p>
 
