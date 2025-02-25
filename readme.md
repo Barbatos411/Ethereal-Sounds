@@ -32,25 +32,17 @@
 ### 已实现
 
 - [x] 搜索
-
 - [x] 播放音乐
-
 - [x] 滚动歌词
-
 - [x] 音频控制
-
 - [x] 播放列表
 
 ### TODO
 
 - [ ] 各平台首页
-
 - [ ] 平台账号登录
-
 - [ ] 收藏、创建歌单
-
 - [ ] 自定义音效
-
 - [ ] 更多的配色、主题
 
 ## 安装
@@ -96,10 +88,8 @@ pip install -r requirements.txt
 ### 启动
 
 ```
-python -m uvicorn app.main:app
+python main.py
 ```
-
-访问 <http://127.0.0.1:8000> 查看应用运行状态
 
 ### 更新
 
@@ -117,10 +107,12 @@ git pull
 - **[FastAPI](https://fastapi.tiangolo.com/)** : 提供了高性能的 API 构建框架。
 - **[Starlette](https://www.starlette.io/)** : 支持异步请求和路由系统，是 FastAPI 的底层框架。
 - **[Uvicorn](https://www.uvicorn.org/)** : 作为 ASGI 服务器，为项目提供快速的运行环境。
-- **[httpx](https://www.python-httpx.org/)** 和 **[httpcore](https://www.python-httpx.org/httpcore/)** : 处理异步 HTTP 请求，提升了网络交互的效率。
+- **[httpx](https://www.python-httpx.org/)** 和 **[httpcore](https://www.python-httpx.org/httpcore/)** : 处理异步 HTTP
+  请求，提升了网络交互的效率。
 - [**Web Audio API**](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) : 浏览器内置的强大音频处理接口，用于音频播放、可视化和自定义控制。
 - [**SQLite**](https://www.sqlite.org/) : 轻量级嵌入式数据库，用于存储用户数据和歌单信息。
-- **[BeautifulSoup4](https://www.crummy.com/software/BeautifulSoup/)** 和 **[soupsieve](https://facelessuser.github.io/soupsieve/)** : 强大的 HTML 解析工具，简化了爬虫功能。
+- **[BeautifulSoup4](https://www.crummy.com/software/BeautifulSoup/)** 和 *
+  *[soupsieve](https://facelessuser.github.io/soupsieve/)** : 强大的 HTML 解析工具，简化了爬虫功能。
 - **[Jinja2](https://palletsprojects.com/p/jinja/)** — 便捷的模板引擎，用于前端页面渲染。
 - **[Pydantic](https://docs.pydantic.dev/)** : 数据验证和结构化的基石，使数据处理更为安全可靠。
 

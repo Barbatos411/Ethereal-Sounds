@@ -1,66 +1,62 @@
-import importlib
-import os
+import sys
+import threading
 
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
-from starlette.requests import Request
-
-from platforms.base import BasePlatform
-from platforms.platform_manager import platform_manager
-from routers import database, platform
-from utils.db import create_sqlite_db
-
-app = FastAPI()
-
-# 将模块化路由注册到主程序
-app.include_router(platform.router, tags=["platform"])
-app.include_router(database.router, tags=["database"])
-
-# 设置静态文件的目录（'css', 'js', 'res' 目录需要映射）
-app.mount("/css", StaticFiles(directory="web/css"), name="css")
-app.mount("/js", StaticFiles(directory="web/js"), name="js")
-app.mount("/res", StaticFiles(directory="web/res"), name="res")
-
-# 初始化模板引擎
-templates = Jinja2Templates(directory="web")  # web 目录包含 html 模板文件
-
-if not os.path.exists('data/data.db'):
-    print('数据库不存在，正在创建数据库...')
-    os.makedirs('data', exist_ok=True)
-    create_sqlite_db()
+import httpx
+import uvicorn
+from PySide6.QtCore import QUrl, QTimer
+from PySide6.QtGui import QIcon
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWidgets import QApplication, QMainWindow
 
 
-def load_platforms():
-    search_dir = os.path.join(os.path.dirname(__file__), 'platforms')
-
-    for root, dirs, files in os.walk(search_dir):
-        if '__init__.py' in files:
-            platform_folder = os.path.basename(root)
-            module_name = f"platforms.{platform_folder}"
-
-            try:
-                module = importlib.import_module(module_name)
-                for attr_name in dir(module):
-                    obj = getattr(module, attr_name)
-                    if isinstance(obj, type) and issubclass(obj, BasePlatform) and obj is not BasePlatform:
-                        platform_manager.add_platform(obj())  # 加载到管理器
-            except Exception as e:
-                print(f"加载模块 {platform_folder} 失败: {e}")
+def start_server():
+    uvicorn.run("backend:main", host="127.0.0.1", port=8000)
 
 
-load_platforms()
+class Browser(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("浮声 - Ethereal Sounds")
+        self.setWindowIcon(QIcon('icon.png'))  # 设置窗口图标
+        self.setGeometry(100, 100, 1200, 800)
+
+        # 创建 QWebEngineView 实例
+        self.browser = QWebEngineView()
+        self.setCentralWidget(self.browser)
+
+        # ✅ 加载“加载中”页面
+        self.browser.setHtml("""
+            <html>
+                <head><title>加载中...</title></head>
+                <body style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+                    <h1>🎵 加载中，请稍候...</h1>
+                </body>
+            </html>
+        """)
+
+        # 启动定时器，每 1 秒检测后端状态
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.check_backend_ready)
+        self.timer.start(500)  # 每秒轮询一次
+
+    def check_backend_ready(self):
+        try:
+            response = httpx.get("http://127.0.0.1:8000/status", timeout=1)
+            if response.status_code == 200:
+                # ✅ 后端已就绪，加载实际页面
+                self.timer.stop()
+                self.browser.load(QUrl("http://127.0.0.1:8000"))
+        except httpx.RequestError:
+            pass  # 后端尚未启动，继续轮询
 
 
-# 定义主页路由
-@app.get("/")
-async def read_item(request: Request):
-    # 你可以从数据库查询数据或者传递静态数据
-    example_data = {"message": "Welcome to the music player"}
-    return templates.TemplateResponse(
-        "index.html", {"request": request, "data": example_data})
+if __name__ == "__main__":
+    # ✅ 以守护线程启动后端
+    server_thread = threading.Thread(target=start_server, daemon=True)
+    server_thread.start()
 
-
-@app.get("/status")
-async def status():
-    return {"status": "ok"}
+    # 启动 PySide6 界面
+    app = QApplication(sys.argv)
+    window = Browser()
+    window.show()
+    sys.exit(app.exec())
