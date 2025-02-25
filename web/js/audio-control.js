@@ -423,8 +423,9 @@ async function fetchAndRenderPlaylist() {
     const listContainer = document.querySelector(".list-content");
     listContainer.innerHTML = ""; // 清空原有内容
     const playlist = data.data;
+
     // 如果播放列表为空，则不进行任何操作
-    if (playlist === undefined) return;
+    if (playlist === undefined) hide_display_footer();
 
     // 动态生成 HTML 并重新编号序号
     playlist.forEach((song, index) => {
@@ -442,7 +443,7 @@ async function fetchAndRenderPlaylist() {
         <p class="list-container-singer">${song.singer}</p>
 
         <svg
-          style="width=10%"
+          style="cursor: pointer;"
           role="img"
           xmlns="http://www.w3.org/2000/svg"
           width="1.25rem"
@@ -470,12 +471,22 @@ async function fetchAndRenderPlaylist() {
   } catch (error) {
     console.error("播放列表加载失败:", error);
   }
+  hide_display_footer();
 }
 
 fetchAndRenderPlaylist(); // 页面加载时获取并渲染播放列表
 
 // 删除歌曲函数
 async function deleteSong(songOrder) {
+  const list_container_playing = document.querySelector(
+    ".list-container-playing"
+  );
+  const id = list_container_playing.querySelector(".list-container-title-text")
+    .dataset.id;
+  if (id == songOrder) {
+    // 如果删除的歌曲正在播放，则播放下一首
+    playNextSong();
+  }
   try {
     // 调用后端接口删除对应 order 的歌曲
     const response = await fetch(
@@ -490,6 +501,11 @@ async function deleteSong(songOrder) {
   } catch (error) {
     console.error("删除歌曲失败:", error);
   }
+}
+
+async function del_all_songs() {
+  fetch("/del_all_data?database=data&table=song_list");
+  fetchAndRenderPlaylist();
 }
 
 // 更新封面
@@ -889,4 +905,24 @@ function smtcWithProgressCheck() {
   }
 
   checkProgress();
+}
+
+// 隐藏或显示页脚
+function hide_display_footer() {
+  // 获取列表内容元素
+  const list_content = document.querySelector(".list-content");
+  // 获取页脚元素
+  const footer = document.querySelector(".footer");
+  // 获取页脚容器元素
+  const footer_container = document.querySelector(".footer-container");
+  // 如果列表内容元素没有子元素
+  if (list_content.children.length <= 0) {
+    // 将页脚元素和页脚容器元素的底部距离设置为-10rem
+    footer.style.bottom = "-10rem";
+    footer_container.style.bottom = "-10rem";
+  } else {
+    // 否则，将页脚元素和页脚容器元素的底部距离设置为0.3rem
+    footer.style.bottom = "0.3rem";
+    footer_container.style.bottom = "0.3rem";
+  }
 }
