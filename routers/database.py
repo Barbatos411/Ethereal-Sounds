@@ -4,7 +4,7 @@ from typing import List, Literal
 from fastapi import APIRouter, Query, HTTPException
 from pydantic import BaseModel
 
-from utils.db import get_data, get_all_data, set_data, delete_data, update_play_status
+from utils.db import get_data, get_all_data, set_data, delete_data, update_play_status, delete_all_data
 
 router = APIRouter()
 
@@ -126,6 +126,21 @@ async def db_delete_data(
     """
     try:
         results = delete_data(database, table, keyword, where)
+        return results
+    except sqlite3.Error as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/del_all_data")
+async def db_delete_all_data(
+        database: str = Query(..., description="数据库"),
+        table: str = Query(..., description="搜索表"),
+):
+    """
+    删除指定数据库和表中的数据
+    """
+    try:
+        results = delete_all_data(database, table)
         return results
     except sqlite3.Error as e:
         raise HTTPException(status_code=500, detail=str(e))

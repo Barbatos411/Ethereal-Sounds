@@ -139,3 +139,21 @@ def update_play_status(index: str):
         cursor.execute(f"UPDATE song_list SET status = 'playing' WHERE id = {index}")
         conn.commit()
     return {"message": "播放状态更新成功"}
+
+
+def delete_all_data(database: str, table: str):
+    """
+    删除指定数据库和表中的所有数据并重置自增主键
+    :param database: 数据库名称
+    :param table: 表名称
+    """
+    with sqlite3.connect(f'data/{database}.db') as conn:
+        cursor = conn.cursor()
+        # 删除表内所有数据
+        query = f"DELETE FROM {table}"
+        cursor.execute(query)
+        # 重置自增主键
+        cursor.execute(f"DELETE FROM sqlite_sequence WHERE name = '{table}'")
+        conn.commit()  # 提交事务以保存更改
+
+    return {"message": "所有记录已删除且自增主键已重置"}
