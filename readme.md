@@ -51,7 +51,7 @@
 
 ```bash
 # 使用github
-git clone https://github.com/Barbatos411/Ethereal-Sounds
+git clone https://github.com/Barbatos411/Ethereal-Sounds.git
 cd Ethereal-Sounds
 
 # 使用gitee
