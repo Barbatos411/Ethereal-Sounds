@@ -1,3 +1,7 @@
+* {
+  font-family: "Times New Roman", Times, serif !important;
+}
+
 /* 页面基本样式 */
 body,
 .app {
@@ -70,7 +74,7 @@ em {
 .sidebar {
   background-color: var(--color-primary);
   display: flex;
-  width: 10vw;
+  width: 10rem;
   padding: 0.625rem;
   transition:
     width 0.3s ease,
@@ -88,12 +92,8 @@ em {
 
 .title-text {
   color: var(--text-primary);
-  font-size: 1.4375rem;
+  font-size: 1.5rem;
   transition: font-size 0.3s ease;
-}
-
-.title-text-fold {
-  font-size: 0.0625rem;
 }
 
 .title:hover {
@@ -571,7 +571,7 @@ img {
 
 /* 让第一个空行占据足够空间，使第一句歌词自动居中 */
 .empty-placeholder {
-  height: 12%; /* 让它占据歌词容器的50%高度 */
+  height: 30vh; /* 让它占据歌词容器的50%高度 */
   visibility: hidden; /* 不显示文本 */
 }
 

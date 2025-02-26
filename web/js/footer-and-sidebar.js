@@ -42,16 +42,16 @@ function sidebar_fold() {
 
   if (isSidebarFolded) {
     // 恢复原始状态
-    sidebar.style.width = "10vw";
-    main.style.width = "90vw";
-    main.style.left = "10vw";
-    h2.classList.toggle("title-text-fold");
+    sidebar.style.width = "10rem";
+    main.style.width = "calc(100% - 10rem)";
+    main.style.left = "10rem";
+    h2.style.fontSize = "1.5rem";
   } else {
     // 折叠状态
-    sidebar.style.width = "4vw";
-    main.style.width = "96vw";
-    main.style.left = "4vw";
-    h2.classList.toggle("title-text-fold");
+    sidebar.style.width = "4rem";
+    main.style.width = "calc(100% - 4rem)";
+    main.style.left = "4rem";
+    h2.style.fontSize = "0.1rem";
   }
 
   // 切换折叠类

@@ -1,85 +1,132 @@
 import sys
 import threading
+from time import sleep
 
 import httpx
+import pystray
 import uvicorn
-from PySide6.QtCore import QUrl, QTimer, Qt
-from PySide6.QtGui import QIcon
-from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import QApplication, QMainWindow
+import webview
+from PIL import Image
+from pystray import MenuItem
+
+# 全局变量，用于存储窗口对象和托盘图标对象
+window = None
+tray_icon = None
+is_window_visible = True  # 用于跟踪窗口的显示状态
 
 
 def start_server():
+    """启动 FastAPI 后端服务"""
     uvicorn.run("backend:main", host="127.0.0.1", port=8000)
 
 
-class DevToolsWindow(QMainWindow):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.dev_tools_view = QWebEngineView()
-        self.setCentralWidget(self.dev_tools_view)
-        self.setWindowIcon(QIcon('icon.png'))  # 设置窗口图标
-        self.setWindowTitle("浮声 - 开发者工具")
-        self.resize(800, 600)
-
-
-class Browser(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("浮声 - Ethereal Sounds")
-        self.setWindowIcon(QIcon('icon.png'))  # 设置窗口图标
-        self.setGeometry(100, 100, 1200, 800)
-
-        # 创建 QWebEngineView 实例
-        self.browser = QWebEngineView()
-        self.setCentralWidget(self.browser)
-
-        # ✅ 加载“加载中”页面
-        self.browser.setHtml("""
-            <html>
-                <head><title>加载中...</title></head>
-                <body style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-                    <h1>🎵 加载中，请稍候...</h1>
-                </body>
-            </html>
-        """)
-
-        # 启动定时器，每 1 秒检测后端状态
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.check_backend_ready)
-        self.timer.start(500)  # 每秒轮询一次
-
-        # 初始化开发者工具窗口
-        self.dev_tools_window = DevToolsWindow()
-        self.browser.page().setDevToolsPage(self.dev_tools_window.dev_tools_view.page())
-
-    def check_backend_ready(self):
+def check_backend_ready():
+    """检查后端是否就绪"""
+    while True:
         try:
             response = httpx.get("http://127.0.0.1:8000/status", timeout=1)
             if response.status_code == 200:
-                # ✅ 后端已就绪，加载实际页面
-                self.timer.stop()
-                self.browser.load(QUrl("http://127.0.0.1:8000"))
+                # 后端就绪后加载主页面
+                window.load_url("http://localhost:8000")
+                break
         except httpx.RequestError:
-            pass  # 后端尚未启动，继续轮询
+            pass
+        sleep(0.25)  # 降低轮询频率
 
-    def keyPressEvent(self, event):
-        # 按下 F12 打开/关闭开发者工具
-        if event.key() == Qt.Key_F12:
-            if self.dev_tools_window.isVisible():
-                self.dev_tools_window.hide()
-            else:
-                self.dev_tools_window.show()
-        super().keyPressEvent(event)
+
+def toggle_window(icon, item):
+    """显示或隐藏主窗口"""
+    global is_window_visible
+    if is_window_visible:
+        window.hide()
+        is_window_visible = False
+    else:
+        window.show()
+        is_window_visible = True
+
+
+def play_prev_song(icon, item):
+    """调用前端的 playPrevSong 函数"""
+    if window:
+        window.evaluate_js('playPrevSong()')
+
+
+def play_next_song(icon, item):
+    """调用前端的 playNextSong 函数"""
+    if window:
+        window.evaluate_js('playNextSong()')
+
+
+def toggle_play_pause(icon, item):
+    """调用前端的 togglePlayPause 函数"""
+    if window:
+        window.evaluate_js('togglePlayPause()')
+
+
+def exit_app(icon, item):
+    """退出应用"""
+    if window:
+        window.destroy()
+    if tray_icon:
+        tray_icon.stop()
+    sys.exit(0)
+
+
+def create_system_tray():
+    """创建系统托盘图标"""
+    global tray_icon
+
+    # 加载托盘图标（替换为你的图标路径）
+    image = Image.open("icon.ico")  # 确保图标文件存在
+
+    # 定义托盘菜单
+    menu = (
+        MenuItem('显示/隐藏窗口', toggle_window, default=True),
+        MenuItem('上一首', play_prev_song),
+        MenuItem('播放/暂停', toggle_play_pause),
+        MenuItem('下一首', play_next_song),
+        MenuItem('退出', exit_app)
+    )
+
+    # 创建系统托盘图标
+    tray_icon = pystray.Icon("浮声 - Ethereal Sounds", image, "浮声 - Ethereal Sounds", menu)
+    tray_icon.run()
+
+
+class API:
+    def hide_to_tray(self):
+        """供前端调用的隐藏到系统托盘方法"""
+        toggle_window(None, None)
+        return "窗口已隐藏到系统托盘"
 
 
 if __name__ == "__main__":
-    # ✅ 以守护线程启动后端
+    # 启动后端服务
     server_thread = threading.Thread(target=start_server, daemon=True)
     server_thread.start()
 
-    # 启动 PySide6 界面
-    app = QApplication(sys.argv)
-    window = Browser()
-    window.show()
-    sys.exit(app.exec())
+    # 创建无边框窗口
+    window = webview.create_window(
+        title='浮声 - Ethereal Sounds',
+        url='loading.html',  # 初始加载页
+        width=1200,
+        height=800,
+        frameless=True,
+        easy_drag=True,
+        js_api=API(),  # 暴露 API 类的实例给前端
+        confirm_close=False,
+    )
+
+    # 启动后端检测线程
+    check_thread = threading.Thread(target=check_backend_ready, daemon=True)
+    check_thread.start()
+
+    # 创建并运行系统托盘图标
+    tray_thread = threading.Thread(target=create_system_tray, daemon=True)
+    tray_thread.start()
+
+    # 启动应用
+    webview.start(
+        debug=False,  # 设置为 False，避免启动时自动打开开发者工具
+        gui='edgechromium' if sys.platform == 'win32' else None
+    )
