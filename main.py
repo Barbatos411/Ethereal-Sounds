@@ -1,3 +1,4 @@
+import logging
 import sys
 import threading
 from time import sleep
@@ -9,6 +10,14 @@ import webview
 from PIL import Image
 from pystray import MenuItem
 
+from config import config
+from log import logger  # 复用 Logger
+
+# 让 PyWebView 也使用logger
+pywebview_logger = logging.getLogger("pywebview")
+pywebview_logger.handlers = logger.logger.handlers  # 复用 log.py 配置
+pywebview_logger.propagate = False  # 避免日志重复
+
 # 全局变量，用于存储窗口对象和托盘图标对象
 window = None
 tray_icon = None
@@ -17,14 +26,17 @@ is_window_visible = True  # 用于跟踪窗口的显示状态
 
 def start_server():
     """启动 FastAPI 后端服务"""
-    uvicorn.run("backend:main", host="127.0.0.1", port=8000)
+    logger.info("🚀 启动后端服务...")
+    HOST = config.get('HOST')
+    PORT = config.get('PORT')
+    uvicorn.run("backend:main", host = HOST, port = PORT, reload = False, access_log = False)
 
 
 def check_backend_ready():
     """检查后端是否就绪"""
     while True:
         try:
-            response = httpx.get("http://127.0.0.1:8000/status", timeout=1)
+            response = httpx.get("http://127.0.0.1:8000/status", timeout = 1)
             if response.status_code == 200:
                 # 后端就绪后加载主页面
                 window.load_url("http://localhost:8000")
@@ -81,7 +93,7 @@ def create_system_tray():
 
     # 定义托盘菜单
     menu = (
-        MenuItem('显示/隐藏窗口', toggle_window, default=True),
+        MenuItem('显示/隐藏窗口', toggle_window, default = True),
         MenuItem('上一首', play_prev_song),
         MenuItem('播放/暂停', toggle_play_pause),
         MenuItem('下一首', play_next_song),
@@ -102,31 +114,32 @@ class API:
 
 if __name__ == "__main__":
     # 启动后端服务
-    server_thread = threading.Thread(target=start_server, daemon=True)
+    server_thread = threading.Thread(target = start_server, daemon = True)
     server_thread.start()
 
     # 创建无边框窗口
     window = webview.create_window(
-        title='浮声 - Ethereal Sounds',
-        url='loading.html',  # 初始加载页
-        width=1200,
-        height=800,
-        frameless=True,
-        easy_drag=True,
-        js_api=API(),  # 暴露 API 类的实例给前端
-        confirm_close=False,
+        title = '浮声 - Ethereal Sounds',
+        url = 'loading.html',  # 初始加载页
+        width = 1200,
+        height = 800,
+        frameless = True,
+        easy_drag = True,
+        js_api = API(),  # 暴露 API 类的实例给前端
+        confirm_close = False,
     )
 
     # 启动后端检测线程
-    check_thread = threading.Thread(target=check_backend_ready, daemon=True)
+    check_thread = threading.Thread(target = check_backend_ready, daemon = True)
     check_thread.start()
 
     # 创建并运行系统托盘图标
-    tray_thread = threading.Thread(target=create_system_tray, daemon=True)
+    tray_thread = threading.Thread(target = create_system_tray, daemon = True)
     tray_thread.start()
 
     # 启动应用
     webview.start(
-        debug=False,  # 设置为 False，避免启动时自动打开开发者工具
-        gui='edgechromium' if sys.platform == 'win32' else None
+        debug = config.get('DEBUG'),  # False没有开发者工具
+        http_server = False,  # 禁用内置 HTTP 服务器
+        gui = 'edgechromium' if sys.platform == 'win32' else None
     )

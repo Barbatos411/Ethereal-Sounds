@@ -1,0 +1,10 @@
+# 监听地址
+HOST: 0.0.0.0
+# 监听端口
+PORT: 8000
+# 日志等级
+LOGLEVEL: DEBUG
+# 日志保留天数
+LOG_RETAIN_DAYS: 7
+# 是否开启调试模式
+DEBUG: False
