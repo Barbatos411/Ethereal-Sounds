@@ -90,11 +90,3 @@ logger = Logger()
 
 # **启动时清理旧日志**
 logger.clean_old_logs()
-
-# **测试日志**
-# **测试日志**
-logger.debug("这是一条 DEBUG 日志")
-logger.info("这是一条 INFO 日志")
-logger.warning("这是一条 WARNING 日志")
-logger.error("这是一条 ERROR 日志")
-logger.info(f"当前终端日志级别: {config.get('LOG_LEVEL', 'INFO')}")
