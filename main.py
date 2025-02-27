@@ -106,6 +106,24 @@ def create_system_tray():
 
 
 class API:
+    def __init__(self):
+        self.start_x = 0  # 记录鼠标按下时的窗口 X 位置
+        self.start_y = 0  # 记录鼠标按下时的窗口 Y 位置
+
+    def start_drag(self, mouse_x, mouse_y):
+        """鼠标按下时，记录窗口位置和鼠标偏移"""
+        window = webview.windows[0]  # 获取当前窗口
+        if window:
+            self.start_x, self.start_y = mouse_x, mouse_y  # 记录窗口初始位置
+
+    def move_window(self, mouse_x, mouse_y):
+        """计算鼠标偏移量，移动窗口"""
+        window = webview.windows[0]
+        if window:
+            new_x = mouse_x - self.start_x
+            new_y = mouse_y - self.start_y
+            window.move(new_x, new_y)  # 移动窗口
+
     def hide_to_tray(self):
         """供前端调用的隐藏到系统托盘方法"""
         toggle_window(None, None)
