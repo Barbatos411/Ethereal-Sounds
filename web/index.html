@@ -10,6 +10,10 @@
   </head>
 
   <body>
+    <div
+      id="drag-area"
+      style="position: fixed; top: 0; height: 3vh; width: 100%"
+    ></div>
     <div class="app dark-before">
       <div class="sidebar">
         <div class="sidebar-container">
@@ -600,38 +604,9 @@
         </div>
       </div>
     </div>
-    <script src="js/footer-and-sidebar.js"></script>
+    <script src="js/interaction.js"></script>
     <script src="js/platforms.js"></script>
     <script src="js/button-interactions.js"></script>
     <script src="js/audio-control.js"></script>
-    <script src="js/drag-scroll.js"></script>
-    <script>
-      // 确保 pywebview.api 已加载
-      function hideToTray() {
-        if (
-          typeof pywebview !== "undefined" &&
-          pywebview.api &&
-          pywebview.api.hideToTray
-        ) {
-          try {
-            pywebview.api.hideToTray(); // 调用 Python 方法
-          } catch (error) {
-            console.error("调用隐藏方法失败:", error);
-          }
-        } else {
-          console.error("pywebview.api 未加载或 hideToTray 方法不可用");
-        }
-      }
-
-      // 监听 pywebview 加载完成事件
-      window.addEventListener("pywebviewready", function () {
-        console.log("pywebview.api 已加载");
-
-        // 绑定按钮点击事件
-        document
-          .getElementById("hide-button")
-          .addEventListener("click", hideToTray);
-      });
-    </script>
   </body>
 </html>
