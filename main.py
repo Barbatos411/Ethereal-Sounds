@@ -109,6 +109,7 @@ class API:
     def __init__(self):
         self.start_x = 0  # 记录鼠标按下时的窗口 X 位置
         self.start_y = 0  # 记录鼠标按下时的窗口 Y 位置
+        self.is_fullscreen = False
 
     def start_drag(self, mouse_x, mouse_y):
         """鼠标按下时，记录窗口位置和鼠标偏移"""
@@ -119,7 +120,7 @@ class API:
     def move_window(self, mouse_x, mouse_y):
         """计算鼠标偏移量，移动窗口"""
         window = webview.windows[0]
-        if window:
+        if window and not self.is_fullscreen:
             new_x = mouse_x - self.start_x
             new_y = mouse_y - self.start_y
             window.move(new_x, new_y)  # 移动窗口
@@ -128,6 +129,17 @@ class API:
         """供前端调用的隐藏到系统托盘方法"""
         toggle_window(None, None)
         return "窗口已隐藏到系统托盘"
+
+    def minimize(self):
+        """最小化窗口"""
+        if window:
+            window.minimize()
+
+    def toggle_fullscreen(self):
+        """切换全屏模式"""
+        if window:
+            self.is_fullscreen = not self.is_fullscreen
+            window.toggle_fullscreen()
 
 
 if __name__ == "__main__":
