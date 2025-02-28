@@ -4,6 +4,7 @@ import threading
 from time import sleep
 
 import httpx
+import keyboard  # ⬅️ 新增：用于监听全局快捷键
 import pystray
 import uvicorn
 import webview
@@ -13,15 +14,15 @@ from pystray import MenuItem
 from config import config
 from log import logger  # 复用 Logger
 
-# 让 PyWebView 也使用logger
+# 让 PyWebView 也使用 logger
 pywebview_logger = logging.getLogger("pywebview")
 pywebview_logger.handlers = logger.logger.handlers  # 复用 log.py 配置
 pywebview_logger.propagate = False  # 避免日志重复
 
-# 全局变量，用于存储窗口对象和托盘图标对象
+# 全局变量
 window = None
 tray_icon = None
-is_window_visible = True  # 用于跟踪窗口的显示状态
+is_window_visible = True  # 记录窗口的显示状态
 
 
 def start_server():
@@ -38,8 +39,7 @@ def check_backend_ready():
         try:
             response = httpx.get("http://127.0.0.1:8000/status", timeout = 1)
             if response.status_code == 200:
-                # 后端就绪后加载主页面
-                window.load_url("http://localhost:8000")
+                window.load_url("http://localhost:8000")  # 后端就绪后加载主页面
                 break
         except httpx.RequestError:
             pass
@@ -57,25 +57,25 @@ def toggle_window(icon, item):
         is_window_visible = True
 
 
-def play_prev_song(icon, item):
+def play_prev_song():
     """调用前端的 playPrevSong 函数"""
     if window:
         window.evaluate_js('playPrevSong()')
 
 
-def play_next_song(icon, item):
+def play_next_song():
     """调用前端的 playNextSong 函数"""
     if window:
         window.evaluate_js('playNextSong()')
 
 
-def toggle_play_pause(icon, item):
+def toggle_play_pause():
     """调用前端的 togglePlayPause 函数"""
     if window:
         window.evaluate_js('togglePlayPause()')
 
 
-def exit_app(icon, item):
+def exit_app():
     """退出应用"""
     if window:
         window.destroy()
@@ -89,20 +89,28 @@ def create_system_tray():
     global tray_icon
 
     # 加载托盘图标（替换为你的图标路径）
-    image = Image.open("icon.ico")  # 确保图标文件存在
+    image = Image.open("icon.ico")
 
     # 定义托盘菜单
     menu = (
         MenuItem('显示/隐藏窗口', toggle_window, default = True),
-        MenuItem('上一首', play_prev_song),
-        MenuItem('播放/暂停', toggle_play_pause),
-        MenuItem('下一首', play_next_song),
+        MenuItem('上一首', lambda icon, item: play_prev_song()),
+        MenuItem('播放/暂停', lambda icon, item: toggle_play_pause()),
+        MenuItem('下一首', lambda icon, item: play_next_song()),
         MenuItem('退出', exit_app)
     )
 
     # 创建系统托盘图标
     tray_icon = pystray.Icon("浮声 - Ethereal Sounds", image, "浮声 - Ethereal Sounds", menu)
     tray_icon.run()
+
+
+def setup_global_hotkeys():
+    """注册全局快捷键"""
+    keyboard.add_hotkey("ctrl+alt+space", toggle_play_pause)  # 播放/暂停
+    keyboard.add_hotkey("ctrl+alt+right", play_next_song)  # 下一曲
+    keyboard.add_hotkey("ctrl+alt+left", play_prev_song)  # 上一曲
+    logger.info("✅ 全局快捷键已启用")
 
 
 class API:
@@ -112,10 +120,10 @@ class API:
         self.is_fullscreen = False
 
     def start_drag(self, mouse_x, mouse_y):
-        """鼠标按下时，记录窗口位置和鼠标偏移"""
-        window = webview.windows[0]  # 获取当前窗口
+        """鼠标按下时，记录窗口位置"""
+        window = webview.windows[0]
         if window:
-            self.start_x, self.start_y = mouse_x, mouse_y  # 记录窗口初始位置
+            self.start_x, self.start_y = mouse_x, mouse_y  # 记录鼠标初始位置
 
     def move_window(self, mouse_x, mouse_y):
         """计算鼠标偏移量，移动窗口"""
@@ -167,9 +175,13 @@ if __name__ == "__main__":
     tray_thread = threading.Thread(target = create_system_tray, daemon = True)
     tray_thread.start()
 
+    # 启用全局快捷键监听
+    hotkey_thread = threading.Thread(target = setup_global_hotkeys, daemon = True)
+    hotkey_thread.start()
+
     # 启动应用
     webview.start(
-        debug = config.get('DEBUG'),  # False没有开发者工具
-        http_server = False,  # 禁用内置 HTTP 服务器
+        debug = config.get('DEBUG'),
+        http_server = False,
         gui = 'edgechromium' if sys.platform == 'win32' else None
     )
