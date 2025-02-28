@@ -10,10 +10,23 @@
   </head>
 
   <body>
-    <div
-      id="drag-area"
-      style="position: fixed; top: 0; height: 3vh; width: 100%"
-    ></div>
+    <div id="drag-area">
+      <div
+        class="windows_button"
+        onclick="minimizeWindow()"
+        style="background-color: rgb(243, 188, 79)"
+      ></div>
+      <div
+        class="windows_button"
+        onclick="toggle_fullscreen()"
+        style="background-color: rgb(99, 197, 85)"
+      ></div>
+      <div
+        class="windows_button"
+        onclick="closeWindow()"
+        style="background-color: rgb(235, 106, 95)"
+      ></div>
+    </div>
     <div class="app dark-before">
       <div class="sidebar">
         <div class="sidebar-container">

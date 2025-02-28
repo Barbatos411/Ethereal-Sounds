@@ -11,6 +11,29 @@ body,
   margin: 0;
 }
 
+#drag-area {
+  position: fixed;
+  display: flex;
+  top: 0;
+  height: 3vh;
+  width: 100%;
+  z-index: 15;
+  justify-content: flex-end;
+  padding-right: 5vw;
+}
+
+#drag-area .windows_button {
+  opacity: 0;
+  border-radius: 50%;
+  width: 2vh;
+  height: 2vh;
+  margin: 1.2vh 2vh 0 0;
+}
+
+#drag-area:hover .windows_button {
+  opacity: 1;
+}
+
 .footer-left,
 .music-container-left,
 .music-name,

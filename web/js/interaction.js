@@ -144,3 +144,14 @@ document.addEventListener("DOMContentLoaded", () => {
     WindowisDragging = false;
   });
 });
+
+function minimizeWindow() {
+  window.pywebview.api.minimize();
+}
+
+function toggle_fullscreen() {
+  window.pywebview.api.toggle_fullscreen();
+}
+function closeWindow() {
+  window.pywebview.api.hide_to_tray();
+}
