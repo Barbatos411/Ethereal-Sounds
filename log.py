@@ -18,7 +18,7 @@ LOG_COLORS = {
 
 class Logger:
     def __init__(self):
-        self.log_dir = "log"  # 日志目录
+        self.log_dir = "logs"  # 日志目录
         self.retention_days = config.get("LOG_RETAIN_DAYS", 7)  # 日志保留天数
         self.console_log_level = getattr(logging, config.get("LOGLEVEL", "INFO").upper(), logging.INFO)  # 终端日志等级
 

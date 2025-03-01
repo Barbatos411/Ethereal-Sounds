@@ -42,6 +42,7 @@ async function displayPlatforms() {
 
 // 页面加载时显示平台
 window.onload = displayPlatforms;
+
 function select_platform() {
   // 为输入框添加 keydown 事件监听器
   searchInput.addEventListener("keydown", handleEnterKeyPress);
@@ -266,7 +267,7 @@ async function home(url = undefined) {
       const albumItem = document.createElement("li");
       albumItem.dataset.id = album.id;
       albumItem.innerHTML = `
-                <img src="${album.cover}" alt="${album.title}" style="width: 100%; height: autp;">
+                <img src="${album.cover}" alt="${album.title}" style="width: 100%; height: auto;">
                 ${album.title}
               `;
       document.querySelector(".platforms-home-list").appendChild(albumItem);

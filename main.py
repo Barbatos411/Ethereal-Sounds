@@ -24,12 +24,14 @@ window = None
 tray_icon = None
 is_window_visible = True  # 记录窗口的显示状态
 
+# 监听地址和端口
+HOST = config.get('HOST')
+PORT = config.get('PORT')
+
 
 def start_server():
     """启动 FastAPI 后端服务"""
-    logger.info("🚀 启动后端服务...")
-    HOST = config.get('HOST')
-    PORT = config.get('PORT')
+    logger.info(f"🚀 启动后端服务中...,监听地址：{HOST},端口号：{PORT}")
     uvicorn.run("backend:main", host = HOST, port = PORT, reload = False, access_log = False)
 
 
@@ -37,16 +39,16 @@ def check_backend_ready():
     """检查后端是否就绪"""
     while True:
         try:
-            response = httpx.get("http://127.0.0.1:8000/status", timeout = 1)
+            response = httpx.get(f"http://{HOST}:{PORT}/status", timeout = 1)
             if response.status_code == 200:
-                window.load_url("http://localhost:8000")  # 后端就绪后加载主页面
+                window.load_url(f"http://{HOST}:{PORT}")  # 后端就绪后加载主页面
                 break
         except httpx.RequestError:
             pass
         sleep(0.25)  # 降低轮询频率
 
 
-def toggle_window(icon, item):
+def toggle_window():
     """显示或隐藏主窗口"""
     global is_window_visible
     if is_window_visible:
@@ -94,9 +96,9 @@ def create_system_tray():
     # 定义托盘菜单
     menu = (
         MenuItem('显示/隐藏窗口', toggle_window, default = True),
-        MenuItem('上一首', lambda icon, item: play_prev_song()),
-        MenuItem('播放/暂停', lambda icon, item: toggle_play_pause()),
-        MenuItem('下一首', lambda icon, item: play_next_song()),
+        MenuItem('上一首', lambda: play_prev_song()),
+        MenuItem('播放/暂停', lambda: toggle_play_pause()),
+        MenuItem('下一首', lambda: play_next_song()),
         MenuItem('退出', exit_app)
     )
 
