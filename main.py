@@ -137,7 +137,7 @@ class API:
 
     def hide_to_tray(self):
         """供前端调用的隐藏到系统托盘方法"""
-        toggle_window(None, None)
+        toggle_window()
         return "窗口已隐藏到系统托盘"
 
     def minimize(self):

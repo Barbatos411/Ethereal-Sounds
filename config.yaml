@@ -1,7 +1,7 @@
 # 监听地址
 HOST: 127.0.0.1
 # 监听端口，默认616（是温迪生日啦~）
-PORT: 616
+PORT: 6160
 # 日志等级 INFO, DEBUG, WARNING, ERROR, CRITICAL
 LOGLEVEL: INFO
 # 日志保留天数
