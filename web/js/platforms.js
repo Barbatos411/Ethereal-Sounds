@@ -149,7 +149,7 @@ async function searchSongs(platform, keyword, page) {
                                   </svg>
                               </a>
                             </div>
-                            <div class="button" style="margin:0 1rem" onclick='add_song_to_playlist(this,"add")' data-id=${song.id} data-platform=${encodeURIComponent(platform)} data-singer='${song.author}' data-cover=${song.cover} data-album='${song.album}'>
+                            <div class="button" style="margin:0 1rem" onclick='add_song_to_playlist(this,"add")' data-audio_id=${song.id} data-platform=${encodeURIComponent(platform)} data-singer='${song.author}' data-cover=${song.cover} data-album='${song.album}'>
                                 <svg role="img" xmlns="http://www.w3.org/2000/svg" width="3vh" height="3vh" viewBox="0 0 24 24" aria-labelledby="plusIconTitle" stroke="var(--text-primary)" stroke-width="1.7142857142857142" stroke-linecap="round" stroke-linejoin="round" fill="none" color="#000"> <title id="plusIconTitle">${song.title}</title> <path d="M20 12L4 12M12 4L12 20"/></svg>
                             </div>
                             <div style="display: flex; align-items: center; margin:0 1rem">${song.duration}</div>
