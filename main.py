@@ -32,15 +32,15 @@ PORT = config.get('PORT')
 def start_server():
     """启动 FastAPI 后端服务"""
     logger.info(f"🚀 启动后端服务中...,监听地址：{HOST},端口号：{PORT}")
-    uvicorn.run("backend:main", host=HOST, port=PORT,
-                reload=False, access_log=False)
+    uvicorn.run("backend:main", host = HOST, port = PORT,
+                reload = False, access_log = False)
 
 
 def check_backend_ready():
     """检查后端是否就绪"""
     while True:
         try:
-            response = httpx.get(f"http://{HOST}:{PORT}/status", timeout=1)
+            response = httpx.get(f"http://{HOST}:{PORT}/status", timeout = 1)
             if response.status_code == 200:
                 window.load_url(f"http://{HOST}:{PORT}")  # 后端就绪后加载主页面
                 break
@@ -96,7 +96,7 @@ def create_system_tray():
 
     # 定义托盘菜单
     menu = (
-        MenuItem('显示/隐藏窗口', toggle_window, default=True),
+        MenuItem('显示/隐藏窗口', toggle_window, default = True),
         MenuItem('上一首', lambda: play_prev_song()),
         MenuItem('播放/暂停', lambda: toggle_play_pause()),
         MenuItem('下一首', lambda: play_next_song()),
@@ -156,36 +156,36 @@ class API:
 
 if __name__ == "__main__":
     # 启动后端服务
-    server_thread = threading.Thread(target=start_server, daemon=True)
+    server_thread = threading.Thread(target = start_server, daemon = True)
     server_thread.start()
 
     # 创建无边框窗口
     window = webview.create_window(
-        title='浮声 - Ethereal Sounds',
-        url='loading.html',  # 初始加载页
-        width=1200,
-        height=800,
-        frameless=True,
-        easy_drag=True,
-        js_api=API(),  # 暴露 API 类的实例给前端
-        confirm_close=False,
+        title = '浮声 - Ethereal Sounds',
+        url = 'loading.html',  # 初始加载页
+        width = 1200,
+        height = 800,
+        frameless = True,
+        easy_drag = True,
+        js_api = API(),  # 暴露 API 类的实例给前端
+        confirm_close = False,
     )
 
     # 启动后端检测线程
-    check_thread = threading.Thread(target=check_backend_ready, daemon=True)
+    check_thread = threading.Thread(target = check_backend_ready, daemon = True)
     check_thread.start()
 
     # 创建并运行系统托盘图标
-    tray_thread = threading.Thread(target=create_system_tray, daemon=True)
+    tray_thread = threading.Thread(target = create_system_tray, daemon = True)
     tray_thread.start()
 
     # 启用全局快捷键监听
-    hotkey_thread = threading.Thread(target=setup_global_hotkeys, daemon=True)
+    hotkey_thread = threading.Thread(target = setup_global_hotkeys, daemon = True)
     hotkey_thread.start()
 
     # 启动应用
     webview.start(
-        debug=config.get('DEBUG'),
-        http_server=False,
-        gui='edgechromium' if sys.platform == 'win32' else None
+        debug = config.get('DEBUG'),
+        http_server = False,
+        gui = 'edgechromium' if sys.platform == 'win32' else None
     )

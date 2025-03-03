@@ -38,12 +38,12 @@ class Bilibili(BasePlatform):
         """
         pass
 
-    async def home(self):
+    async def home(self, page: int = 1, categories: str = "全部"):
         """
         定义抽象地获取主页方法，每个平台都必须实现
         :return: 主页
         """
-        return await home()
+        return await home(self, page)
 
     async def login(self, platform: str, method: str, username: str, password: str, code: str):
         """
