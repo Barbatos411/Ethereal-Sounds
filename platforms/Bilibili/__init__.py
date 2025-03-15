@@ -21,6 +21,14 @@ class Bilibili(BasePlatform):
         """
         return await search(self, keyword, page, limit)
 
+    async def album(self, album_id: str):
+        """
+        定义抽象的获取专辑方法，每个平台都必须实现
+        :param album_id: 专辑ID
+        :return: 专辑信息
+        """
+        pass
+
     async def get_audio(self, audio_id: str):
         """
         定义抽象地获取音频方法，每个平台都必须实现
