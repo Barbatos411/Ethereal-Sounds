@@ -13,14 +13,12 @@ async def get_lrc(self, audio_id: str):
     reqid = self.reqid()
     self.headers["referer"] = f"https://kuwo.cn/play_detail/{audio_id}"
     url = f"https://kuwo.cn/openapi/v1/www/lyric/getlyric?musicId={audio_id}&httpsStatus=1&reqId={reqid}&plat=web_www&from="
-    try:
-        response = await self.client.get(url, headers=self.headers)
-        response.raise_for_status()
-        data = response.json()
-        lrclist = data.get("data", {}).get("lrclist", [])
-        # 替换字段
-        for item in lrclist:
-            item['text'] = item.pop('lineLyric')
-        return lrclist
-    except Exception as e:
-        return {"error": f"发生错误: {e}"}
+
+    response = await self.client.get(url, headers = self.headers)
+    response.raise_for_status()
+    data = response.json()
+    lrclist = data.get("data", {}).get("lrclist", [])
+    # 替换字段
+    for item in lrclist:
+        item['text'] = item.pop('lineLyric')
+    return lrclist

@@ -8,13 +8,9 @@ async def get_lrc(self, audio_id: str):
     :return: 歌词
     """
     url = f"https://music.163.com/api/song/lyric?os=pc&id={audio_id}&lv=-1&tv=-1"
-    try:
-        response = await self.client.get(url, headers=self.headers)
-        response.raise_for_status()
-        data = response.json()
-        lrc = data.get("lrc", {}).get('lyric', "")
-        trans = data.get("tlyric", {}).get('lyric', "") if data.get("tlyric", {}).get('lyric', "") else None
-        return parse_lrc(lrc, trans)
-    except Exception as e:
-        # 其他错误处理
-        return {"error": f"发生错误: {e}"}
+    response = await self.client.get(url, headers = self.headers)
+    response.raise_for_status()
+    data = response.json()
+    lrc = data.get("lrc", {}).get('lyric', "")
+    trans = data.get("tlyric", {}).get('lyric', "") if data.get("tlyric", {}).get('lyric', "") else None
+    return parse_lrc(lrc, trans)

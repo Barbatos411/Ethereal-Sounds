@@ -8,13 +8,9 @@ async def get_lrc(self, audio_id: str):
     :return: 歌词
     """
     url = f"https://i.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?songmid={audio_id}&g_tk=5381&format=json&inCharset=utf8&outCharset=utf-8&nobase64=1"
-    try:
-        response = await self.client.get(url, headers=self.headers)
-        response.raise_for_status()
-        data = response.json()
-        lrc = data.get('lyric', "")
-        trans = data.get('trans', "").replace('//', '') if data.get('trans', "") else None
-        return parse_lrc(lrc, trans)
-    except Exception as e:
-        # 其他错误处理
-        return {"error": f"发生错误: {e}"}
+    response = await self.client.get(url, headers = self.headers)
+    response.raise_for_status()
+    data = response.json()
+    lrc = data.get('lyric', "")
+    trans = data.get('trans', "").replace('//', '') if data.get('trans', "") else None
+    return parse_lrc(lrc, trans)

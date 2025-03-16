@@ -47,43 +47,39 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
     params["signature"] = self.signature(params)
 
     # 发送 GET 请求并获取响应
-    try:
-        response = await self.client.get(base_url, headers = self.headers, params = params)
-        response.raise_for_status()  # 如果请求失败则抛出异常
-        data = response.json()
-        # 提取搜索结果
-        songs = data.get("data", {}).get("lists", [])
-        song_list = [
-            {
-                # 歌曲名称
-                "title": song.get("SongName"),
-                # 歌手
-                "author": song.get("SingerName"),
-                # 歌曲封面图片
-                "cover": song.get("Image").replace("{size}", "100"),
-                "hd_cover": song.get("Image").replace("{size}/", ""),
-                # 歌曲链接
-                "url": f"https://www.kugou.com/song/#hash={song.get('FileHash')}&album_id={song.get('AlbumID')}",
-                # 专辑名称
-                "album": song.get("AlbumName"),
-                "album_id": song.get("AlbumID"),
-                # 付费状态8为免费，1为VIP
-                # "fee": song.get("PayType"),
-                # 歌曲MV,0表示无MV
-                # "mvid": song.get("mvdata")[0].get("id") if song.get("mvdata") else 0,
-                # 歌曲时长，单位ms
-                "duration": s_to_mmss(
-                    song.get("HQDuration") if int(song.get("HQDuration")) == 0 else song.get("Duration")),
-                "id": song.get("EMixSongID"),
-            }
-            for song in songs
-        ]
-        song_count = data.get("data", {}).get("total", 0)  # 歌曲总数
-        result = {
-            "song_list": song_list,
-            "song_count": song_count
+    response = await self.client.get(base_url, headers = self.headers, params = params)
+    response.raise_for_status()  # 如果请求失败则抛出异常
+    data = response.json()
+    # 提取搜索结果
+    songs = data.get("data", {}).get("lists", [])
+    song_list = [
+        {
+            # 歌曲名称
+            "title": song.get("SongName"),
+            # 歌手
+            "author": song.get("SingerName"),
+            # 歌曲封面图片
+            "cover": song.get("Image").replace("{size}", "100"),
+            "hd_cover": song.get("Image").replace("{size}/", ""),
+            # 歌曲链接
+            "url": f"https://www.kugou.com/song/#hash={song.get('FileHash')}&album_id={song.get('AlbumID')}",
+            # 专辑名称
+            "album": song.get("AlbumName"),
+            "album_id": song.get("AlbumID"),
+            # 付费状态8为免费，1为VIP
+            # "fee": song.get("PayType"),
+            # 歌曲MV,0表示无MV
+            # "mvid": song.get("mvdata")[0].get("id") if song.get("mvdata") else 0,
+            # 歌曲时长，单位ms
+            "duration": s_to_mmss(
+                song.get("HQDuration") if int(song.get("HQDuration")) == 0 else song.get("Duration")),
+            "id": song.get("EMixSongID"),
         }
-        return result
-    except Exception as e:
-        # 其他错误处理
-        return {"error": f"发生错误: {e}"}
+        for song in songs
+    ]
+    song_count = data.get("data", {}).get("total", 0)  # 歌曲总数
+    result = {
+        "song_list": song_list,
+        "song_count": song_count
+    }
+    return result

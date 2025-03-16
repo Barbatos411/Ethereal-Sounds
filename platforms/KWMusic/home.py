@@ -11,20 +11,17 @@ async def home(self, page: int = 1):
     self.headers["Secret"] = secret
     baseurl = f"https://www.kuwo.cn/api/www/classify/playlist/getRcmPlayList"
     url = f"{baseurl}?pn={page}&rn=35&httpsStatus=1&reqId={self.reqid()}&plat=web_www&from="
-    try:
-        responses = await self.client.get(url, headers = self.headers)
-        responses.raise_for_status()
-        data = responses.json()
-        plist = data.get('data', {}).get('data', [])
-        albums = [
-            {
-                "id": album.get("id"),
-                "cover": album.get("img"),
-                "title": album.get("name"),
-                "platform": self.id
-            }
-            for album in plist
-        ]
-        return {"albums": albums}
-    except Exception as e:
-        return {"error": f"发生错误: {e}"}
+    responses = await self.client.get(url, headers = self.headers)
+    responses.raise_for_status()
+    data = responses.json()
+    plist = data.get('data', {}).get('data', [])
+    albums = [
+        {
+            "id": album.get("id"),
+            "cover": album.get("img"),
+            "title": album.get("name"),
+            "platform": self.id
+        }
+        for album in plist
+    ]
+    return {"albums": albums}

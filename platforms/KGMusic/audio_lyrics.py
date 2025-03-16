@@ -37,19 +37,15 @@ async def audio_lyrics(self, method: str, audio_id: str):
     # 插入签名值
     params["signature"] = self.signature(params)
 
-    try:
-        response = await self.client.get(base_url, headers=self.headers, params=params)
-        response.raise_for_status()  # 检查 HTTP 状态码
-        data = response.json()
+    response = await self.client.get(base_url, headers = self.headers, params = params)
+    response.raise_for_status()  # 检查 HTTP 状态码
+    data = response.json()
 
-        # 解析返回数据
-        play_url = data.get('data', {}).get('play_url', None)
-        lrc = data.get('data', {}).get('lyrics', None)
-        trans = data.get('data', {}).get('transLyrics', None)
-        if method == 'audio':
-            return False, play_url
-        else:
-            return parse_lrc(lrc, trans)
-    except Exception as e:
-        # 其他错误处理
-        return {"error": f"发生错误: {e}"}
+    # 解析返回数据
+    play_url = data.get('data', {}).get('play_url', None)
+    lrc = data.get('data', {}).get('lyrics', None)
+    trans = data.get('data', {}).get('transLyrics', None)
+    if method == 'audio':
+        return False, play_url
+    else:
+        return parse_lrc(lrc, trans)

@@ -34,16 +34,12 @@ async def get_audio(self, audio_id):
         }
     }
 
-    try:
-        # 发送 POST 请求
-        response = await self.client.post(base_url, headers=self.headers, json=data)
-        response.raise_for_status()  # 如果请求失败则抛出异常
-        # 解析数据
-        data = response.json()
-        audio_url = f"https://ws.stream.qqmusic.qq.com/{data.get('req_0', {}).get('data', {}).get('midurlinfo', [{}])[0].get('purl')}"
-        # 返回音频文件/链接
-        print(audio_url)
-        return False, audio_url
-    except Exception as e:
-        # 其他错误处理
-        return {"error": f"发生错误: {e}"}
+    # 发送 POST 请求
+    response = await self.client.post(base_url, headers = self.headers, json = data)
+    response.raise_for_status()  # 如果请求失败则抛出异常
+    # 解析数据
+    data = response.json()
+    audio_url = f"https://ws.stream.qqmusic.qq.com/{data.get('req_0', {}).get('data', {}).get('midurlinfo', [{}])[0].get('purl')}"
+    # 返回音频文件/链接
+    print(audio_url)
+    return False, audio_url

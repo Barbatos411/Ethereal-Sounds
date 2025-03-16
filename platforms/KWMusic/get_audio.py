@@ -17,23 +17,19 @@ async def get_audio(self, audio_id):
     # 构建请求 URL
     url = f"{base_url}?mid={audio_id}&type=music&httpsStatus=1&reqId={reqid}&plat=web_www&from="
 
-    try:
-        # 发送 GET 请求
-        response = await self.client.get(url, headers=self.headers)
-        response.raise_for_status()  # 如果请求失败则抛出异常
-        # 解析数据
-        data = response.json()
-        audio_url = data.get('data', {}).get('url')
+    # 发送 GET 请求
+    response = await self.client.get(url, headers = self.headers)
+    response.raise_for_status()  # 如果请求失败则抛出异常
+    # 解析数据
+    data = response.json()
+    audio_url = data.get('data', {}).get('url')
 
-        # 使用 stream 方法获取音频流
-        async with self.client.stream("GET", audio_url, headers=self.headers) as audio:
-            audio.raise_for_status()  # 如果请求失败则抛出异常
+    # 使用 stream 方法获取音频流
+    async with self.client.stream("GET", audio_url, headers = self.headers) as audio:
+        audio.raise_for_status()  # 如果请求失败则抛出异常
 
-            # 读取流式响应的内容
-            audio_content = await audio.aread()
+        # 读取流式响应的内容
+        audio_content = await audio.aread()
 
-            # 返回音频内容和 MIME 类型
-            return True, audio_content
-    except Exception as e:
-        # 其他错误处理
-        return {"error": f"发生错误: {e}"}
+        # 返回音频内容和 MIME 类型
+        return True, audio_content
