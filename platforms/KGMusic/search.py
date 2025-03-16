@@ -48,7 +48,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
 
     # 发送 GET 请求并获取响应
     try:
-        response = await self.client.get(base_url, headers=self.headers, params=params)
+        response = await self.client.get(base_url, headers = self.headers, params = params)
         response.raise_for_status()  # 如果请求失败则抛出异常
         data = response.json()
         # 提取搜索结果
@@ -66,6 +66,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
                 "url": f"https://www.kugou.com/song/#hash={song.get('FileHash')}&album_id={song.get('AlbumID')}",
                 # 专辑名称
                 "album": song.get("AlbumName"),
+                "album_id": song.get("AlbumID"),
                 # 付费状态8为免费，1为VIP
                 # "fee": song.get("PayType"),
                 # 歌曲MV,0表示无MV

@@ -17,7 +17,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
 
     try:
         # 发起请求
-        response = await self.client.get(search_url, headers=self.headers)
+        response = await self.client.get(search_url, headers = self.headers)
         response.raise_for_status()  # 如果请求失败则抛出异常
 
         # 解析数据
@@ -40,6 +40,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
                 "url": f"https://music.163.com/song?id={song['id']}",
                 # 专辑名称
                 "album": song["album"]["name"],
+                "album_id": song["album"]["id"],
                 # 付费状态8为免费，1为VIP
                 "fee": song["fee"],
                 # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=

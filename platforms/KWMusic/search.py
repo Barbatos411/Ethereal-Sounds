@@ -15,9 +15,8 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
     search_url = f"{base_url}?vipver=1&client=kt&ft=music&cluster=0&strategy=2012&encoding=utf8&rformat=json&mobi=1&issubtitle=1&show_copyright_off=1&pn={page - 1}&rn={limit}&all={keyword}"
 
     try:
-        print(search_url)
         # 发起请求
-        response = await self.client.get(search_url, headers=self.headers)
+        response = await self.client.get(search_url, headers = self.headers)
         response.raise_for_status()  # 如果请求失败则抛出异常
 
         # 解析数据
@@ -40,6 +39,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
                 "url": f"https://www.kuwo.cn/play_detail/{song['DC_TARGETID']}",
                 # 专辑名称
                 "album": song["ALBUM"],
+                "album_id": song["ALBUMID"],
                 # 付费状态
                 "fee": 1 if int(song["payInfo"]["play"]) > 1100 else 0,
                 # 歌曲MV,0表示无MV,MV地址：https://music.163.com/#/mv?id=

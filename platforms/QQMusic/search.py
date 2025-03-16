@@ -34,7 +34,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
 
     try:
         # 发送 POST 请求
-        response = await self.client.post(base_url, headers=self.headers, json=payload)
+        response = await self.client.post(base_url, headers = self.headers, json = payload)
         response.raise_for_status()  # 如果请求失败则抛出异常
 
         # 解析数据
@@ -69,6 +69,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
                 "url": f"https://y.qq.com/n/ryqq/songDetail/{song.get('mid')}?songtype=[type]",
                 # 专辑名称
                 "album": song.get("album").get("name"),
+                "album_id": song.get("album").get("mid"),
                 # 付费状态，0为免费，1为付费
                 "fee": song.get("pay", {}).get("pay_play", 0),
                 # 歌曲MV, 0表示无MV
