@@ -3,7 +3,7 @@ from utils.time import ms_to_mmss
 
 async def album(self, album_id):
     url = f"https://music.163.com/api/album/{album_id}"
-    response = await  self.client.get(url)
+    response = await self.client.get(url, headers = self.headers)
     response.raise_for_status()
     data = response.json()
     album_list = [
