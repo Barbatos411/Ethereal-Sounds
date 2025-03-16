@@ -15,8 +15,8 @@ async def album(self, album_id: str):
             # 歌手
             "author": ", ".join(singer.get("name", "") for singer in song.get("singer", [])),
             # 歌曲封面图片
-            "cover": f"https://y.gtimg.cn/music/photo_new/T002R300x300M000{song.get('songmid')}.jpg?param=224y224",
-            "hd_cover": f"https://y.gtimg.cn/music/photo_new/T002R300x300M000{song.get('songmid')}.jpg",
+            "cover": f"https://y.gtimg.cn/music/photo_new/T002R300x300M000{song.get('albummid')}.jpg?param=224y224",
+            "hd_cover": f"https://y.gtimg.cn/music/photo_new/T002R300x300M000{song.get('albummid')}.jpg",
             # 歌曲ID 详情页https://y.qq.com/n/ryqq/songDetail/mid
             "id": song.get("songmid"),
             # 歌曲链接
