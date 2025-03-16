@@ -15,7 +15,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
 
     try:
         # 发起请求
-        response = await self.client.get(search_url, headers=self.headers)
+        response = await self.client.get(search_url, headers = self.headers)
         response.raise_for_status()  # 如果请求失败则抛出异常
 
         # 解析数据

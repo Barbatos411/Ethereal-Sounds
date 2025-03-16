@@ -1,4 +1,5 @@
 from platforms.base import BasePlatform
+from .album import album
 from .get_audio import get_audio
 from .get_lrc import get_lrc
 from .home import home
@@ -28,7 +29,7 @@ class NetEase(BasePlatform):
         :param album_id: 专辑ID
         :return: 专辑信息
         """
-        pass
+        return await album(self, album_id)
 
     async def get_audio(self, audio_id: str):
         """
