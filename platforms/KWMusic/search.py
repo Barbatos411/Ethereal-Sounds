@@ -46,7 +46,7 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
             # 歌曲时长，单位ms
             "duration": s_to_mmss(int(song["DURATION"])),
             # 歌曲ID
-            "id": {song['DC_TARGETID']}
+            "id": song['DC_TARGETID']
         }
         for song in songs
     ]
