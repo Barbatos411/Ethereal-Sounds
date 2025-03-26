@@ -12,6 +12,8 @@ async def get_platforms():
     :return: 平台名称列表
     """
     platforms = platform_manager.get_all_platforms()
+
+    platforms = [item for item in platforms if item['id'] != 'Local']
     # 根据 order 排序
     sorted_platforms = sorted(platforms, key = lambda x: x['order'])
 

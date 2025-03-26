@@ -21,7 +21,7 @@ class BasePlatform(ABC):
         # 先尝试获取 cookie
         cookie = get_cookie(self.id)
 
-        if not cookie:
+        if not cookie and self.cookie:
             # 如果数据库中没有 cookie，使用 self.cookie 并写入数据库
             cookie = self.cookie
             set_data("data", "account", "platforms", self.id, "cookie", cookie)  # 将 self.cookie 写入数据库
