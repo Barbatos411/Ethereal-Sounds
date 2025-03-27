@@ -45,7 +45,6 @@ def create_sqlite_db():
         """)
         # 提交事务
         conn.commit()
-    print("✅ 数据库创建成功！")
 
 
 def get_data(database, table, where, keyword, select):

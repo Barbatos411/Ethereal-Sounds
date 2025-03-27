@@ -1,6 +1,6 @@
 import importlib
 import logging
-import os
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -40,19 +40,25 @@ main.mount("/res", StaticFiles(directory = "./web/res"), name = "res")
 # 初始化模板引擎
 templates = Jinja2Templates(directory = "web")  # web 目录包含 html 模板文件
 
-if not os.path.exists('data/data.db'):
-    print('数据库不存在，正在创建数据库...')
-    os.makedirs('data', exist_ok = True)
-    create_sqlite_db()
+
+def check_db():
+    db_path = Path("data/data.db")
+    if not db_path.exists():
+        logger.warning("数据库不存在，正在创建数据库...")
+        db_path.parent.mkdir(parents = True, exist_ok = True)  # 创建 data 目录（如果不存在）
+        try:
+            create_sqlite_db()
+            logger.info("✅ 数据库创建成功")
+        except Exception as e:
+            logger.error(f"❌创建数据库失败: {e}")
 
 
 def load_platforms():
-    search_dir = os.path.join(os.path.dirname(__file__), 'platforms')
-
-    for root, dirs, files in os.walk(search_dir):
-        if '__init__.py' in files:
-            platform_folder = os.path.basename(root)
-            module_name = f"platforms.{platform_folder}"
+    search_dir = Path(__file__).parent / "platforms"
+    for platform_path in search_dir.iterdir():
+        if platform_path.is_dir() and (platform_path / "__init__.py").exists():
+            platform_folder = platform_path.name  # 获取子目录名称
+            module_name = f"platforms.{platform_folder}"  # 组装 Python 模块路径
 
             try:
                 module = importlib.import_module(module_name)
@@ -62,9 +68,6 @@ def load_platforms():
                         platform_manager.add_platform(obj())  # 加载到管理器
             except Exception as e:
                 logger.error(f"加载模块 {platform_folder} 失败: {e}")
-
-
-load_platforms()
 
 
 # 定义主页路由
@@ -80,5 +83,9 @@ async def read_item(request: Request):
 async def status():
     return {"status": "ok"}
 
+
+# 检查数据库和加载平台
+check_db()
+load_platforms()
 
 logger.info("✅ 后端服务已启动")
