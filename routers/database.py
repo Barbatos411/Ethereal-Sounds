@@ -77,7 +77,20 @@ class PlaylistRequest(BaseModel):
 
 
 @router.post("/update_playlist")
-async def update_playlist(data: PlaylistRequest):
+async def update_playlist(
+        audio_id: str = Query(..., description = "歌曲ID"),
+        title: str = Query(..., description = "歌名"),
+        singer: str = Query(..., description = "歌手"),
+        singer_id: str = Query(None, description = "歌手ID"),
+        album: str = Query(..., description = "专辑"),
+        album_id: str = Query(None, description = "专辑ID"),
+        platform: str = Query(..., description = "平台"),
+        status: str = Query(None, description = "播放或添加"),
+        cover: str = Query(..., description = "封面"),
+        hd_cover: str = Query(..., description = "高清封面"),
+        MV: str = Query(..., description = "MV"),
+        VIP: str = Query(..., description = "VIP")
+):
     """
     更新播放列表（专用）。
     - `action` 为 `play` 时：
@@ -86,7 +99,7 @@ async def update_playlist(data: PlaylistRequest):
     - `action` 为 `add` 时：
         - 仅插入或更新数据
     """
-    logger.info(f"调用了 /update_playlist 接口, 操作类型: {data.action}")
+    logger.info(f"调用了 /update_playlist 接口")
     columns = ["audio_id", "title", "singer", "singer_id", "album",
                "album_id", "platform", "status", "cover", "hd_cover", "MV", "VIP"]
 
@@ -94,7 +107,7 @@ async def update_playlist(data: PlaylistRequest):
         with sqlite3.connect(f'data/data.db') as conn:
             cursor = conn.cursor()
 
-            if data.action == "play":
+            if status == "play":
                 # 清除 status 列内容
                 cursor.execute("UPDATE song_list SET status = NULL")
 
@@ -103,12 +116,16 @@ async def update_playlist(data: PlaylistRequest):
             placeholders = ", ".join(["?" for _ in columns])
             query = f"INSERT OR REPLACE INTO song_list ({columns_str}) VALUES ({placeholders})"
 
-            # 批量插入/更新
-            cursor.executemany(query, data.values)
+            # 准备要插入的数据
+            data = [
+                audio_id, title, singer, singer_id, album, album_id, platform, status, cover, hd_cover, MV, VIP
+            ]
+
+            # 执行插入或替换操作
+            cursor.execute(query, data)
             conn.commit()
 
-        action_result = "播放" if data.action == "play" else "添加"
-        return {"message": f"{action_result}列表更新成功"}
+        return {"message": "列表更新成功"}
     except sqlite3.Error as e:
         logger.error(f"调用 /update_playlist 接口失败: {str(e)}")
         raise HTTPException(status_code = 500, detail = str(e))
