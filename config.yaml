@@ -8,3 +8,10 @@ LOGLEVEL: INFO
 LOG_RETAIN_DAYS: 7
 # 是否开启调试模式
 DEBUG: False
+
+# 本地音乐目录，可配置多个，示例：
+#  - "path/to/Music_dir/"
+#  - "C:/Users/Babatous/Music"
+MUSIC_DIR:
+  - "D:/Babatous/下载/Telegram Desktop"
+  - "D:/Babatous/下载/test/渣反DISICO_"

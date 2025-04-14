@@ -8,6 +8,7 @@ from .home import home
 class LocalMusic(BasePlatform):
     name = "本地音乐"  # 平台名称
     id = "Local"  # 平台ID
+    logo = ""
     Referer = None  # 平台Referer
     order = None  # 顺序
     cookie = None  # 平台Cookie

@@ -7,11 +7,13 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 
+from config import config
 from log import logger
 from platforms.base import BasePlatform
 from platforms.platform_manager import platform_manager
 from routers import database, platform
 from utils.db import create_sqlite_db
+from utils.make_index import make_index
 
 # 获取 FastAPI / Uvicorn 相关日志
 uvicorn_access = logging.getLogger("uvicorn.access")  # 访问日志
@@ -33,9 +35,7 @@ main.include_router(platform.router, tags = ["platform"])
 main.include_router(database.router, tags = ["database"])
 
 # 设置静态文件的目录（'css', 'js', 'res' 目录需要映射）
-main.mount("/css", StaticFiles(directory = "./web/css"), name = "css")
-main.mount("/js", StaticFiles(directory = "./web/js"), name = "js")
-main.mount("/res", StaticFiles(directory = "./web/res"), name = "res")
+main.mount("/assets", StaticFiles(directory = "./web/assets"), name = "assets")
 
 # 初始化模板引擎
 templates = Jinja2Templates(directory = "web")  # web 目录包含 html 模板文件
@@ -70,6 +70,16 @@ def load_platforms():
                 logger.error(f"加载模块 {platform_folder} 失败: {e}")
 
 
+def make_local_index():
+    path = config.get("MUSIC_DIR")
+    try:
+        for i in path:
+            make_index(i)
+        logger.info("✅ 索引文件创建/更新成功")
+    except Exception as e:
+        logger.error(f"❌ 索引文件创建失败: {e}")
+
+
 # 定义主页路由
 @main.get("/")
 async def read_item(request: Request):
@@ -84,8 +94,9 @@ async def status():
     return {"status": "ok"}
 
 
-# 检查数据库和加载平台
+# 检查数据库、加载平台、创建索引
 check_db()
 load_platforms()
+# make_local_index()
 
 logger.info("✅ 后端服务已启动")

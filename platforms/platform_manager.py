@@ -17,7 +17,7 @@ class PlatformManager:
         raise ValueError(f"平台 ID {platform_id} 不存在")
 
     def get_all_platforms(self):
-        return [{"name": p.name, "id": p.id, "order": p.order} for p in self.platforms]
+        return [{"name": p.name, "id": p.id, "logo": p.logo, "order": p.order} for p in self.platforms]
 
 
 platform_manager = PlatformManager()

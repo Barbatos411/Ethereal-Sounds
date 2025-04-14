@@ -63,19 +63,19 @@ def toggle_window():
 def play_prev_song():
     """调用前端的 playPrevSong 函数"""
     if window:
-        window.evaluate_js('playPrevSong()')
+        window.evaluate_js("audioControl.previous()")
 
 
 def play_next_song():
     """调用前端的 playNextSong 函数"""
     if window:
-        window.evaluate_js('playNextSong()')
+        window.evaluate_js("audioControl.next()")
 
 
 def toggle_play_pause():
     """调用前端的 togglePlayPause 函数"""
     if window:
-        window.evaluate_js('togglePlayPause()')
+        window.evaluate_js("audioControl.togglePlayPause()")
 
 
 def exit_app():

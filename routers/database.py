@@ -107,7 +107,7 @@ async def update_playlist(
         with sqlite3.connect(f'data/data.db') as conn:
             cursor = conn.cursor()
 
-            if status == "play":
+            if status == "playing":
                 # 清除 status 列内容
                 cursor.execute("UPDATE song_list SET status = NULL")
 

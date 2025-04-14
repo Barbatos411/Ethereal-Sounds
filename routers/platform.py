@@ -156,3 +156,23 @@ async def album(
     except Exception as e:
         logger.error(f"获取专辑失败：{str(e)}")
         raise HTTPException(status_code = 500, detail = str(e))
+
+
+@router.get("/referer")
+async def referer(
+        platform: str = Query(..., description = "平台"),
+        url: str = Query(..., description = "地址")
+):
+    logger.info(f"调用了 /referer 接口, 平台: {platform}, 地址: {url}")
+    try:
+        platform_obj = platform_manager.get_platform_by_id(platform)
+        result = await platform_obj.referer(url)  # 获取包含 content 和 content_type 的字典
+
+        # 使用 FastAPI 的 Response 构造响应，动态设置媒体类型
+        return Response(
+            content = result["content"],
+            media_type = result["content_type"]
+        )
+    except Exception as e:
+        logger.error(f"获取资源失败：{str(e)}")
+        raise HTTPException(status_code = 500, detail = str(e))

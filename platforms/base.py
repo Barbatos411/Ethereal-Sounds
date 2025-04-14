@@ -13,6 +13,7 @@ class BasePlatform(ABC):
     """
     name = "BasePlatform"  # 平台名称
     id = "base"  # 平台ID
+    logo = ""  # 平台logo
     Referer = "https://www.example.com/"  # 平台Referer
     order = 0  # 平台优先级
     cookie = ""  # 平台cookie
@@ -93,3 +94,20 @@ class BasePlatform(ABC):
         :return: 专辑歌曲信息
         """
         pass
+
+    async def referer(self, url: str):
+        """
+        发起带Referer的请求，返回响应内容和媒体类型
+        :param url: 请求地址
+        :return: 字典 { "content": bytes, "content_type": str }
+        """
+        response = await self.client.get(url, headers = self.headers)
+        response.raise_for_status()  # 检查HTTP错误
+
+        # 从响应头提取媒体类型（Content-Type）
+        content_type = response.headers.get("content-type", "application/octet-stream")
+
+        return {
+            "content": response.content,  # 响应的二进制内容
+            "content_type": content_type  # 媒体类型（如 image/jpeg, text/html 等）
+        }

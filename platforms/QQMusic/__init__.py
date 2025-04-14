@@ -9,6 +9,7 @@ from .search import search
 class QQMusic(BasePlatform):
     name = "QQ音乐"  # 平台名称
     id = "QQMusic"  # 平台ID
+    logo = "https://y.qq.com/favicon.ico?max_age=2592000"
     Referer = "https://y.qq.com/"  # 平台Referer
     order = 2  # 顺序
     cookie = "pgv_pvid=3720502878;pgv_info=ssid=s5519043906;fqm_sessionid=14f3d2ef-7356-4946-a098-bae97e2437e6;fqm_pvqid=7c94a00a-804b-4d86-bfcf-84283ef932a0;ts_last=y.qq.com/;ts_refer=music.qq.com/;ts_uid=6209002575"
