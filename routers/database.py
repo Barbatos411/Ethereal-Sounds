@@ -82,14 +82,14 @@ async def update_playlist(
         title: str = Query(..., description = "歌名"),
         singer: str = Query(..., description = "歌手"),
         singer_id: str = Query(None, description = "歌手ID"),
-        album: str = Query(..., description = "专辑"),
+        album: str = Query(None, description = "专辑"),
         album_id: str = Query(None, description = "专辑ID"),
         platform: str = Query(..., description = "平台"),
         status: str = Query(None, description = "播放或添加"),
         cover: str = Query(..., description = "封面"),
         hd_cover: str = Query(..., description = "高清封面"),
-        MV: str = Query(..., description = "MV"),
-        VIP: str = Query(..., description = "VIP")
+        MV: str = Query(None, description = "MV"),
+        VIP: str = Query(None, description = "VIP")
 ):
     """
     更新播放列表（专用）。
