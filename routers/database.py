@@ -5,7 +5,7 @@ from fastapi import APIRouter, Query, HTTPException
 from pydantic import BaseModel
 
 from log import logger
-from utils.db import get_data, get_all_data, set_data, delete_data, update_play_status, delete_all_data
+from utils.db import get_data, get_all_data, set_data, delete_data, update_play_status, delete_all_data, update_data
 
 router = APIRouter()
 
@@ -68,6 +68,32 @@ async def db_set_data(
     except sqlite3.Error as e:
         logger.error(f"调用 /set_data 接口失败: {str(e)}")
         raise HTTPException(status_code = 500, detail = str(e))
+
+
+@router.get("/update_data")
+async def update_existing_data(
+        database: str = Query(..., description = "数据库名称"),
+        table: str = Query(..., description = "数据表名称"),
+        where_column: str = Query(..., description = "查找列名"),
+        keyword: str = Query(..., description = "查找条件值"),
+        set_column: str = Query(..., description = "要更新的列名"),
+        value: str = Query(..., description = "新值")
+):
+    """
+    仅更新已存在的记录，若记录不存在则返回404
+    """
+    logger.info(
+        f"调用了 /update_existing_data 接口, 数据库: {database}, 表: {table}, "
+        f"查找条件: {where_column}={keyword}, 更新列: {set_column}={value}"
+    )
+    try:
+        results = update_data(
+            database, table, where_column, keyword, set_column, value
+        )
+        return results
+    except sqlite3.Error as e:
+        logger.error(f"更新失败: {str(e)}")
+        raise HTTPException(500, detail = str(e))
 
 
 # 定义请求体模型

@@ -75,7 +75,6 @@ def load_platforms():
         if platform_folder in loaded_platforms:
             continue
 
-        logger.info(f"🛠️开始加载平台: {platform_folder}")
         module_name = f"platforms.{platform_folder}"
         try:
             # 使用importlib.util实现按需导入

@@ -112,6 +112,38 @@ def set_data(database: str, table: str, where_column: str, keyword: str,
     return {"message": "单个记录更新成功"}
 
 
+def update_data(
+        database: str, table: str, where_column: str, keyword: str,
+        set_column: str, value: str
+) -> dict:
+    """
+    仅执行UPDATE操作，若记录不存在则抛出异常
+    """
+    with sqlite3.connect(f"data/{database}.db") as conn:
+        cursor = conn.cursor()
+
+        # 预检记录是否存在
+        cursor.execute(
+            f"SELECT 1 FROM {table} WHERE {where_column} = ?", (keyword,)
+        )
+        if not cursor.fetchone():
+            raise ValueError(f"未找到 {where_column}={keyword} 的记录")
+
+        # 执行更新操作
+        query = f"""
+            UPDATE {table}
+            SET {set_column} = ?
+            WHERE {where_column} = ?
+        """
+        cursor.execute(query, (value, keyword))
+
+        if cursor.rowcount == 0:
+            raise RuntimeError("更新失败，未影响任何记录")
+
+        conn.commit()
+    return {"message": "更新成功", "affected_rows": cursor.rowcount}
+
+
 def delete_data(database: str, table: str, keyword: str, where: str):
     """
     param database: 数据库名称
