@@ -38,15 +38,26 @@ def start_server():
 
 def check_backend_ready():
     """检查后端是否就绪"""
-    while True:
+    retry_count = 0
+    max_retries = 10  # 最多等待4秒
+    while retry_count < max_retries:
         try:
             response = httpx.get(f"http://{HOST}:{PORT}/status", timeout = 1)
             if response.status_code == 200:
+                logger.info("✅ 后端服务已就绪")
                 window.load_url(f"http://{HOST}:{PORT}")  # 后端就绪后加载主页面
-                break
+                return True
         except httpx.RequestError:
-            pass
-        sleep(0.25)  # 降低轮询频率
+            retry_count += 1
+            sleep(0.25)  # 降低轮询频率
+            # 更新加载状态
+            if window:
+                window.evaluate_js(f'document.body.innerHTML = "<h1>🎵 正在加载中 ({retry_count}/{max_retries})</h1>"')
+    
+    logger.error("❌ 后端服务启动超时")
+    if window:
+        window.evaluate_js('document.body.innerHTML = "<h1>❌ 加载失败，请重启应用</h1>"')
+    return False
 
 
 def toggle_window():
@@ -79,12 +90,31 @@ def toggle_play_pause():
 
 
 def exit_app():
-    """退出应用"""
-    if window:
-        window.destroy()
-    if tray_icon:
-        tray_icon.stop()
-    sys.exit(0)
+    """退出应用并清理资源"""
+    logger.info("正在关闭应用...")
+    try:
+        # 清理全局快捷键
+        keyboard.unhook_all()
+        logger.info("✅ 已清理全局快捷键")
+        
+        # 关闭窗口
+        if window:
+            window.destroy()
+            logger.info("✅ 已关闭主窗口")
+            
+        # 关闭系统托盘
+        if tray_icon:
+            tray_icon.stop()
+            logger.info("✅ 已关闭系统托盘")
+            
+        logger.info("应用退出完成，感谢使用！")
+        # 使用os._exit()来强制退出，避免异常输出
+        import os
+        os._exit(0)
+    except Exception as e:
+        logger.error(f"退出时发生错误: {e}")
+        import os
+        os._exit(1)
 
 
 def create_system_tray():

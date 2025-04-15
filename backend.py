@@ -55,19 +55,41 @@ def check_db():
 
 def load_platforms():
     search_dir = Path(__file__).parent / "platforms"
+    loaded_platforms = set()
+    
     for platform_path in search_dir.iterdir():
-        if platform_path.is_dir() and (platform_path / "__init__.py").exists():
-            platform_folder = platform_path.name  # 获取子目录名称
-            module_name = f"platforms.{platform_folder}"  # 组装 Python 模块路径
-
-            try:
-                module = importlib.import_module(module_name)
-                for attr_name in dir(module):
-                    obj = getattr(module, attr_name)
-                    if isinstance(obj, type) and issubclass(obj, BasePlatform) and obj is not BasePlatform:
-                        platform_manager.add_platform(obj())  # 加载到管理器
-            except Exception as e:
-                logger.error(f"加载模块 {platform_folder} 失败: {e}")
+        if not platform_path.is_dir() or not (platform_path / "__init__.py").exists():
+            continue
+            
+        platform_folder = platform_path.name
+        if platform_folder in loaded_platforms:
+            continue
+            
+        module_name = f"platforms.{platform_folder}"
+        try:
+            # 使用importlib.util实现按需导入
+            import importlib.util
+            spec = importlib.util.find_spec(module_name)
+            if spec is None:
+                logger.error(f"找不到模块 {platform_folder}")
+                continue
+                
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            
+            # 只导入平台类
+            for attr_name in dir(module):
+                obj = getattr(module, attr_name)
+                if isinstance(obj, type) and issubclass(obj, BasePlatform) and obj is not BasePlatform:
+                    platform_manager.add_platform(obj())
+                    loaded_platforms.add(platform_folder)
+                    logger.info(f"✅ 成功加载平台: {platform_folder}")
+                    break
+        except Exception as e:
+            logger.error(f"加载模块 {platform_folder} 失败: {e}")
+    
+    if not loaded_platforms:
+        logger.warning("⚠️ 未找到任何可用的音乐平台模块")
 
 
 def make_local_index():
