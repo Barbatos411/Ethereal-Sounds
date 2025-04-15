@@ -13,5 +13,4 @@ DEBUG: False
 #  - "path/to/Music_dir/"
 #  - "C:/Users/Babatous/Music"
 MUSIC_DIR:
-  - "D:/Babatous/下载/Telegram Desktop"
-  - "D:/Babatous/下载/test/渣反DISICO_"
+  - "D:/code/main/Ethereal-Sounds"

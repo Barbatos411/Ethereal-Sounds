@@ -33,7 +33,7 @@ class BasePlatform(ABC):
             "cookie": get_cookie(self.id) or self.cookie,
             "referer": self.Referer,
         }
-        logger.info(f"成功加载平台 {self.name}, 平台ID: {self.id}, 优先级: {self.order}")
+        logger.info(f"✅成功加载平台 {self.name}, 平台ID: {self.id}, 优先级: {self.order}")
 
     @abstractmethod
     async def search(self, keyword: str, page: int = 1, limit: int = 30):

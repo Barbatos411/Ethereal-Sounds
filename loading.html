@@ -1,8 +1,101 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>加载中...</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+      .loading-text {
+        margin-bottom: 10px;
+      }
+      .retry-count {
+        font-size: 14px;
+        color: #666;
+      }
+      .error-message {
+        color: #ff4444;
+        margin-top: 10px;
+      }
+      .retry-button {
+        margin-top: 15px;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .retry-button:hover {
+        background-color: #45a049;
+      }
+    </style>
   </head>
-  <body style="display: flex; justify-content: center; align-items: center">
-    <h1>🎵 加载中，请稍候...</h1>
+  <body>
+    <h1 class="loading-text">🎵 加载中，请稍候...</h1>
+    <div class="retry-count"></div>
+    <div class="error-message"></div>
+    <button class="retry-button" style="display: none;" onclick="startCheck()">重试</button>
+
+    <script>
+      const HOST = window.location.hostname;
+      const PORT = 6160;
+      let retryCount = 0;
+      const maxRetries = 10;
+      const retryInterval = 250;
+      
+      const retryCountElement = document.querySelector('.retry-count');
+      const loadingTextElement = document.querySelector('.loading-text');
+      const errorMessageElement = document.querySelector('.error-message');
+      const retryButton = document.querySelector('.retry-button');
+
+      async function checkBackendStatus() {
+        try {
+          const response = await fetch(`http://${HOST}:${PORT}/status`);
+          if (response.status === 200) {
+            window.location.href = `http://${HOST}:${PORT}`;
+            return true;
+          }
+        } catch (error) {
+          return false;
+        }
+        return false;
+      }
+
+      async function startCheck() {
+        retryCount = 0;
+        loadingTextElement.textContent = '🎵 加载中，请稍候...';
+        errorMessageElement.textContent = '';
+        retryButton.style.display = 'none';
+        await checkLoop();
+      }
+
+      async function checkLoop() {
+        while (retryCount < maxRetries) {
+          // retryCountElement.textContent = `尝试次数: ${retryCount + 1}/${maxRetries}`;
+          
+          if (await checkBackendStatus()) {
+            return;
+          }
+
+          retryCount++;
+          await new Promise(resolve => setTimeout(resolve, retryInterval));
+        }
+
+        loadingTextElement.textContent = '❌ 加载失败';
+        errorMessageElement.textContent = '无法连接到后端服务';
+        retryButton.style.display = 'block';
+      }
+
+      // 开始检查
+      startCheck();
+    </script>
   </body>
 </html>

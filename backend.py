@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
+from fastapi.middleware.cors import CORSMiddleware
 
 from config import config
 from log import logger
@@ -29,6 +30,15 @@ uvicorn_error.handlers = logger.logger.handlers  # 复用你的日志配置
 uvicorn_error.propagate = False  # 避免重复日志
 
 main = FastAPI()
+
+# 配置CORS中间件
+main.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 允许所有源，因为loading.html是本地文件
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # 将模块化路由注册到主程序
 main.include_router(platform.router, tags = ["platform"])
@@ -65,6 +75,7 @@ def load_platforms():
         if platform_folder in loaded_platforms:
             continue
             
+        logger.info(f"🛠️开始加载平台: {platform_folder}")
         module_name = f"platforms.{platform_folder}"
         try:
             # 使用importlib.util实现按需导入
@@ -83,7 +94,6 @@ def load_platforms():
                 if isinstance(obj, type) and issubclass(obj, BasePlatform) and obj is not BasePlatform:
                     platform_manager.add_platform(obj())
                     loaded_platforms.add(platform_folder)
-                    logger.info(f"✅ 成功加载平台: {platform_folder}")
                     break
         except Exception as e:
             logger.error(f"加载模块 {platform_folder} 失败: {e}")

@@ -45,7 +45,7 @@ def check_backend_ready():
             response = httpx.get(f"http://{HOST}:{PORT}/status", timeout = 1)
             if response.status_code == 200:
                 logger.info("✅ 后端服务已就绪")
-                window.load_url(f"http://{HOST}:{PORT}")  # 后端就绪后加载主页面
+                #window.load_url(f"http://{HOST}:{PORT}")  # 仁济
                 return True
         except httpx.RequestError:
             retry_count += 1
