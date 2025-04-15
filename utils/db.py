@@ -27,7 +27,8 @@ def create_sqlite_db():
                 hd_cover TEXT not null,
                 MV        TEXT,
                 VIP        TEXT,
-                play_count       INTEGER
+                play_count       INTEGER,
+                url         TEXT
             );
             -- 账号数据
             create table account(

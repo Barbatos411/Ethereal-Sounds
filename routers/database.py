@@ -115,7 +115,8 @@ async def update_playlist(
         cover: str = Query(..., description = "封面"),
         hd_cover: str = Query(..., description = "高清封面"),
         MV: str = Query(None, description = "MV"),
-        VIP: str = Query(None, description = "VIP")
+        VIP: str = Query(None, description = "VIP"),
+        url: str = Query(..., description = "歌曲链接")
 ):
     """
     更新播放列表（专用）。
@@ -127,7 +128,7 @@ async def update_playlist(
     """
     logger.info(f"调用了 /update_playlist 接口")
     columns = ["audio_id", "title", "singer", "singer_id", "album",
-               "album_id", "platform", "status", "cover", "hd_cover", "MV", "VIP"]
+               "album_id", "platform", "status", "cover", "hd_cover", "MV", "VIP", "url"]
 
     try:
         with sqlite3.connect(f'data/data.db') as conn:
@@ -144,7 +145,7 @@ async def update_playlist(
 
             # 准备要插入的数据
             data = [
-                audio_id, title, singer, singer_id, album, album_id, platform, status, cover, hd_cover, MV, VIP
+                audio_id, title, singer, singer_id, album, album_id, platform, status, cover, hd_cover, MV, VIP, url
             ]
 
             # 执行插入或替换操作
