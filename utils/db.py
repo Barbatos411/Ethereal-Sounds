@@ -35,13 +35,6 @@ def create_sqlite_db():
                     primary key,
                 cookie    text not null
             );
-            -- 配置数据
-            create table settings(
-                project TEXT not null
-                    primary key,
-                value   TEXT not null
-            )
-            without rowid;
         """)
         # 提交事务
         conn.commit()
