@@ -1,9 +1,7 @@
 import logging
 import sys
 import threading
-from time import sleep
 
-import httpx
 import keyboard
 import pystray
 import uvicorn
@@ -34,30 +32,6 @@ def start_server():
     logger.info(f"🚀 启动后端服务中...,监听地址：{HOST},端口号：{PORT}")
     uvicorn.run("backend:main", host = HOST, port = PORT,
                 reload = False, access_log = False)
-
-
-def check_backend_ready():
-    """检查后端是否就绪"""
-    retry_count = 0
-    max_retries = 10  # 最多等待4秒
-    while retry_count < max_retries:
-        try:
-            response = httpx.get(f"http://{HOST}:{PORT}/status", timeout = 1)
-            if response.status_code == 200:
-                logger.info("✅ 后端服务已就绪")
-                #window.load_url(f"http://{HOST}:{PORT}")  # 仁济
-                return True
-        except httpx.RequestError:
-            retry_count += 1
-            sleep(0.25)  # 降低轮询频率
-            # 更新加载状态
-            if window:
-                window.evaluate_js(f'document.body.innerHTML = "<h1>🎵 正在加载中 ({retry_count}/{max_retries})</h1>"')
-    
-    logger.error("❌ 后端服务启动超时")
-    if window:
-        window.evaluate_js('document.body.innerHTML = "<h1>❌ 加载失败，请重启应用</h1>"')
-    return False
 
 
 def toggle_window():
@@ -96,17 +70,17 @@ def exit_app():
         # 清理全局快捷键
         keyboard.unhook_all()
         logger.info("✅ 已清理全局快捷键")
-        
+
         # 关闭窗口
         if window:
             window.destroy()
             logger.info("✅ 已关闭主窗口")
-            
+
         # 关闭系统托盘
         if tray_icon:
             tray_icon.stop()
             logger.info("✅ 已关闭系统托盘")
-            
+
         logger.info("应用退出完成，感谢使用！")
         # 使用os._exit()来强制退出，避免异常输出
         import os
@@ -200,10 +174,6 @@ if __name__ == "__main__":
         js_api = API(),  # 暴露 API 类的实例给前端
         confirm_close = False,
     )
-
-    # 启动后端检测线程
-    check_thread = threading.Thread(target = check_backend_ready, daemon = True)
-    check_thread.start()
 
     # 创建并运行系统托盘图标
     tray_thread = threading.Thread(target = create_system_tray, daemon = True)

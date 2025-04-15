@@ -1,12 +1,12 @@
-import importlib
+import importlib.util
 import logging
 from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
-from fastapi.middleware.cors import CORSMiddleware
 
 from config import config
 from log import logger
@@ -34,10 +34,10 @@ main = FastAPI()
 # 配置CORS中间件
 main.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 允许所有源，因为loading.html是本地文件
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins = ["*"],  # 允许所有源，因为loading.html是本地文件
+    allow_credentials = True,
+    allow_methods = ["*"],
+    allow_headers = ["*"],
 )
 
 # 将模块化路由注册到主程序
@@ -66,28 +66,28 @@ def check_db():
 def load_platforms():
     search_dir = Path(__file__).parent / "platforms"
     loaded_platforms = set()
-    
+
     for platform_path in search_dir.iterdir():
         if not platform_path.is_dir() or not (platform_path / "__init__.py").exists():
             continue
-            
+
         platform_folder = platform_path.name
         if platform_folder in loaded_platforms:
             continue
-            
+
         logger.info(f"🛠️开始加载平台: {platform_folder}")
         module_name = f"platforms.{platform_folder}"
         try:
             # 使用importlib.util实现按需导入
-            import importlib.util
+
             spec = importlib.util.find_spec(module_name)
             if spec is None:
                 logger.error(f"找不到模块 {platform_folder}")
                 continue
-                
+
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
-            
+
             # 只导入平台类
             for attr_name in dir(module):
                 obj = getattr(module, attr_name)
@@ -97,7 +97,7 @@ def load_platforms():
                     break
         except Exception as e:
             logger.error(f"加载模块 {platform_folder} 失败: {e}")
-    
+
     if not loaded_platforms:
         logger.warning("⚠️ 未找到任何可用的音乐平台模块")
 
