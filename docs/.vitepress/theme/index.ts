@@ -44,7 +44,7 @@ export default {
     })
   },
   enhanceApp({ app, router, siteData }) {
-    app.component('Linkcard' , Linkcard)
+    app.component('Linkcard', Linkcard)
     app.component('confetti', confetti)
     app.component('Mycomponent', Mycomponent)
 
@@ -54,9 +54,9 @@ export default {
         NProgress.start() // 开始进度条
       }
       router.onAfterRouteChanged = () => {
-         NProgress.done() // 停止进度条
+        NProgress.done() // 停止进度条
       }
-}
+    }
   }
 } satisfies Theme
 

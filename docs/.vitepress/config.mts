@@ -29,6 +29,11 @@ export default defineConfig({
       pattern: 'https://github.com/Barbatos411/Ethereal-Sounds/edit/main/docs/:path',
       text: '在GitHub编辑本页'
     },
+    //页脚
+    footer: {
+      message: 'Released under the MIT License.',
+      copyright: 'Copyright © 2025-present Ethereal-Sounds'
+    },
     //上次更新时间 //
     lastUpdated: {
       text: '最后更新于',

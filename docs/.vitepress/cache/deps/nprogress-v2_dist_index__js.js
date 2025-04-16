@@ -3,9 +3,9 @@ import {
   __publicField
 } from "./chunk-JVWSFFO4.js";
 
-// node_modules/.pnpm/nprogress-v2@1.1.10/node_modules/nprogress-v2/dist/index.js
+// node_modules/nprogress-v2/dist/index.js
 var require_dist = __commonJS({
-  "node_modules/.pnpm/nprogress-v2@1.1.10/node_modules/nprogress-v2/dist/index.js"(exports, module) {
+  "node_modules/nprogress-v2/dist/index.js"(exports, module) {
     var __defProp = Object.defineProperty;
     var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
     var __getOwnPropNames = Object.getOwnPropertyNames;
