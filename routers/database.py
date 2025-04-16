@@ -83,7 +83,7 @@ async def update_existing_data(
     仅更新已存在的记录，若记录不存在则返回404
     """
     logger.info(
-        f"调用了 /update_existing_data 接口, 数据库: {database}, 表: {table}, "
+        f"调用了 /update_data 接口, 数据库: {database}, 表: {table}, "
         f"查找条件: {where_column}={keyword}, 更新列: {set_column}={value}"
     )
     try:
