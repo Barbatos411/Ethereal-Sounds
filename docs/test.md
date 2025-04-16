@@ -52,6 +52,14 @@ const members = [
     links: [
       { icon: 'github', link: 'https://github.com/Barbatos411' }
     ]
+  },
+  {
+    avatar: 'https://www.github.com/MapleLeaf2007.png',
+    name: 'MapleLeaf',
+    title: '摸鱼~',
+    links: [
+      { icon: 'github', link: 'https://github.com/MapleLeaf2007' }
+      ],
   }
 ]
 </script>
