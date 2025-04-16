@@ -15,3 +15,7 @@ venv
 /pnpm-lock.yaml
 /node_modules/
 /logs/
+
+# docs
+docs/node_modules
+docs/package-lock.json
