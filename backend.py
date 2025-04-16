@@ -1,3 +1,4 @@
+import concurrent.futures
 import importlib.util
 import logging
 import time
@@ -65,45 +66,65 @@ def check_db():
             logger.error(f"❌创建数据库失败: {e}")
     logger.info(f"数据库检查耗时: {(time.time() - start_time):.2f}秒")
 
+
 def load_platforms():
     start_time = time.time()
     search_dir = Path(__file__).parent / "platforms"
     loaded_platforms = set()
 
+    # 收集所有有效平台模块名称
+    modules_to_load = []
     for platform_path in search_dir.iterdir():
         if not platform_path.is_dir() or not (platform_path / "__init__.py").exists():
             continue
-
         platform_folder = platform_path.name
-        if platform_folder in loaded_platforms:
-            continue
+        modules_to_load.append(f"platforms.{platform_folder}")
 
-        module_name = f"platforms.{platform_folder}"
-        try:
-            # 使用importlib.util实现按需导入
+    # 并行加载模块
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = []
+        for module_name in modules_to_load:
+            futures.append(executor.submit(_load_platform_module, module_name))
 
-            spec = importlib.util.find_spec(module_name)
-            if spec is None:
-                logger.error(f"找不到模块 {platform_folder}")
-                continue
-
-            module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
-
-            # 只导入平台类
-            for attr_name in dir(module):
-                obj = getattr(module, attr_name)
-                if isinstance(obj, type) and issubclass(obj, BasePlatform) and obj is not BasePlatform:
-                    platform_manager.add_platform(obj())
-                    loaded_platforms.add(platform_folder)
-                    break
-        except Exception as e:
-            logger.error(f"加载模块 {platform_folder} 失败: {e}")
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                platform_instance = future.result()
+                if platform_instance:
+                    platform_manager.add_platform(platform_instance)
+                    loaded_platforms.add(platform_instance.name)
+            except Exception as e:
+                logger.error(f"加载模块失败: {e}")
 
     if not loaded_platforms:
         logger.warning("⚠️ 未找到任何可用的音乐平台模块")
-    
+
     logger.info(f"平台加载耗时: {(time.time() - start_time):.2f}秒")
+
+
+def _load_platform_module(module_name):
+    try:
+        spec = importlib.util.find_spec(module_name)
+        if not spec:
+            logger.error(f"找不到模块 {module_name}")
+            return None
+
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        # 寻找符合要求的平台类
+        for attr_name in dir(module):
+            obj = getattr(module, attr_name)
+            if (isinstance(obj, type) and
+                    issubclass(obj, BasePlatform) and
+                    obj is not BasePlatform):
+                return obj()
+
+        logger.warning(f"模块 {module_name} 中未找到有效的平台类")
+        return None
+
+    except Exception as e:
+        logger.error(f"加载模块 {module_name} 失败: {e}")
+        return None
 
 
 def make_local_index():
