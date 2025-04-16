@@ -3,11 +3,11 @@ layout: home
 
 hero:
   name: "Ethereal Sounds"
-  text: "优雅 · 高效"
+  text: "轻量 · 高效"
   image:
     src: /logo.jpg
     alt: logo
-  tagline: 一个模仿Listen1的在线、可拓展的音乐播放器✨
+  tagline: 一个模仿Listen1的模块化、可拓展的音乐播放器✨
   actions:
     - theme: brand
       text: 🚀快速开始
@@ -34,7 +34,7 @@ features:
     details: 支持自定义主题，你可以根据自己的喜好进行个性化定制。
   - icon: 🎵
     title: 丰富的音乐资源
-    details: 支持多种音乐平台，目前已包括网易云音乐、QQ音乐、酷我音乐、酷狗音乐。
+    details: 支持多种音乐平台，目前已包括网易云、QQ音乐、酷我音乐、酷狗音乐、BiliBili。
 ---
 
 <confetti />

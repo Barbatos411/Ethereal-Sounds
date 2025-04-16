@@ -24,3 +24,6 @@ export default {
     app.component('confetti' , confetti)
   }
 } satisfies Theme
+
+
+// 人生处一世,去若朝露兮
