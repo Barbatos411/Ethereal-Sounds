@@ -137,3 +137,10 @@
   --docsearch-primary-color: var(--vp-c-brand-1) !important;
 }
 
+/* .vitepress/theme/style/var.css */
+.VPDoc h1 {
+  background: -webkit-linear-gradient(10deg, #01e001 5%, #05fddc 15%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

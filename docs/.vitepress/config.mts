@@ -12,18 +12,32 @@ export default defineConfig({
       md.use(groupIconMdPlugin); //代码组图标
     },
   },
-
   vite: {
     plugins: [
       groupIconVitePlugin(), //代码组图标
     ],
   },
+  lastUpdated: true,
   themeConfig: {
     logo: "/logo.jpg",
     nav: [
       { text: "主页", link: "/" },
       { text: "使用", link: "/start" },
     ],
+    //编辑本页
+    editLink: {
+      pattern: 'https://github.com/Barbatos411/Ethereal-Sounds/edit/main/docs/:path',
+      text: '在GitHub编辑本页'
+    },
+    //上次更新时间 //
+    lastUpdated: {
+      text: '最后更新于',
+      formatOptions: {
+        dateStyle: 'short', // 可选值full、long、medium、short
+        timeStyle: 'medium' // 可选值full、long、medium、short
+      },
+    },
+    //本地搜索
     search: {
       provider: 'local',
       options: {
@@ -40,12 +54,12 @@ export default defineConfig({
                 footer: {
                   selectText: '选择',
                   navigateText: '切换'
-                }
-              }
-            }
-          }
-        }
-      }
+                },
+              },
+            },
+          },
+        },
+      },
     },
     returnToTopLabel: "返回顶部",
     sidebar: [
