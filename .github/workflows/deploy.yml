@@ -1,53 +1,59 @@
-name: Deploy
+name: Vitepress Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
-      - 'docs/**'  # 路径过滤
-  workflow_dispatch:  # 手动触发
+      - 'docs/**'  # 仅监控docs目录变化
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
-  id-token: write
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
+    name: Deploy Docs
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs  # 工作目录
 
     steps:
-      - name: 检出当前仓库代码
+      - name: 检出仓库
         uses: actions/checkout@v4
         with:
-          # 仅拉取必要的历史记录
           fetch-depth: 0
 
-      - name: 安装 Deno
-        uses: denoland/setup-deno@v2
+      - name: 设置Node.js
+        uses: actions/setup-node@v4
         with:
-          deno-version: v2.x
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: docs/package.json
 
-      - name: 安装 pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: |
-            - args: [--no-frozen-lockfile]
+      - name: 安装pnpm
+        run: npm install -g pnpm
+
+      - name: 安装依赖
+        run: pnpm install --dir docs
 
       - name: 构建文档
-        run: |
-          if [ -d "docs" ]; then
-            pnpm install
-            pnpm docs:build
-          else
-            echo "没有找到docs目录，跳过构建"
-          fi
+        run: pnpm docs:build
 
-      - name: 上传并部署到Github Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: 初始化Pages
+        uses: actions/configure-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .vitepress/dist
-          # 强制推送更新
-          force_orphan: true
+          static_site_generator: vite
+
+      - name: 上传构建产物
+        uses: actions/upload-pages@v3
+        with:
+          path: docs/.vitepress/dist
+
+      - name: 部署到Pages
+        uses: actions/deploy-pages@v4
+        timeout-minutes: 5
