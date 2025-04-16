@@ -1,5 +1,6 @@
 import importlib.util
 import logging
+import time
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -52,6 +53,7 @@ templates = Jinja2Templates(directory = "web")  # web 目录包含 html 模板�
 
 
 def check_db():
+    start_time = time.time()
     db_path = Path("data/data.db")
     if not db_path.exists():
         logger.warning("数据库不存在，正在创建数据库...")
@@ -61,9 +63,10 @@ def check_db():
             logger.info("✅ 数据库创建成功")
         except Exception as e:
             logger.error(f"❌创建数据库失败: {e}")
-
+    logger.info(f"数据库检查耗时: {(time.time() - start_time):.2f}秒")
 
 def load_platforms():
+    start_time = time.time()
     search_dir = Path(__file__).parent / "platforms"
     loaded_platforms = set()
 
@@ -99,6 +102,8 @@ def load_platforms():
 
     if not loaded_platforms:
         logger.warning("⚠️ 未找到任何可用的音乐平台模块")
+    
+    logger.info(f"平台加载耗时: {(time.time() - start_time):.2f}秒")
 
 
 def make_local_index():
@@ -126,8 +131,9 @@ async def status():
 
 
 # 检查数据库、加载平台、创建索引
+start_time = time.time()
 check_db()
 load_platforms()
 # make_local_index()
 
-logger.info("✅ 后端服务已启动")
+logger.info(f"✅ 后端服务启动完成，总耗时: {(time.time() - start_time):.2f}秒")

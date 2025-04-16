@@ -116,7 +116,7 @@ git pull
 - **[Jinja2](https://palletsprojects.com/p/jinja/)** — 便捷的模板引擎，用于前端页面渲染。
 - **[Pydantic](https://docs.pydantic.dev/)** : 数据验证和结构化的基石，使数据处理更为安全可靠。
 
-感谢 [MapleLeaf](https://gitee.com/maple-leaf-sweeping) 大佬提供的技术指导和宝贵建议
+感谢 [MapleLeaf](https://github.com/MapleLeaf2007) 大佬提供的技术指导和宝贵建议
 
 ## 版权声明
 

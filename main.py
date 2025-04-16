@@ -1,6 +1,7 @@
 import logging
 import sys
 import threading
+import time
 
 import keyboard
 import pystray
@@ -29,9 +30,11 @@ PORT = config.get('PORT')
 
 def start_server():
     """启动 FastAPI 后端服务"""
+    start_time = time.time()
     logger.info(f"🚀 启动后端服务中...,监听地址：{HOST},端口号：{PORT}")
     uvicorn.run("backend:main", host = HOST, port = PORT,
                 reload = False, access_log = False)
+    logger.info(f"后端服务启动耗时: {(time.time() - start_time):.2f}秒")
 
 
 def toggle_window():
@@ -159,6 +162,8 @@ class API:
 
 
 if __name__ == "__main__":
+    start_time = time.time()
+    
     # 启动后端服务
     server_thread = threading.Thread(target = start_server, daemon = True)
     server_thread.start()
@@ -174,6 +179,7 @@ if __name__ == "__main__":
         js_api = API(),  # 暴露 API 类的实例给前端
         confirm_close = False,
     )
+    logger.info(f"窗口创建耗时: {(time.time() - start_time):.2f}秒")
 
     # 创建并运行系统托盘图标
     tray_thread = threading.Thread(target = create_system_tray, daemon = True)
