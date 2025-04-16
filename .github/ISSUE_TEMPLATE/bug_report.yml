@@ -43,7 +43,7 @@ body:
     id: Operation-procedure
     attributes:
       label: 操作步骤
-      description: 大意为聊天记录截图
+      description: 大意为错误截图
     validations:
       required: true
   - type: textarea
