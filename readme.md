@@ -17,11 +17,13 @@
 一个模仿listen1的在线、可拓展的音乐播放器，平台开发见Wiki(编辑中...（其实还没写）)
 
 [Listen1](https://github.com/listen1/listen1):
-让你用一个网页就能听到多个网站的在线音乐（现已包括网易云音乐、QQ音乐、酷我音乐、酷狗音乐、BiliBili、咪咕音乐、千千音乐）。你可以非常的简单的访问和收听在线音乐，而不用受到单个音乐网站资源不全地限制了。
+让你用一个网页就能听到多个网站的在线音乐（现已包括网易云音乐、QQ音乐、酷我音乐、酷狗音乐、BiliBili）。你可以非常的简单的访问和收听在线音乐，而不用受到单个音乐网站资源不全地限制了。
 
 ## 功能
 
 ### 支持的平台
+
+> 如果想要支持新的平台，欢迎提交 [Issue](https://github.com/Barbatos411/Ethereal-Sounds/issues/new?template=feature_request.yml) 或直接提交 [Pull request](https://github.com/Barbatos411/Ethereal-Sounds/pulls/new)
 
 - [x] 网易云音乐
 - [x] QQ音乐
@@ -49,12 +51,14 @@
 
 ### 拉取仓库源码并进入项目目录
 
+#### 使用GitHub
 ```bash
-# 使用github
 git clone https://github.com/Barbatos411/Ethereal-Sounds.git
 cd Ethereal-Sounds
+```
 
-# 使用gitee
+#### 使用Gitee
+```bash
 git clone https://gitee.com/Barbatos411/Ethereal-Sounds.git
 cd Ethereal-Sounds
 ```
