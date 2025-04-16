@@ -20,3 +20,4 @@ venv
 docs/node_modules
 docs/package-lock.json
 docs/pnpm-lock.yaml
+/docs/.vitepress/cache
