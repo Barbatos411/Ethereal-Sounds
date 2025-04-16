@@ -54,19 +54,18 @@
 #### 使用GitHub
 ```bash
 git clone https://github.com/Barbatos411/Ethereal-Sounds.git
-cd Ethereal-Sounds
 ```
 
 #### 使用Gitee
 ```bash
 git clone https://gitee.com/Barbatos411/Ethereal-Sounds.git
-cd Ethereal-Sounds
 ```
 
 ### 创建虚拟环境
 
 ```bash
-python -m venv venv
+cd Ethereal-Sounds  # 进入项目目录
+python -m venv venv  # 创建虚拟环境
 ```
 
 ### 启动虚拟环境
