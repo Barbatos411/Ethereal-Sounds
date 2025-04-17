@@ -23,7 +23,7 @@ export default defineConfig({
     nav: [
       { text: "主页", link: "/" },
       { text: "使用", link: "/start" },
-      { text: "API文档", link: "/api" },
+      { text: "API", link: "/API" },
     ],
     //编辑本页
     editLink: {

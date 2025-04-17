@@ -1,0 +1,40 @@
+# 服务器配置
+HOST: 127.0.0.1
+PORT: 6160  # 默认端口（616是温迪生日~）
+
+# 日志配置
+LOGLEVEL: INFO  # 可选：INFO, DEBUG, WARNING, ERROR, CRITICAL
+LOG_RETAIN_DAYS: 7  # 日志保留天数
+DEBUG: False  # 调试模式开关
+
+# 本地音乐目录配置
+# 可配置多个目录路径，例如：
+#  - "C:/Users/YourName/Music"
+#  - "D:/Music/Collection"
+MUSIC_DIR:
+  - "./music"
+
+# 平台配置
+platforms:
+  netease:  # 网易云音乐
+    enabled: true
+    cookie: ""  # 登录cookie，可选
+  
+  qq:  # QQ音乐
+    enabled: true
+    cookie: ""
+  
+  kugou:  # 酷狗音乐
+    enabled: true
+    cookie: ""
+  
+  kuwo:  # 酷我音乐
+    enabled: true
+    cookie: ""
+  
+  bilibili:  # 哔哩哔哩
+    enabled: true
+    cookie: ""
+  
+  local:  # 本地音乐
+    enabled: true
