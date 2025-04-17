@@ -1,4 +1,3 @@
-import os
 import threading
 from typing import Any, Dict, Optional
 
@@ -7,9 +6,11 @@ from colorlog import getLogger
 
 logger = getLogger(__name__)
 
+
 class ConfigError(Exception):
     """配置相关错误"""
     pass
+
 
 class Config:
     _instance = None
@@ -25,26 +26,15 @@ class Config:
         return cls._instance
 
     def load_config(self) -> None:
-        """从 YAML 读取所有配置项，存入字典"""
         try:
-            config_path = "config.yaml"
-            if not os.path.exists(config_path):
-                example_path = "config.yaml.example"
-                if os.path.exists(example_path):
-                    raise ConfigError(f"配置文件 {config_path} 不存在")
-                else:
-                    raise ConfigError(f"配置文件 {config_path} 和示例配置文件都不存在")
-
-            with open(config_path, "r", encoding="utf-8") as f:
+            with open("config/config.yaml", "r", encoding = "utf-8") as f:
                 self.config_dict = yaml.safe_load(f)
-
             self._validate_config()
-            logger.info("配置加载成功")
-
+            logger.info("✅ 配置加载成功")
         except yaml.YAMLError as e:
-            raise ConfigError(f"配置文件格式错误: {str(e)}")
+            raise ConfigError(f"❌ 配置文件格式错误: {str(e)}")
         except Exception as e:
-            raise ConfigError(f"加载配置文件失败: {str(e)}")
+            raise ConfigError(f"❌ 加载配置文件失败: {str(e)}")
 
     def _validate_config(self) -> None:
         """验证配置项"""
@@ -64,7 +54,6 @@ class Config:
             raise ConfigError(f"无效的日志级别，必须是以下之一: {', '.join(valid_log_levels)}")
 
     def reload_config(self) -> None:
-        """重新加载 YAML 配置"""
         try:
             self.load_config()
             logger.info("配置已更新")
@@ -80,6 +69,7 @@ class Config:
         """获取指定平台的配置"""
         platforms = self.config_dict.get('platforms', {})
         return platforms.get(platform)
+
 
 # 生成全局唯一 config 实例
 config = Config()

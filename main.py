@@ -2,6 +2,8 @@ import logging
 import sys
 import threading
 import time
+from pathlib import Path
+from shutil import copy
 
 import keyboard
 import pystray
@@ -10,29 +12,32 @@ import webview
 from PIL import Image
 from pystray import MenuItem
 
-from config import config
-from log import logger  # 复用 Logger
 
-# 让 PyWebView 也使用 logger
-pywebview_logger = logging.getLogger("pywebview")
-pywebview_logger.handlers = logger.logger.handlers  # 复用 log.py 配置
-pywebview_logger.propagate = False  # 避免日志重复
+def check_config_file():
+    # 配置文件路径
+    CONFIG_PATH = Path("config/config.yaml")
+    EXAMPLE_PATH = Path("config/default_config.yaml")
+
+    """检测并生成配置文件"""
+    if not CONFIG_PATH.exists():
+        if EXAMPLE_PATH.exists():
+            copy(str(EXAMPLE_PATH), str(CONFIG_PATH))
+            print(f"✅ 已自动生成配置文件: {CONFIG_PATH} (从 {EXAMPLE_PATH})")
+        else:
+            raise RuntimeError(f"⚠️ 配置文件 {CONFIG_PATH} 和示例文件 {EXAMPLE_PATH} 都不存在！")
+
 
 # 全局变量
 window = None
 tray_icon = None
 is_window_visible = True  # 记录窗口的显示状态
 
-# 监听地址和端口
-HOST = config.get('HOST')
-PORT = config.get('PORT')
 
-
-def start_server():
+def start_server(host: str, port: int):
     """启动 FastAPI 后端服务"""
     start_time = time.time()
-    logger.info(f"🚀 启动后端服务中...,监听地址：{HOST},端口号：{PORT}")
-    uvicorn.run("backend:main", host = HOST, port = PORT,
+    logger.info(f"🚀 启动后端服务中...,监听地址：{host},端口号：{port}")
+    uvicorn.run("backend:main", host = host, port = port,
                 reload = False, access_log = False)
     logger.info(f"后端服务启动耗时: {(time.time() - start_time):.2f}秒")
 
@@ -163,9 +168,28 @@ class API:
 
 if __name__ == "__main__":
     start_time = time.time()
-    
+
+    # 检测并生成配置文件
+    check_config_file()
+
+    # 导入配置和日志
+    from config import config
+    from log import logger  # 复用 Logger
+
+    # 让 PyWebView 也使用 logger
+    pywebview_logger = logging.getLogger("pywebview")
+    pywebview_logger.handlers = logger.logger.handlers  # 复用 log.py 配置
+    pywebview_logger.propagate = False  # 避免日志重复
+
     # 启动后端服务
-    server_thread = threading.Thread(target = start_server, daemon = True)
+    host = config.get('HOST')
+    port = config.get('PORT')
+
+    server_thread = threading.Thread(
+        target = start_server,
+        args = (host, port),  # 通过元组传递位置参数
+        daemon = True
+    )
     server_thread.start()
 
     # 创建无边框窗口
@@ -179,7 +203,6 @@ if __name__ == "__main__":
         js_api = API(),  # 暴露 API 类的实例给前端
         confirm_close = False,
     )
-    logger.info(f"窗口创建耗时: {(time.time() - start_time):.2f}秒")
 
     # 创建并运行系统托盘图标
     tray_thread = threading.Thread(target = create_system_tray, daemon = True)
