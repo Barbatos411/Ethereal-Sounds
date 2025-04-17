@@ -57,8 +57,7 @@ pip install -r requirements.txt
 
 ### 5. 配置文件
 
-1. 复制 `config.yaml.example` 为 `config.yaml`
-2. 根据需要修改配置文件：
+根据需要修改配置文件：
    - `HOST`: 服务器host地址
    - `PORT`: 服务器端口（1-65535之间）
    - `LOGLEVEL`: 日志级别（INFO/DEBUG/WARNING/ERROR/CRITICAL）
