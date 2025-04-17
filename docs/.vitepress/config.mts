@@ -92,7 +92,7 @@ export default defineConfig({
         ],
       },
       {
-        text: "🚀API文档",
+        text: "⛏️API文档",
         items: [
           { text: "基础信息", link: "/API.html#基础信息" },
           { text: "平台接口", link: "/API.html#平台相关接口" },
