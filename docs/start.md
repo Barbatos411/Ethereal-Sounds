@@ -10,12 +10,12 @@
 
 ::: code-group
 
-```sh [github]
+```sh [GitHub]
 #使用GitHub
 git clone https://github.com/Barbatos411/Ethereal-Sounds.git
 ```
 
-```sh [gitee]
+```sh [Gitee]
 #使用Gitee
 git clone https://gitee.com/Barbatos411/Ethereal-Sounds.git
 ```
@@ -23,27 +23,30 @@ git clone https://gitee.com/Barbatos411/Ethereal-Sounds.git
 :::
 ### 2. 创建虚拟环境
 
-```bash
+```bash [bash]
 cd Ethereal-Sounds  # 进入项目目录
+```
+
+```bash [python]
 python -m venv venv  # 创建虚拟环境
 ```
 
 ### 3. 启动虚拟环境
 
-#### Linux/Unix/MacOS
-```bash
+::: code-group
+
+```bash [Linux/Unix/MacOS]
 source venv/bin/activate
 ```
 
-#### Windows
-```bash
+```cmd [Windows]
 .\venv\Scripts\activate
 ```
 
+:::
 ### 4. 安装依赖
 
 ```bash [pip]
-# 安装Python依赖
 pip install -r requirements.txt
 ```
 
@@ -59,8 +62,7 @@ pip install -r requirements.txt
 
 ### 6. 启动服务
 
-```bash
-# 启动主服务
+```bash [python]
 python main.py
 ```
 
