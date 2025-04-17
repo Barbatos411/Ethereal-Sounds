@@ -26,7 +26,8 @@ async def get_platforms():
 async def search_song(
         keyword: str = Query(..., description = "搜索关键词"),
         platform: str = Query(..., description = "搜索平台"),
-        page: int = Query(1, description = "分页")
+        page: int = Query(1, description = "分页"),
+        limit: int = Query(30, description = "每页返回的结果数")
 ):
     """
     根据指定平台和关键词进行歌曲搜索
@@ -35,7 +36,7 @@ async def search_song(
     # 根据平台名称找到对应的平台类
     try:
         platform_obj = platform_manager.get_platform_by_id(platform)
-        results = await platform_obj.search(keyword, page)
+        results = await platform_obj.search(keyword, page,limit)
         return {"platform": platform, "results": results}
     except ValueError as e:
         logger.error(f"搜索失败：{str(e)}")

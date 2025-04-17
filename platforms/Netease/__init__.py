@@ -67,3 +67,18 @@ class NetEase(BasePlatform):
         :return: 登录状态
         """
         pass
+
+    async def playlists(self):
+        """
+        定义抽象的获取歌单方法，每个平台都必须实现
+        :return: 歌单信息
+        """
+        pass
+
+    async def playlistinfo(self, playlist_id: str):
+        """
+        定义抽象的获取歌单方法，每个平台都必须实现
+        :param playlist_id: 歌单ID
+        :return: 歌单歌曲信息
+        """
+        pass

@@ -95,6 +95,25 @@ class BasePlatform(ABC):
         """
         pass
 
+    @abstractmethod
+    async def playlists(self):
+        """
+        定义抽象的获取歌单方法，每个平台都必须实现
+        :return: 歌单信息
+        """
+        pass
+
+    @abstractmethod
+    async def playlistinfo(self, playlist_id: str):
+        """
+        定义抽象的获取歌单方法，每个平台都必须实现
+        :param playlist_id: 歌单ID
+        :return: 歌单歌曲信息
+        """
+        pass
+
+
+
     async def referer(self, url: str):
         """
         发起带Referer的请求，返回响应内容和媒体类型
