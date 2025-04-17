@@ -90,6 +90,10 @@ export default defineConfig({
     sidebar: [
       {
         text: "🚀快速开始",
+        items: [
+          { text: "从安装包开始", link: "/start.html" },
+          { text: "从原代码开始", link: "/start.html#环境要求" },
+        ],
       },
       {
         text: "⛏️API文档",
