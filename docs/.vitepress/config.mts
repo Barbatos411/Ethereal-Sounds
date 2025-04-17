@@ -91,6 +91,14 @@ export default defineConfig({
           { text: "配置", link: "/start#配置" },
         ],
       },
+      {
+        text: "🚀API文档",
+        items: [
+          { text: "基础信息", link: "/API.html#基础信息" },
+          { text: "平台接口", link: "/API.html#平台相关接口" },
+          { text: "数据库接口", link: "/API.html#数据库相关接口" },
+        ],
+      },
     ],
 
     socialLinks: [

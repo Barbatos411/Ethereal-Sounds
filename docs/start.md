@@ -26,6 +26,11 @@ git clone https://gitee.com/Barbatos411/Ethereal-Sounds.git
 ```bash [bash]
 cd Ethereal-Sounds  # 进入项目目录
 ```
+::: tip
+建议使用虚拟环境，避免依赖冲突
+:::
+
+
 
 ```bash [python]
 python -m venv venv  # 创建虚拟环境
