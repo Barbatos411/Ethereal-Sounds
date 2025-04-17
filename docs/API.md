@@ -10,14 +10,14 @@
 
 ### 错误码说明
 
-| 状态码 | 说明 |
-|--------|------|
-| 200 | 请求成功 |
-| 400 | 请求参数错误 |
+| 状态码 | 说明       |
+|-----|----------|
+| 200 | 请求成功     |
+| 400 | 请求参数错误   |
 | 401 | 未授权或登录失效 |
-| 403 | 无访问权限 |
-| 404 | 资源不存在 |
-| 500 | 服务器内部错误 |
+| 403 | 无访问权限    |
+| 404 | 资源不存在    |
+| 500 | 服务器内部错误  |
 
 ## 平台相关接口
 
@@ -31,22 +31,26 @@ GET /platforms
 
 **响应参数：**
 - `platforms` (array): 平台列表
-  - `id` (string): 平台唯一标识
   - `name` (string): 平台名称
+  - `id` (string): 平台唯一标识
+  - `logo`(string): 平台图标
   - `order` (integer): 平台排序序号
+
 
 **响应示例：**
 ```json
 {
     "platforms": [
         {
-            "id": "netease",
             "name": "网易云音乐",
+            "id": "NetEase",
+            "logo": "https://p3.music.126.net/tBTNafgjNnTL1KlZMt7lVA==/18885211718935735.jpg",
             "order": 1
         },
         {
-            "id": "qq",
             "name": "QQ音乐",
+            "id": "QQMusic",
+            "logo": "https://y.qq.com/favicon.ico?max_age=2592000",
             "order": 2
         }
     ]
@@ -65,16 +69,51 @@ GET /search
 - `keyword` (string, required): 搜索关键词，支持歌曲名、歌手名、专辑名
 - `platform` (string, required): 搜索平台，必须是已支持的平台ID
 - `page` (integer, default: 1): 分页页码，从1开始
-- `limit` (integer, default: 20): 每页返回数量，默认20条
+- `limit` (integer, default: 30): 每页返回数量，默认30条
 
 **响应参数：**
-- `songs` (array): 搜索结果列表
-  - `id` (string): 歌曲ID
-  - `name` (string): 歌曲名称
-  - `artist` (string): 艺术家名称
-  - `album` (string): 专辑名称
-  - `duration` (integer): 歌曲时长(秒)
-  - `cover` (string): 封面图片URL
+
+- `platform` (string): 音乐平台的名称，
+- `results` (object): 包含搜索结果相关信息的对象。
+  - `song_count` (integer): 搜索结果总数。
+  - `song_list` (array): 歌曲信息列表。
+    - `title` (string): 歌曲标题
+    - `author` (string): 歌曲作者/演唱者
+    - `cover` (string): 封面图片URL
+    - `hd_cover` (string): 高清封面图片URL（原始尺寸）
+    - `url` (string): 歌曲播放页面URL
+    - `album` (string): 所属专辑名称
+    - `album_id` (integer): 专辑ID
+    - `fee` (integer): 收费标识（0表示免费）
+    - `mvid` (integer): MV ID（0表示无MV）
+    - `duration` (string): 歌曲时长（格式：mm:ss）
+    - `id` (integer): 歌曲唯一ID
+    
+```json
+{
+  "platform": "NetEase",
+  "results": {
+    "song_list": [
+      {
+        "title": "轻涟 La vaguelette",
+        "author": "HOYO-MiX",
+        "cover": "https://p2.music.126.net/I-cw5yaq4Pz0EL2dZAmq1g==/109951169058808374.jpg?param=300y300",
+        "hd_cover": "https://p2.music.126.net/I-cw5yaq4Pz0EL2dZAmq1g==/109951169058808374.jpg",
+        "url": "https://music.163.com/song?id=2100334024",
+        "album": "原神-「轻涟 La vaguelette」游戏原声EP专辑",
+        "album_id": 179193598,
+        "fee": 0,
+        "mvid": 0,
+        "duration": "02:29",
+        "id": 2100334024
+      }
+    ],
+    "song_count": 301
+  }
+}
+```
+
+
 
 ### 获取音频
 
@@ -87,16 +126,14 @@ GET /get_audio
 **请求参数：**
 - `platform` (string, required): 平台ID
 - `audio_id` (string, required): 歌曲ID
-- `quality` (string, optional): 音质选择，可选值：standard(标准)、high(高质量)、hires(无损)
 
 **响应：**
+
 - Content-Type: audio/mpeg - 直接返回音频流
 - 或 JSON格式：
   ```json
   {
-      "url": "音频文件URL",
-      "expires": "URL过期时间",
-      "quality": "音质信息"
+      "audio_url": "音频文件URL"
   }
   ```
 
@@ -111,12 +148,13 @@ GET /get_lrc
 **请求参数：**
 - `platform` (string, required): 平台ID
 - `audio_id` (string, required): 歌曲ID
-- `type` (string, optional): 歌词类型，可选值：lrc(LRC格式)、txt(纯文本)
 
 **响应参数：**
-- `lrc` (string): LRC格式歌词内容
-- `tlyric` (string, optional): 翻译歌词
-- `romalrc` (string, optional): 罗马音歌词
+
+- `results` (array): 歌词结果列表
+  - `time` (number): 歌词时间点（单位：秒）
+  - `text` (string): 歌词文本内容
+  - `translation` (string, optional): 歌词翻译文本（非所有条目都有此字段）
 
 ### 获取平台主页内容
 
@@ -126,37 +164,7 @@ GET /get_lrc
 GET /home
 ```
 
-**请求参数：**
-- `platform` (string, required): 平台ID
-- `categories` (string, optional): 内容分类，多个分类用逗号分隔
-- `page` (integer, default: 1): 分页页码
-- `limit` (integer, default: 20): 每页数量
-
-**响应参数：**
-- `banners` (array): 轮播图列表
-- `playlists` (array): 推荐歌单
-- `new_songs` (array): 新歌推荐
-- `hot_songs` (array): 热门歌曲
-
-### 平台登录
-
-用户登录指定平台。
-
-```http
-GET /login
-```
-
-**请求参数：**
-- `platform` (string, required): 登录平台ID
-- `method` (string, required): 登录方式，可选值：password(密码登录)、code(验证码登录)、qr(二维码登录)
-- `username` (string, conditional): 用户名/手机号，密码登录时必需
-- `password` (string, conditional): 密码，密码登录时必需
-- `code` (string, conditional): 验证码或二维码信息
-
-**响应参数：**
-- `token` (string): 登录凭证
-- `user_info` (object): 用户信息
-- `expires_in` (integer): 凭证有效期
+开发中...
 
 ### 获取专辑信息
 
@@ -171,30 +179,35 @@ GET /album
 - `album_id` (string, required): 专辑ID
 
 **响应参数：**
-- `id` (string): 专辑ID
-- `name` (string): 专辑名称
-- `artist` (string): 艺术家名称
-- `release_time` (string): 发行时间
-- `description` (string): 专辑描述
-- `cover` (string): 封面图片URL
-- `songs` (array): 专辑歌曲列表
+- `results` (array): 音乐结果列表
+  - `title` (string): 歌曲标题
+  - `author` (string): 歌曲作者/演唱者
+  - `cover` (string): 封面图片URL
+  - `hd_cover` (string): 高清封面图片URL（原始尺寸）
+  - `url` (string): 歌曲播放页面URL
+  - `album` (string): 所属专辑名称
+  - `album_id` (integer): 专辑ID
+  - `fee` (integer): 收费标识（0表示免费）
+  - `mvid` (integer): MV ID（0表示无MV）
+  - `duration` (string): 歌曲时长（格式：mm:ss）
+  - `id` (integer): 歌曲唯一ID
 
 ### 获取资源引用
 
-获取资源的引用信息。
+获取资源的原始内容（图片等）。
 
 ```http
 GET /referer
 ```
 
 **请求参数：**
+
 - `platform` (string, required): 平台ID
 - `url` (string, required): 资源URL地址
 
-**响应参数：**
-- `referer` (string): 引用地址
-- `user_agent` (string): User-Agent信息
-- `headers` (object): 其他请求头信息
+**响应说明：**
+
+- 如果请求的是图片资源：直接返回图片二进制数据，Content-Type 为对应的图片类型（如 image/jpeg, image/png 等）
 
 ## 数据库相关接口
 
@@ -210,7 +223,6 @@ GET /get_data
 - `keyword` (string, required): 查询关键词
 - `select` (string, required): 需要返回的字段，多个字段用逗号分隔
 - `where` (string, required): 查询条件字段
-- `limit` (integer, optional): 返回记录数量限制
 
 ### 获取所有数据
 
@@ -221,8 +233,6 @@ GET /get_all_data
 **请求参数：**
 - `database` (string, default: "data"): 数据库名称
 - `table` (string, required): 表名
-- `order_by` (string, optional): 排序字段
-- `order_type` (string, optional): 排序方式，可选值：asc(升序)、desc(降序)
 
 ### 设置数据
 
@@ -266,7 +276,7 @@ POST /update_playlist
 - `album` (string, optional): 专辑名称
 - `album_id` (string, optional): 专辑ID
 - `platform` (string, required): 平台ID
-- `status` (string, optional): 播放状态
+- `status` (string, optional): 播放状态 (空 或 playing)
 - `cover` (string, required): 封面图片URL
 - `hd_cover` (string, required): 高清封面图片URL
 - `MV` (string, optional): MV链接
@@ -281,8 +291,6 @@ GET /update_play_status
 
 **请求参数：**
 - `audio_number` (string, required): 音频序号
-- `status` (string, required): 播放状态，可选值：playing、paused、stopped
-- `position` (integer, optional): 播放位置(秒)
 
 ### 删除数据
 
@@ -305,4 +313,3 @@ GET /del_all_data
 **请求参数：**
 - `database` (string, required): 数据库名称
 - `table` (string, required): 表名
-- `confirm` (boolean, required): 确认删除，必须为true
