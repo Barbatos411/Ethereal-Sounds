@@ -36,7 +36,7 @@ async def search_song(
     # 根据平台名称找到对应的平台类
     try:
         platform_obj = platform_manager.get_platform_by_id(platform)
-        results = await platform_obj.search(keyword, page,limit)
+        results = await platform_obj.search(keyword, page, limit)
         return {"platform": platform, "results": results}
     except ValueError as e:
         logger.error(f"搜索失败：{str(e)}")
@@ -122,10 +122,6 @@ async def home(
 @router.get("/login")
 async def login(
         platform: str = Query(..., description = "登录平台"),
-        method: str = Query(..., description = "登录方式"),
-        username: str = Query(..., description = "用户名/手机号"),
-        password: str = Query(..., description = "密码/验证码"),
-        code: str = Query(None, description = "cookie")
 ):
     """
     根据指定平台和登录方式进行登录
@@ -134,8 +130,8 @@ async def login(
     # 根据平台名称找到对应的平台类
     try:
         platform_obj = platform_manager.get_platform_by_id(platform)
-        results = await platform_obj.login(platform, method, username, password, code)
-        return {"results": results}
+        results = await platform_obj.login()
+        return results
     except Exception as e:
         logger.error(f"登录失败：{str(e)}")
         raise HTTPException(status_code = 500, detail = str(e))

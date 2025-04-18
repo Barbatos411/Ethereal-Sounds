@@ -11,6 +11,8 @@ import webview
 from PIL import Image
 from pystray import MenuItem
 
+from platforms.platform_manager import platform_manager
+
 
 def check_config_file():
     # 配置文件路径
@@ -163,6 +165,47 @@ class API:
         if window:
             self.is_fullscreen = not self.is_fullscreen
             window.toggle_fullscreen()
+
+    def check_cookie(self, cookie_str, platform):
+        """处理接收到的 Cookie"""
+
+        logger.info(f"接收到 Cookie: {cookie_str}")
+        p = platform_manager.get_platform_by_id(platform)
+        if p.check_login_success(cookie_str):
+            title = "登录"
+            for w in webview.windows:
+                if w.title == title:
+                    w.destroy()
+
+    def login(self, platform):
+        """供前端调用的登录方法"""
+
+        # 获取平台实例
+        p = platform_manager.get_platform_by_id(platform)
+
+        try:
+            login_window = webview.create_window(
+                title = '登录',
+                url = p.Referer,
+                width = 1200,
+                height = 900,
+                js_api = API(),  # 暴露 API 类的实例给前
+                on_top = True,
+            )
+
+            # 注入 JavaScript 定时器
+            login_window.evaluate_js(f"""
+                setInterval(() => {{
+                    try {{
+                        pywebview.api.check_cookie(document.cookie, '{platform}');
+                    }} catch (e) {{
+                        console.error("获取 Cookie 失败:", e);
+                    }}
+                }}, 500);
+            """)
+
+        except Exception as e:
+            logger.error(f"登录失败：{str(e)}")
 
 
 if __name__ == "__main__":
