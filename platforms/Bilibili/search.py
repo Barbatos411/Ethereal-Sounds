@@ -29,8 +29,8 @@ async def search(self, keyword: str, page: int = 1, limit: int = 30):
             # 作者
             "author": song["author"],
             # 封面
-            "cover": f"http://127.0.0.1:6160/referer?platform=Bilibili&url=https:{song['pic']}",
-            "hd_cover": f"http://127.0.0.1:6160/referer?platform=Bilibili&url=https:{song['pic']}",
+            "cover": f"/referer?platform=Bilibili&url=https:{song['pic']}",
+            "hd_cover": f"/referer?platform=Bilibili&url=https:{song['pic']}",
             # 播放量
             "play": song["play"],
             # 时长
