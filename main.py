@@ -1,4 +1,3 @@
-import logging
 import sys
 import threading
 import time
@@ -175,11 +174,6 @@ if __name__ == "__main__":
     # 导入配置和日志
     from config import config
     from log import logger  # 复用 Logger
-
-    # 让 PyWebView 也使用 logger
-    pywebview_logger = logging.getLogger("pywebview")
-    pywebview_logger.handlers = logger.logger.handlers  # 复用 log.py 配置
-    pywebview_logger.propagate = False  # 避免日志重复
 
     # 启动后端服务
     host = config.get('HOST')
