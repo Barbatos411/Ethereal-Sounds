@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <title>加载中...</title>
     <style>
       body {
@@ -28,7 +29,7 @@
         padding: 8px 16px;
         border: none;
         border-radius: 4px;
-        background-color: #4CAF50;
+        background-color: #4caf50;
         color: white;
         cursor: pointer;
         font-size: 14px;
@@ -42,7 +43,9 @@
     <h1 class="loading-text">🎵 加载中，请稍候...</h1>
     <div class="retry-count"></div>
     <div class="error-message"></div>
-    <button class="retry-button" style="display: none;" onclick="startCheck()">重试</button>
+    <button class="retry-button" style="display: none" onclick="startCheck()">
+      重试
+    </button>
 
     <script>
       const HOST = window.location.hostname;
@@ -50,11 +53,11 @@
       let retryCount = 0;
       const maxRetries = 10;
       const retryInterval = 250;
-      
-      const retryCountElement = document.querySelector('.retry-count');
-      const loadingTextElement = document.querySelector('.loading-text');
-      const errorMessageElement = document.querySelector('.error-message');
-      const retryButton = document.querySelector('.retry-button');
+
+      const retryCountElement = document.querySelector(".retry-count");
+      const loadingTextElement = document.querySelector(".loading-text");
+      const errorMessageElement = document.querySelector(".error-message");
+      const retryButton = document.querySelector(".retry-button");
 
       async function checkBackendStatus() {
         try {
@@ -71,27 +74,27 @@
 
       async function startCheck() {
         retryCount = 0;
-        loadingTextElement.textContent = '🎵 加载中，请稍候...';
-        errorMessageElement.textContent = '';
-        retryButton.style.display = 'none';
+        loadingTextElement.textContent = "🎵 加载中，请稍候...";
+        errorMessageElement.textContent = "";
+        retryButton.style.display = "none";
         await checkLoop();
       }
 
       async function checkLoop() {
         while (retryCount < maxRetries) {
           // retryCountElement.textContent = `尝试次数: ${retryCount + 1}/${maxRetries}`;
-          
+
           if (await checkBackendStatus()) {
             return;
           }
 
           retryCount++;
-          await new Promise(resolve => setTimeout(resolve, retryInterval));
+          await new Promise((resolve) => setTimeout(resolve, retryInterval));
         }
 
-        loadingTextElement.textContent = '❌ 加载失败';
-        errorMessageElement.textContent = '无法连接到后端服务';
-        retryButton.style.display = 'block';
+        loadingTextElement.textContent = "❌ 加载失败";
+        errorMessageElement.textContent = "无法连接到后端服务";
+        retryButton.style.display = "block";
       }
 
       // 开始检查
