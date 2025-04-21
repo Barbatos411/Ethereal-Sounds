@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>加载中...</title>
     <style>
       body {
@@ -48,8 +48,9 @@
     </button>
 
     <script>
-      const HOST = window.location.hostname;
-      const PORT = 6160;
+      const params = new URLSearchParams(window.location.search);
+      const HOST = params.get("host");
+      const PORT = params.get("port");
       let retryCount = 0;
       const maxRetries = 10;
       const retryInterval = 250;

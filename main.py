@@ -232,7 +232,7 @@ if __name__ == "__main__":
     # 创建无边框窗口
     window = webview.create_window(
         title = '浮声 - Ethereal Sounds',
-        url = 'loading.html',  # 初始加载页
+        url = f'loading.html?host={host}&port={port}',  # 初始加载页
         width = 1200,
         height = 800,
         frameless = True,
