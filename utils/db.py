@@ -10,33 +10,41 @@ def create_sqlite_db():
     with sqlite3.connect('data/data.db') as conn:
         cursor = conn.cursor()
         cursor.executescript("""
-            -- 播放列表
-            create table song_list(
-                id    INTEGER
-                    primary key autoincrement,
-                audio_id        TEXT not null
-                    unique,
-                platform  TEXT not null,
-                title      TEXT not null,
-                singer    TEXT,
-                singer_id TEXT,
-                album     TEXT,
-                album_id  TEXT,
-                status    TEXT,
-                cover     TEXT not null,
-                hd_cover TEXT not null,
-                MV        TEXT,
-                VIP        TEXT,
-                play_count       INTEGER,
-                url         TEXT
-            );
-            -- 账号数据
-            create table account(
-                platforms TEXT not null
-                    primary key,
-                cookie    text not null
-            );
-        """)
+                             -- 播放列表
+                             create table song_list
+                             (
+                                 id         INTEGER
+                                     primary key autoincrement,
+                                 audio_id   TEXT not null
+                                     unique,
+                                 platform   TEXT not null,
+                                 title      TEXT not null,
+                                 singer     TEXT,
+                                 singer_id  TEXT,
+                                 album      TEXT,
+                                 album_id   TEXT,
+                                 status     TEXT,
+                                 cover      TEXT not null,
+                                 hd_cover   TEXT not null,
+                                 MV         TEXT,
+                                 VIP        TEXT,
+                                 play_count INTEGER,
+                                 url        TEXT
+                             );
+                             -- 账号数据
+                             create table account
+                             (
+                                 indexNum INTEGER not null,
+                                 title    TEXT    not null,
+                                 ID       TEXT    not null PRIMARY KEY unique,
+                                 logo     TEXT    not null,
+                                 userID   TEXT,
+                                 username TEXT,
+                                 avatar   TEXT,
+                                 cookie   text,
+                                 login    INTEGER DEFAULT 0
+                             );
+                             """)
         # 提交事务
         conn.commit()
 
@@ -104,6 +112,48 @@ def set_data(database: str, table: str, where_column: str, keyword: str,
         cursor.execute(query, (keyword, value))
         conn.commit()
     return {"message": "单个记录更新成功"}
+
+
+def batch_set_datas(database: str, table: str, where_column: str, keyword: str, updates: dict):
+    """
+    更新数据表中单个记录的多个列，若记录不存在则插入新记录
+    :param database: 数据库名称
+    :param table: 表名称
+    :param where_column: 作为条件的列名（需为唯一约束或主键）
+    :param keyword: 条件值
+    :param updates: 字典形式的更新内容，格式为 {列名: 新值}
+    :return: 更新/插入结果信息
+    """
+    with sqlite3.connect(f'data/{database}.db') as conn:
+        cursor = conn.cursor()
+
+        # 构造列名和占位符
+        all_columns = [where_column] + list(updates.keys())
+        columns = ", ".join(all_columns)
+        placeholders = ", ".join(["?"] * len(all_columns))
+
+        # 构造 SET 子句
+        set_clause = ", ".join([f"{col} = excluded.{col}" for col in updates.keys()])
+
+        # 构造 UPSERT SQL 语句（需表有唯一约束）
+        query = f"""
+            INSERT INTO {table} ({columns})
+            VALUES ({placeholders})
+            ON CONFLICT({where_column}) DO UPDATE SET
+                {set_clause}
+        """
+
+        # 参数：where_column的值 + updates的值
+        params = [keyword] + list(updates.values())
+
+        cursor.execute(query, params)
+        conn.commit()
+
+    return {
+        "message": "记录更新或插入成功",
+        "affected_rows": cursor.rowcount,
+        "updated_columns": list(updates.keys()) if cursor.rowcount else []
+    }
 
 
 def update_data(

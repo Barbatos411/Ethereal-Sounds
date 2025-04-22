@@ -5,7 +5,8 @@ from fastapi import APIRouter, Query, HTTPException
 from pydantic import BaseModel
 
 from log import logger
-from utils.db import get_data, get_all_data, set_data, delete_data, update_play_status, delete_all_data, update_data
+from utils.db import get_data, get_all_data, set_data, delete_data, update_play_status, delete_all_data, update_data, \
+    batch_set_datas
 
 router = APIRouter()
 
@@ -64,6 +65,33 @@ async def db_set_data(
         f"调用了 /set_data 接口, 数据库: {database}, 表: {table}, 关键词: {keyword}, 查找列: {where_column}, 更新列: {set_column}, 更新值: {value}")
     try:
         results = set_data(database, table, where_column, keyword, set_column, value)
+        return results
+    except sqlite3.Error as e:
+        logger.error(f"调用 /set_data 接口失败: {str(e)}")
+        raise HTTPException(status_code = 500, detail = str(e))
+
+
+@router.get("/batch_set_datas")
+async def db_set_data(
+        database: str = Query(..., description = "数据库"),
+        table: str = Query(..., description = "数据表"),
+        where_column: str = Query(..., description = "查找列"),
+        keyword: str = Query(..., description = "关键词"),
+        updates: str = Query(..., description = "更新列"),
+):
+    """
+    更新数据表中单个记录的多个列，若记录不存在则插入新记录
+    :param database: 数据库名称
+    :param table: 表名称
+    :param where_column: 作为条件的列名（需为唯一约束或主键）
+    :param keyword: 条件值
+    :param updates: 字典形式的更新内容，格式为 {列名: 新值}
+    :return: 更新/插入结果信息
+    """
+    logger.info(
+        f"调用了 /batch_set_datas 接口, 数据库: {database}, 表: {table}, 关键词: {keyword}, 查找列: {where_column}, 更新项目: {updates},")
+    try:
+        results = batch_set_datas(database, table, where_column, keyword, updates)
         return results
     except sqlite3.Error as e:
         logger.error(f"调用 /set_data 接口失败: {str(e)}")

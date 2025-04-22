@@ -4,7 +4,7 @@ import httpx
 
 from log import logger
 from utils.cookie import get_cookie
-from utils.db import set_data
+from utils.db import batch_set_datas
 
 
 class BasePlatform(ABC):
@@ -25,7 +25,8 @@ class BasePlatform(ABC):
         if not cookie and self.cookie:
             # 如果数据库中没有 cookie，使用 self.cookie 并写入数据库
             cookie = self.cookie
-            set_data("data", "account", "platforms", self.id, "cookie", cookie)  # 将 self.cookie 写入数据库
+            param = {"title": self.name, "cookie": cookie, "indexNum": self.order, "logo": self.logo}
+            batch_set_datas("data", "account", "ID", self.id, param)
 
         self.client = httpx.AsyncClient()
         self.headers = {
