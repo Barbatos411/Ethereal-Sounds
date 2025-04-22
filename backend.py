@@ -49,6 +49,8 @@ main.include_router(database.router, tags = ["database"])
 # 设置静态文件的目录（'css', 'js', 'res' 目录需要映射）
 main.mount("/assets", StaticFiles(directory = "./web/assets"), name = "assets")
 
+main.mount("/root", StaticFiles(directory = "./"), name = "root")
+
 # 初始化模板引擎
 templates = Jinja2Templates(directory = "web")  # web 目录包含 html 模板文件
 
